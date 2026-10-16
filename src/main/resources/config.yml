@@ -1,0 +1,1190 @@
+# ==========================================================
+#          AlcatrazCoreOptimizer - Configuración General
+#               Autor: AlcatrazM (1.21.x - V1.0.9)
+# ==========================================================
+
+# ----------------------------------------------------------
+# 1. MÓDULO: HOJA SÓNICA (SONIC BLADE / GRITO DEL CENTINELA)
+# ----------------------------------------------------------
+arma:
+  nombre: "&b&lGrito del Centinela"
+  custom-model-data: 12345
+  lore:
+    - "&7¡El eco del abismo concentrado!"
+    - "&8▪ &7Habilidad: &bOnda Sónica de Warden"
+    - "&eClick derecho para desatar el ataque."
+
+habilidad:
+  danio: 15.0
+  rango: 25.0
+  radio-hitbox: 3.0
+  cooldown-segundos: 5
+  duracion-oscuridad-ticks: 200
+  respetar-protecciones-claims: true
+
+mensajes-hojasonica:
+  prefijo: "&8[&bSonicBlade&8] &r"
+  recibida: "&aHas recibido el &b&lGrito del Centinela&a."
+  entregada: "&aLe has entregado la espada a &e%jugador%&a."
+  sin-permiso-uso: "&cNo dominas el poder de esta arma."
+  cooldown: "&c¡Recargando! Espera %tiempo%s."
+  protegido: "&eEl objetivo está protegido en esta zona."
+  sin-permiso: "&cNo tienes permisos para ejecutar este comando."
+  jugador-no-encontrado: "&cJugador no encontrado o desconectado."
+  recargado: "&a¡Configuración recargada con éxito!"
+  solo-jugadores: "&cEste comando solo puede ser usado por jugadores."
+
+# ----------------------------------------------------------
+# 2. MÓDULO: PECHERA DE NETHERITE ÉLITRA (NETHERITE ELYTRA)
+# ----------------------------------------------------------
+flight:
+  boost-velocity-multiplier: 1.65
+  double-jump-to-glide: true
+  consume-fireworks: true
+  durability-loss-on-boost: 1
+  durability-loss-gliding-interval-ticks: 40
+  min-durability-to-glide: 5
+
+anvil:
+  exp-level-cost: 5
+
+items:
+  book:
+    name: "&6&lLibro Encantado: &d&lAlas del Inframundo"
+    lore:
+      - "&7Otorga la habilidad de &bplanear y volar"
+      - "&7e impulsarse con &ecohetes pirotécnicos&7."
+      - ""
+      - "&c&lRestricción:"
+      - "&8▪ &7Solo aplicable a: &5&lPechera de Netherite"
+      - ""
+      - "&eCombina en un yunque con una pechera de netherite."
+  chestplate:
+    name: "&5&lPechera de Netherite &d[Élitra]"
+    enchantment-tag-lore: "&b✦ Propulsión de Élitra Integrada ✦"
+    extra-lore-line: "&7Presiona doble espacio en el aire para planear y usa cohetes."
+
+messages-elytra:
+  prefix: "&8[&5Netherite&dElytra&8] &r"
+  no-permission: "&cNo tienes permisos para usar este comando."
+  book-given: "&aHas recibido &e%amount%x &6Libro Encantado de Alas del Inframundo&a."
+  book-given-target: "&aHas entregado &e%amount%x &6libro(s) a &e%player%&a."
+  chestplate-given: "&aHas recibido &e%amount%x &5Pechera de Netherite con Élitra&a."
+  chestplate-given-target: "&aHas entregado &e%amount%x &5pechera(s) a &e%player%&a."
+  player-not-found: "&cEl jugador no fue encontrado o está desconectado."
+  reload-success: "&a¡Configuración recargada correctamente!"
+  only-players: "&cEste comando solo puede ser ejecutado por jugadores dentro del juego."
+  chestplate-broken: "&c¡Tu pechera tiene muy poca durabilidad para volar!"
+  inventory-full: "&e¡Tu inventario estaba lleno! Los objetos se soltaron en el suelo."
+
+# ----------------------------------------------------------
+# 3. MÓDULO: LIFE MENDING (REPARACIÓN VITAL CON VIDA/SATURACIÓN)
+# ----------------------------------------------------------
+life-mending:
+  enabled: true
+  consumption-mode: "SATURATION_THEN_HEALTH"
+  durability-per-cycle: 1
+  repair-interval-ticks: 20
+  health-cost-per-durability: 0.5
+  saturation-cost-per-durability: 0.5
+  food-cost-per-durability: 1
+  min-health-threshold: 4.0
+  repair-all-inventory-items: false
+  particles-enabled: true
+  sound-enabled: true
+
+  anvil:
+    exp-level-cost: 5
+
+  book:
+    name: "&c&lLibro Encantado: &4&lLife Mending"
+    lore:
+      - "&7Repara la durabilidad de cualquier objeto"
+      - "&7consumiendo la &cvida &7y la &esaturación &7del portador."
+      - ""
+      - "&c&lCompatibilidad Universal:"
+      - "&8▪ &7Aplicable a: &aCualquier objeto o herramienta con durabilidad"
+      - ""
+      - "&eCombina en un yunque con cualquier herramienta, arma o armadura."
+
+  enchantment-tag-lore: "&c✦ Life Mending ✦"
+  extra-lore-line: "&7Repara su durabilidad consumiendo tu vida y saturación."
+
+messages-lifemending:
+  prefix: "&8[&4Life&cMending&8] &r"
+  no-permission: "&cNo tienes permisos para usar este comando."
+  book-given: "&aHas recibido &e%amount%x &cLibro Encantado de Life Mending&a."
+  book-given-target: "&aHas entregado &e%amount%x &clibro(s) de Life Mending a &e%player%&a."
+  player-not-found: "&cEl jugador no fue encontrado o está desconectado."
+  reload-success: "&a¡Configuración de Life Mending recargada correctamente!"
+  only-players: "&cEste comando solo puede ser ejecutado por jugadores dentro del juego."
+  inventory-full: "&e¡Tu inventario estaba lleno! Los libros se soltaron en el suelo."
+
+# ----------------------------------------------------------
+# 4. MÓDULO: ELEVADORES (ELEVATORS)
+# ----------------------------------------------------------
+elevator:
+  enabled: true
+  max-distance: 400
+  sound: "ENTITY_ENDERMAN_TELEPORT"
+  block-materials:
+    - IRON_BLOCK
+    - GOLD_BLOCK
+    - DIAMOND_BLOCK
+    - EMERALD_BLOCK
+    - COPPER_BLOCK
+
+# ----------------------------------------------------------
+# 6. MÓDULO: VOIDSPAWN (RESCATE DE CAÍDA AL VACÍO PARA NUEVOS USUARIOS)
+# ----------------------------------------------------------
+void-spawn:
+  enabled: true
+  activation-y: -60
+  # Si es true, solo los jugadores que aún tengan activa su Protección de Nuevo Usuario serán rescatados
+  require-newbie-protection: true
+  worlds:
+    - "world"
+    - "world_nether"
+    - "world_the_end"
+
+messages-voidspawn:
+  title: "&c&l¡SALVADO DEL VACÍO!"
+  subtitle: "&7Protección de Nuevo Usuario activa (&e48h&7)."
+  saved: "&8[&bAlcatraz&cOptimizer&8] &e¡Has caído al vacío! Has sido rescatado por tu Protección de Nuevo Usuario."
+
+# ----------------------------------------------------------
+# 7. MÓDULO: PROTECCIÓN DE NUEVO USUARIO (ANTI-PVP Y RESCATE DE VACÍO)
+# ----------------------------------------------------------
+newbie-protection:
+  enabled: true
+  # Duración de la protección de nuevo usuario en horas (48 horas)
+  duration-hours: 48
+  duration-minutes: 2880
+
+# ----------------------------------------------------------
+# 8. MÓDULO: SISTEMA DE PROTECCIONES Y CLAIMS POR BLOQUES (PS)
+# ----------------------------------------------------------
+protections:
+  enabled: true
+  max-claims-per-player: 5
+  temporary-duration-days: 7
+  # Cobertura vertical total: Protege desde Y: -64 hasta Y: 320 (Bedrock a Cielo)
+  full-height-coverage: true
+  # Avisos en pantalla al cruzar las fronteras del terreno (ActionBar)
+  show-entry-exit-messages: true
+  # Bloqueo de invasión con pistones y líquidos exteriores
+  prevent-piston-grief: true
+  prevent-liquid-grief: true
+
+# ----------------------------------------------------------
+# 8.1. MÓDULO: CANDADOS PRIVADOS PARA COFRES Y PUERTAS (LOCKETTE)
+# ----------------------------------------------------------
+chest-lock:
+  enabled: true
+  # Auto-cierre automático de puertas tras abrirse (en segundos)
+  door-auto-close: true
+  default-door-timer-seconds: 3
+  # Protección contra tolvas de extracción
+  anti-hopper-steal: true
+  # Protección contra explosiones de TNT/Creepers en contenedores privados
+  anti-explosion: true
+
+# ----------------------------------------------------------
+# 9. MÓDULO: COMBATLOG (ANTI-ESCAPE EN PVP)
+# ----------------------------------------------------------
+combat-log:
+  enabled: true
+  duration-seconds: 15
+  blocked-commands:
+    - "/rtp"
+    - "/spawn"
+    - "/home"
+    - "/tpa"
+    - "/tpahere"
+    - "/pv"
+    - "/vault"
+    - "/claim"
+    - "/fly"
+    - "/wild"
+    - "/back"
+
+
+# ----------------------------------------------------------
+# 11. MÓDULO: AUTO-ANNOUNCER (CONSEJOS Y AVISOS)
+# ----------------------------------------------------------
+announcer:
+  enabled: true
+  interval-seconds: 300
+  messages:
+    - "&8[&bAlcatraz&8] &7¡Protege tu terreno de 80 a 150 bloques con &e/claim create <nombre>&7!"
+    - "&8[&bAlcatraz&8] &7¿Tienes basura acumulada? Usa &e/trash &7para destruirla al instante sin generar lag."
+    - "&8[&bAlcatraz&8] &7¡Consigue la poderosa &b&lHoja Sónica &7o la &5&lPechera con Élitra &7del inframundo!"
+    - "&8[&bAlcatraz&8] &7Optimiza tus granjas evitando acumular más de 20 animales por chunk."
+
+# ----------------------------------------------------------
+# 12. SUITE DE OPTIMIZACIÓN Y CONTROL DE MEMORIA RAM
+# ----------------------------------------------------------
+optimizer:
+  # A. Descargador de Chunks de Paso Rápido (Fly-by / Transient Chunks)
+  transient-chunks:
+    enabled: true
+    unload-delay-seconds: 5
+    check-radius-blocks: 64
+
+  # B. Optimizador de Granjas (FarmControl AI)
+  farm-control:
+    enabled: true
+    check-interval-ticks: 60
+    crowd-threshold: 6
+    crowd-radius: 2.5
+    affected-mobs:
+      - COW
+      - SHEEP
+      - PIG
+      - CHICKEN
+      - VILLAGER
+      - ZOMBIE
+      - SKELETON
+      - ENDERMAN
+      - ZOMBIFIED_PIGLIN
+      - IRON_GOLEM
+
+  # C. Optimizador Inteligente de Aldeanos (Trading Halls AI Freeze)
+  villagers:
+    enabled: true
+    check-interval-ticks: 100
+    optimize-stationary-only: true
+
+  # D. Anti-Lag de TNT y Bloques que Caen
+  tnt:
+    enabled: true
+    max-primed-tnt-per-chunk: 25
+    max-falling-blocks-per-chunk: 40
+    optimize-explosions: true
+    max-explosion-blocks: 150
+
+  # F. Colisiones Físicas Selectivas (Anti-Cramming Lag)
+  collisions:
+    enabled: true
+
+  # G. Límite Duro de Mobs por Chunk
+  chunk-hard-cap:
+    enabled: true
+    max-animals-per-chunk: 25
+    max-monsters-per-chunk: 40
+
+  # H. Fusión de Experiencia (XP Stacker & Absorción Rápida)
+  xp-stacker:
+    enabled: true
+    merge-radius: 4.0
+
+  # I. Fusión de Ítems en el Suelo (Item Stacker)
+  items:
+    stacker-enabled: true
+    merge-radius: 3.0
+
+  # J. Limpieza Rápida de Flechas y Proyectiles Clavados
+  projectiles:
+    fast-despawn-arrows: true
+    arrow-lifetime-ticks: 100
+
+  # K. Protección contra Relojes de Redstone
+  redstone:
+    anti-lag-clocks: true
+    max-pulses-per-second: 60
+
+# ----------------------------------------------------------
+# 13. MENSAJES GENERALES Y LIMPIEZA DE PARTÍCULAS
+# ----------------------------------------------------------
+messages-particulas:
+  prefix: "&8[&bAlcatraz&cOptimizer&8] "
+  cleared: "&a¡Se han eliminado &e%count% &anubes de partículas/efectos del servidor!"
+
+# ----------------------------------------------------------
+# 14. MÓDULO: SELLWANDS (VARITAS DE VENTA INTELIGENTE)
+# ----------------------------------------------------------
+sellwand:
+  enabled: true
+  cooldown-seconds: 0.5
+  sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+
+  messages:
+    prefix: "&8[&6VaraVenta&8] &r"
+    no-permission: "&cNo tienes permiso para usar esta varita de venta."
+    protected-chest: "&cNo tienes permiso para vender el contenido de este cofre protegido."
+    no-items-to-sell: "&eNo se encontraron objetos vendibles en este contenedor."
+    actionbar-sold: "&6&l✔ &e¡Vendiste &f%items% ítems &epor &a+$%dinero% &7(%multiplicador%x) &8[&a+Bono: $%bono%&8]!"
+    send-chat-summary: false
+    wand-broken: "&c¡Tu &e%tier% &cse ha roto tras agotar todos sus usos!"
+
+  tiers:
+    ANGEL:
+      name: "&e&l✨ Vara Ángel"
+      multiplier: 1.00
+      max-uses: 100
+      infinite: false
+      material: "BLAZE_ROD"
+      custom-model-data: 1001
+      lore:
+        - "&7Varita bendecida con gracia celestial."
+        - "&8▪ &7Multiplicador: &a%multiplicador%x &7de ganancia"
+        - "&8▪ &7Usos: &e%usos%&7/&6%usos_max% %barra_progreso%"
+        - "&8▪ &7Total recaudado: &a$%total_ganado%"
+        - "&8▪ &7Ítems vendidos: &f%items_vendidos%"
+        - ""
+        - "&eClick derecho en un cofre para vender su contenido."
+
+    CELESTIAL:
+      name: "&b&l⭐ Vara Celestial"
+      multiplier: 1.20
+      max-uses: 300
+      infinite: false
+      material: "BLAZE_ROD"
+      custom-model-data: 1002
+      lore:
+        - "&7Forjada con fragmentos de luz astral."
+        - "&8▪ &7Multiplicador: &a%multiplicador%x &7(+20% bono)"
+        - "&8▪ &7Usos: &e%usos%&7/&6%usos_max% %barra_progreso%"
+        - "&8▪ &7Total recaudado: &a$%total_ganado%"
+        - "&8▪ &7Ítems vendidos: &f%items_vendidos%"
+        - ""
+        - "&eClick derecho en un cofre para vender su contenido."
+
+    DIVINA:
+      name: "&d&l🔮 Vara Divina"
+      multiplier: 1.50
+      max-uses: 500
+      infinite: false
+      material: "BLAZE_ROD"
+      custom-model-data: 1003
+      lore:
+        - "&7Concentra la energía mística de los titanes."
+        - "&8▪ &7Multiplicador: &a%multiplicador%x &7(+50% bono)"
+        - "&8▪ &7Usos: &e%usos%&7/&6%usos_max% %barra_progreso%"
+        - "&8▪ &7Total recaudado: &a$%total_ganado%"
+        - "&8▪ &7Ítems vendidos: &f%items_vendidos%"
+        - ""
+        - "&eClick derecho en un cofre para vender su contenido."
+
+    INMORTAL:
+      name: "&c&l🔱 Vara Inmortal"
+      multiplier: 1.80
+      max-uses: -1
+      infinite: true
+      material: "BLAZE_ROD"
+      custom-model-data: 1004
+      lore:
+        - "&7Artefacto eterno indestructible del inframundo."
+        - "&8▪ &7Multiplicador: &a%multiplicador%x &7(+80% bono)"
+        - "&8▪ &7Usos: &dInfinitos %barra_progreso%"
+        - "&8▪ &7Total recaudado: &a$%total_ganado%"
+        - "&8▪ &7Ítems vendidos: &f%items_vendidos%"
+        - ""
+        - "&eClick derecho en un cofre para vender su contenido."
+
+  # Lista de Precios de Venta Unitarios (en $)
+  prices:
+    # Cultivos y Agricultura
+    BEETROOT: 3.60
+    BEETROOT_SEEDS: 1.95
+    CARROT: 4.10
+    COCOA_BEANS: 3.50
+    EGG: 1.15
+    HAY_BLOCK: 7.25
+    MELON_SEEDS: 1.20
+    MELON_SLICE: 2.80
+    POTATO: 3.70
+    PUMPKIN: 4.80
+    PUMPKIN_SEEDS: 1.00
+    SUGAR_CANE: 3.30
+    WHEAT: 3.95
+    WHEAT_SEEDS: 2.85
+
+    # Minerales y Lingotes
+    AMETHYST_SHARD: 8.90
+    COAL: 4.50
+    COPPER_INGOT: 11.00
+    DIAMOND: 205.00
+    GOLD_INGOT: 28.00
+    IRON_INGOT: 7.00
+    LAPIS_LAZULI: 12.00
+    NETHERITE_INGOT: 385.00
+    QUARTZ: 10.00
+    REDSTONE: 3.10
+
+    # Drops de Mobs y Caza
+    ARROW: 1.60
+    BONE: 3.25
+    ENDER_PEARL: 7.00
+    FEATHER: 1.90
+    FLINT: 3.10
+    GHAST_TEAR: 40.25
+    GLOW_INK_SAC: 3.90
+    GUNPOWDER: 5.75
+    INK_SAC: 2.25
+    LEATHER: 5.25
+    MAGMA_CREAM: 18.50
+    PHANTOM_MEMBRANE: 6.50
+    RABBIT_HIDE: 3.50
+    ROTTEN_FLESH: 3.30
+    SLIME_BALL: 4.75
+    SPIDER_EYE: 1.50
+    STRING: 3.95
+
+    # Maderas y Troncos
+    ACACIA_LOG: 5.40
+    ACACIA_PLANKS: 1.20
+    ACACIA_SAPLING: 0.20
+    BIRCH_LOG: 5.25
+    BIRCH_PLANKS: 1.20
+    BIRCH_SAPLING: 1.75
+    CHERRY_LOG: 7.00
+    CHERRY_PLANKS: 1.75
+    CHERRY_SAPLING: 0.20
+    DARK_OAK_LOG: 7.50
+    DARK_OAK_PLANKS: 1.60
+    DARK_OAK_SAPLING: 0.20
+    JUNGLE_LOG: 6.50
+    JUNGLE_PLANKS: 1.40
+    JUNGLE_SAPLING: 0.20
+    MANGROVE_LOG: 8.80
+    MANGROVE_PLANKS: 2.10
+    MANGROVE_PROPAGULE: 0.20
+    OAK_LOG: 6.50
+    OAK_PLANKS: 1.40
+    OAK_SAPLING: 1.75
+    PALE_OAK_LOG: 8.25
+    PALE_OAK_PLANKS: 1.90
+    PALE_OAK_SAPLING: 0.40
+    SPRUCE_LOG: 6.75
+    SPRUCE_PLANKS: 1.40
+    SPRUCE_SAPLING: 0.20
+
+    # Redstone y Mecanismos
+    COMPARATOR: 0.20
+    DAYLIGHT_DETECTOR: 0.20
+    DISPENSER: 0.75
+    DROPPER: 0.75
+    HOPPER: 0.30
+    NOTE_BLOCK: 1.60
+    OBSERVER: 0.10
+    PISTON: 0.10
+    REDSTONE_TORCH: 0.20
+    REPEATER: 0.40
+    STICKY_PISTON: 0.30
+    TARGET: 1.40
+
+    # Flores y Naturaleza
+    ALLIUM: 0.50
+    AZURE_BLUET: 0.50
+    BLUE_ORCHID: 0.50
+    CORNFLOWER: 0.50
+    DANDELION: 0.50
+    LILAC: 0.50
+    LILY_OF_THE_VALLEY: 0.50
+    ORANGE_TULIP: 0.50
+    OXEYE_DAISY: 0.50
+    PEONY: 0.50
+    PINK_PETALS: 0.50
+    PINK_TULIP: 0.50
+    POPPY: 0.50
+    RED_TULIP: 0.50
+    ROSE_BUSH: 0.50
+    SUNFLOWER: 0.50
+    WHITE_TULIP: 0.50
+
+    # Bloques Tintados y Decoración I
+    BLACK_CONCRETE: 0.20
+    BLUE_CONCRETE: 0.40
+    BLUE_STAINED_GLASS: 0.20
+    BROWN_CONCRETE: 0.60
+    CYAN_CONCRETE: 0.50
+    CYAN_STAINED_GLASS: 0.80
+    GLASS: 0.80
+    GRAY_CONCRETE: 0.90
+    GREEN_CONCRETE: 0.30
+    GREEN_STAINED_GLASS: 0.75
+    LIGHT_BLUE_CONCRETE: 0.80
+    LIGHT_BLUE_STAINED_GLASS: 0.40
+    LIGHT_GRAY_CONCRETE: 0.30
+    LIME_CONCRETE: 0.80
+    LIME_STAINED_GLASS: 0.20
+    MAGENTA_CONCRETE: 0.70
+    MAGENTA_STAINED_GLASS: 1.25
+    ORANGE_CONCRETE: 0.50
+    ORANGE_STAINED_GLASS: 0.20
+    PINK_CONCRETE: 0.60
+    PURPLE_CONCRETE: 1.00
+    PURPLE_STAINED_GLASS: 0.80
+    RED_CONCRETE: 0.80
+    RED_STAINED_GLASS: 0.80
+    WHITE_CONCRETE: 0.80
+    YELLOW_CONCRETE: 0.20
+    YELLOW_STAINED_GLASS: 0.50
+
+    # Bloques Tintados y Decoración II
+    BLACK_STAINED_GLASS: 0.25
+    BLACK_WOOL: 0.20
+    BLUE_WOOL: 0.20
+    BROWN_STAINED_GLASS: 0.20
+    BROWN_WOOL: 0.20
+    CYAN_WOOL: 0.20
+    GRAY_STAINED_GLASS: 0.50
+    GRAY_WOOL: 0.20
+    GREEN_WOOL: 0.20
+    LIGHT_BLUE_WOOL: 0.20
+    LIGHT_GRAY_STAINED_GLASS: 0.10
+    LIGHT_GRAY_WOOL: 0.20
+    LIME_TERRACOTTA: 0.50
+    LIME_WOOL: 0.20
+    MAGENTA_WOOL: 0.20
+    ORANGE_TERRACOTTA: 0.50
+    ORANGE_WOOL: 0.20
+    PINK_STAINED_GLASS: 0.75
+    PINK_WOOL: 0.20
+    PURPLE_WOOL: 0.20
+    RED_TERRACOTTA: 0.50
+    RED_WOOL: 0.20
+    TINTED_GLASS: 1.00
+    WHITE_STAINED_GLASS: 0.10
+    WHITE_WOOL: 0.20
+    YELLOW_TERRACOTTA: 0.50
+    YELLOW_WOOL: 0.20
+
+    # Bloques Tintados y Decoración III
+    BLACK_TERRACOTTA: 0.50
+    BLUE_TERRACOTTA: 0.50
+    BROWN_TERRACOTTA: 0.50
+    CYAN_TERRACOTTA: 0.50
+    GRAY_TERRACOTTA: 0.50
+    GREEN_TERRACOTTA: 0.50
+    LIGHT_BLUE_TERRACOTTA: 0.50
+    LIGHT_GRAY_TERRACOTTA: 0.50
+    MAGENTA_TERRACOTTA: 0.50
+    PINK_TERRACOTTA: 0.50
+    PURPLE_TERRACOTTA: 0.50
+    WHITE_TERRACOTTA: 0.50
+
+    # Bloques de Construcción I
+    ANDESITE: 1.00
+    BASALT: 1.50
+    BLACKSTONE: 6.00
+    BLUE_ICE: 4.50
+    BRICKS: 2.00
+    CALCITE: 12.00
+    COARSE_DIRT: 4.00
+    COBBLESTONE: 1.00
+    CRYING_OBSIDIAN: 7.00
+    DIORITE: 1.00
+    DIRT: 2.80
+    GLOWSTONE: 4.00
+    GRANITE: 1.00
+    GRASS_BLOCK: 3.50
+    GRAVEL: 1.50
+    ICE: 3.50
+    MOSS_BLOCK: 0.80
+    MUD: 4.00
+    NETHERRACK: 0.30
+    NETHER_BRICKS: 1.00
+    OBSIDIAN: 5.00
+    PACKED_ICE: 3.50
+    ROOTED_DIRT: 4.50
+    SOUL_SAND: 1.00
+    SOUL_SOIL: 1.00
+    SPONGE: 4.00
+    STONE: 1.50
+
+    # Bloques de Construcción II
+    AMETHYST_BLOCK: 9.00
+    BRAIN_CORAL_BLOCK: 12.00
+    BUBBLE_CORAL_BLOCK: 12.00
+    FIRE_CORAL_BLOCK: 12.00
+    HORN_CORAL_BLOCK: 12.00
+    MAGMA_BLOCK: 5.00
+    PRISMARINE: 2.00
+    PURPUR_BLOCK: 18.00
+    RED_SAND: 2.50
+    SAND: 2.50
+    SEA_LANTERN: 5.00
+    SHROOMLIGHT: 7.00
+    TUBE_CORAL_BLOCK: 12.00
+    TUFF: 1.50
+
+    # Bloques Comprimidos y Minerales en Bruto
+    ANCIENT_DEBRIS: 300.00
+    COAL_BLOCK: 40.50
+    COPPER_BLOCK: 99.00
+    DIAMOND_BLOCK: 1845.00
+    EMERALD_BLOCK: 315.00
+    GOLD_BLOCK: 252.00
+    IRON_BLOCK: 63.00
+    LAPIS_BLOCK: 108.00
+    NETHERITE_BLOCK: 3465.00
+    NETHERITE_SCRAP: 320.00
+    RAW_COPPER: 11.00
+    RAW_GOLD: 28.00
+    RAW_IRON: 7.00
+    REDSTONE_BLOCK: 27.90
+
+
+mounts:
+  enabled: true
+  gui-title: "&8» &6&lESTABLO DE MONTURAS &8«"
+  # Retirar montura automáticamente al entrar en combate PvP
+  combat-auto-dismiss: true
+  # Inmunidad contra daño de caída para el jinete
+  protect-fall-damage: true
+  # Segundos de inmunidad a daño de caída otorgados tras desmontar
+  fall-protection-seconds: 10
+  # Distancia en bloques a partir de la cual la montura empieza a seguirte
+  follow-start-distance: 5.0
+  # Distancia máxima antes de teletransportarse automáticamente a tu lado
+  teleport-distance: 28.0
+
+  types:
+    # 1. Terrestres
+    zorro:
+      name: "&6&lZorro Ancestral"
+      scale: 2.0
+      speed: 0.42
+      jump-velocity: 0.55
+      step-height: 1.25
+      permission: "alcatraz.mounts.zorro"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    conejo:
+      name: "&e&lConejo Colosal"
+      scale: 2.7
+      speed: 0.38
+      jump-velocity: 0.85
+      step-height: 1.25
+      permission: "alcatraz.mounts.conejo"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    armadillo:
+      name: "&6&lArmadillo Veloz"
+      scale: 2.2
+      speed: 0.48
+      jump-velocity: 0.50
+      step-height: 1.25
+      permission: "alcatraz.mounts.armadillo"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    gato:
+      name: "&8&lGato Pantera"
+      scale: 2.4
+      speed: 0.45
+      jump-velocity: 0.60
+      step-height: 1.25
+      permission: "alcatraz.mounts.gato"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    osopolar:
+      name: "&b&lOso Polar Guerrero"
+      scale: 1.3
+      speed: 0.38
+      jump-velocity: 0.50
+      step-height: 1.25
+      permission: "alcatraz.mounts.osopolar"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    panda:
+      name: "&f&lOso Panda Guardián"
+      scale: 1.4
+      speed: 0.34
+      jump-velocity: 0.50
+      step-height: 1.25
+      permission: "alcatraz.mounts.panda"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    sniffer:
+      name: "&2&lSniffer Arcaico"
+      scale: 1.0
+      speed: 0.32
+      jump-velocity: 0.50
+      step-height: 1.25
+      permission: "alcatraz.mounts.sniffer"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    # 2. Voladoras y Especiales
+    phantom:
+      name: "&5&lPhantom del Abismo"
+      scale: 1.25
+      mob-size: 2
+      speed: 1.55
+      jump-velocity: 0.75
+      permission: "alcatraz.mounts.phantom"
+      free: false
+      premium: true
+      attack:
+        enabled: true
+        damage: 9.0
+        range: 14.0
+        cooldown-seconds: 1.0
+        target-monsters: true
+        target-rival-players: true
+
+    minidragon:
+      name: "&d&lMiniDragón del End"
+      scale: 0.20
+      speed: 2.25
+      jump-velocity: 0.85
+      permission: "alcatraz.mounts.minidragon"
+      free: false
+      premium: false
+      attack:
+        enabled: true
+        damage: 14.0
+        range: 20.0
+        cooldown-seconds: 1.0
+        target-monsters: false
+        target-rival-players: true
+
+    murcielago:
+      name: "&7&lMurciélago Espectral"
+      scale: 2.5
+      speed: 0.75
+      jump-velocity: 0.55
+      permission: "alcatraz.mounts.murcielago"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    abeja:
+      name: "&e&lAbeja Reina Melífera"
+      scale: 2.0
+      speed: 0.52
+      jump-velocity: 0.65
+      permission: "alcatraz.mounts.abeja"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    # 3. Acuáticas
+    salmon:
+      name: "&c&lSalmón Titán"
+      scale: 3.5
+      speed: 0.45
+      jump-velocity: 0.40
+      permission: "alcatraz.mounts.salmon"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    delfin:
+      name: "&b&lDelfín Oceánico"
+      scale: 1.5
+      speed: 0.55
+      jump-velocity: 0.65
+      permission: "alcatraz.mounts.delfin"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    ajolote:
+      name: "&d&lAjolote Místico"
+      scale: 3.0
+      speed: 0.46
+      jump-velocity: 0.55
+      permission: "alcatraz.mounts.ajolote"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+    # 4. Mascota Compañera (No Montable)
+    allay:
+      name: "&b&lHada Protectora"
+      scale: 1.0
+      speed: 0.35
+      jump-velocity: 0.0
+      permission: "alcatraz.mounts.allay"
+      free: false
+      premium: false
+      attack:
+        enabled: false
+
+# ----------------------------------------------------------
+# 20. MÓDULO: DEFENSA DE BOSSES (PROYECTILES Y ESPADAS)
+# ----------------------------------------------------------
+boss-defense:
+  enabled: true
+
+  # 1. Defensa contra Proyectiles (Flechas, Tridentes, Cargas de Viento, etc.)
+  projectile:
+    enabled: true
+    # Porcentaje de reducción de daño (75.0 = absorbe el 75%, recibe el 25%)
+    reduction-percentage: 75.0
+    # Incluir pociones arrojadizas (Splash/Lingering) en la reducción
+    include-potions: false
+
+  # 2. Defensa contra Espadas y Armas Cuerpo a Cuerpo
+  sword:
+    enabled: true
+    # Porcentaje de reducción de daño (75.0 = absorbe el 75%, recibe el 25%)
+    reduction-percentage: 75.0
+    # Aplicar a espadas (Madera, Piedra, Hierro, Oro, Diamante, Netherite)
+    apply-to-swords: true
+    # Aplicar a hachas
+    apply-to-axes: true
+    # Aplicar a mazos
+    apply-to-maces: true
+    # Aplicar a cualquier ataque cuerpo a cuerpo (incluso sin espada)
+    apply-to-all-melee: false
+
+  # 3. Notificación / Cartel en Pantalla al Atacante
+  notification:
+    # Activa o desactiva por completo el cartel/aviso en pantalla al golpear al boss
+    enabled: true
+    # Tipo de visualización:
+    #  - "ACTIONBAR" (Texto flotante sobre la barra de objetos)
+    #  - "TITLE" (Texto grande centrado en medio de la pantalla)
+    #  - "CHAT" (Mensaje enviado al chat del jugador)
+    display-type: "ACTIONBAR"
+    # Mensaje para impactos con proyectiles y flechas
+    message-projectile: "&c🛡 &e¡El Jefe absorbe el &6%percentage%%% &ede daño por proyectiles! &7(-%reduction%%%)"
+    # Mensaje para impactos con espada o cuerpo a cuerpo
+    message-sword: "&c🛡 &e¡El Jefe absorbe el &6%percentage%%% &ede daño de tu espada! &7(-%reduction%%%)"
+    # Configuración adicional en caso de elegir display-type: "TITLE"
+    title:
+      title: "&c🛡 &l¡ESCUDO DE JEFE!"
+      subtitle: "&eAbsorbió el &6%percentage%%% &ede daño"
+      fade-in-ticks: 5
+      stay-ticks: 25
+      fade-out-ticks: 5
+    # Tiempo mínimo entre avisos al mismo jugador (segundos) para evitar spam
+    cooldown-seconds: 1.5
+
+  # Efectos visuales y de sonido al impactar
+  sound:
+    enabled: true
+    sound-type: "ITEM_SHIELD_BLOCK"
+    volume: 1.0
+    pitch: 1.25
+  particles:
+    enabled: true
+    particle-type: "ENCHANTED_HIT"
+    count: 15
+    offset-x: 0.4
+    offset-y: 0.6
+    offset-z: 0.4
+    speed: 0.1
+
+  # Criterios para identificar a un Boss / Jefe de Dungeon:
+  detection:
+    # 1. Tags de scoreboard aplicables con vanilla (/tag @e[distance=..5] add boss)
+    scoreboard-tags:
+      - "boss"
+      - "dungeon_boss"
+      - "dungeon"
+      - "jefe"
+      - "jefe_mazmorra"
+      - "miniboss"
+      - "boss_dungeon"
+
+    # 2. Palabras clave en el nombre visible de la entidad (ignora mayúsculas y colores)
+    name-keywords:
+      - "boss"
+      - "jefe"
+      - "rey"
+      - "lord"
+      - "guardian"
+      - "guardián"
+      - "warden"
+      - "centinela"
+      - "dungeon"
+      - "mazmorra"
+      - "titán"
+      - "titan"
+      - "coloso"
+      - "devorador"
+      - "sombra"
+      - "lich"
+      - "dragón"
+      - "dragon"
+
+    # 3. Tipos de mobs boss vanilla considerados bosses automáticamente
+    auto-boss-entity-types:
+      - "WARDEN"
+      - "WITHER"
+      - "ENDER_DRAGON"
+      - "ELDER_GUARDIAN"
+
+    # 4. Umbral de vida máxima (mobs agresivos con >= 100 HP / 50 corazones)
+    min-health-threshold: 100.0
+    require-monster-for-health: true
+
+    # 5. Filtro de mundos opcional (si está enabled: false, aplica en todos los mundos)
+    world-filter:
+      enabled: false
+      worlds:
+        - "dungeon"
+        - "dungeon1"
+        - "dungeon2"
+        - "mazmorra"
+        - "game_world_"
+
+
+# ==========================================
+# Módulo: Chat Bubbles (Globos de Texto Estilo Cómic)
+# ==========================================
+chat-bubbles:
+  enabled: true
+  duration-ticks: 80 # 4 segundos en pantalla
+  vertical-offset: 0.95 # Altura sobre los ojos (~2.6 bloques desde el suelo)
+  max-chars-per-line: 32
+  max-lines: 3
+  crowd-limit:
+    # Si hay más de max-players juntos en el radio, no se muestra ningún globo para evitar saturar la pantalla
+    enabled: true
+    max-players: 15
+    radius: 15.0
+  disabled-players: []
+
+# ==========================================
+# 21. MÓDULO: FILTRO DE GROSERÍAS INTELIGENTE & SISTEMA DE MUTES
+# ==========================================
+chat-filter:
+  enabled: true
+
+  # Sistema de Advertencias (Strikes) antes del Mute
+  max-strikes: 3
+
+  # Duración del Mute automático al alcanzar los 3 strikes (en minutos)
+  mute-duration-minutes: 25
+
+  # Permiso para ignorar el filtro (Staff/Admins)
+  bypass-permission: "alcatraz.chatfilter.bypass"
+  # Si es false, los operadores también están sujetos al filtro (ideal para pruebas)
+  bypass-ops: true
+
+  # Permiso para gestionar mutes y desmutear (/alcatraz unmute)
+  admin-permission: "alcatraz.chatfilter.admin"
+
+  # Notificar al Staff conectado cuando un jugador comete una infracción
+  notify-staff: true
+
+  # Sonido opcional al recibir una advertencia o mute (vacío para desactivar)
+  warning-sound: "ENTITY_VILLAGER_NO"
+  mute-sound: "ENTITY_ENDER_DRAGON_GROWL"
+
+  # Mensajes configurables con soporte para códigos de color (&)
+  messages:
+    prefix: "&8[&c&lFILTRO&8] "
+    strike-warn: "&eTu mensaje fue bloqueado por contener vocabulario inapropiado. &cAdvertencia: &e[&c%strike%&e/&c%max%&e]"
+    strike-final-warn: "&c¡Atención! Al próximo intento serás silenciado durante &4%duration% minutos&c."
+    muted-notice: "&4&l¡SILENCIADO! &cHas acumulado %max% advertencias de malas palabras. Estás silenciado por &e%duration% minutos&c."
+    still-muted: "&cEstás silenciado por acumular advertencias de groserías. &eTiempo restante: &f%time%"
+    unmuted-target: "&a¡Un administrador te ha levantado el silencio! Puedes hablar de nuevo en el chat."
+    unmuted-sender: "&aHas desmuteado exitosamente al jugador &e%player%&a."
+    not-muted: "&eEl jugador &f%player% &eno está silenciado."
+    staff-strike-alert: "&8[&cAlerta Staff&8] &e%player% &cintentó usar groserías &7(%strike%/%max%)&c: &f%message%"
+    staff-mute-alert: "&8[&cAlerta Staff&8] &e%player% &4ha sido silenciado automáticamente por %duration% minutos tras %max% faltas."
+
+# ==========================================
+# 22. MÓDULO: ANTI-FLOOD DE CHAT
+# ==========================================
+anti-flood:
+  enabled: true
+  # Si es false, los operadores también están sujetos a cooldown (ideal para pruebas)
+  bypass-ops: true
+  # Cooldown entre mensajes de chat en segundos (0.0 = desactivado, fluido total)
+  chat-cooldown-seconds: 0.0
+  # Bloquear repetición consecutiva de mensajes idénticos
+  block-duplicates: true
+  duplicate-cooldown-seconds: 2
+  # Recortar caracteres alargados excesivos (ej. 'holaaaaaaaa' -> 'holaaa')
+  trim-repeated-characters: true
+  max-repeat-characters: 3
+
+# ==========================================
+# 23. MÓDULO: ANTI-SPAM (ENLACES, IPS, DISCORD Y RÁFAGAS)
+# ==========================================
+anti-spam:
+  enabled: true
+  # Si es false, los operadores también están sujetos al filtro de spam (ideal para pruebas)
+  bypass-ops: true
+  bypass-permission: "alcatraz.antispam.bypass"
+  admin-permission: "alcatraz.antispam.admin"
+  notify-staff: true
+  warning-sound: "ENTITY_VILLAGER_NO"
+
+  # Bloquear enlaces web (http, https, dominios .com, .net, etc.)
+  block-links: true
+  # Bloquear direcciones IP numéricas
+  block-ips: true
+  # Bloquear invitaciones de Discord
+  block-discord: true
+  # Bloquear spam de caracteres o símbolos repetidos (???????, !!!!!!!, etc.)
+  block-symbol-spam: true
+  max-symbols-percentage: 65.0
+
+  # Protección contra ráfagas (Burst spam: enviar demasiados mensajes en pocos segundos)
+  burst:
+    enabled: true
+    max-messages: 6
+    window-seconds: 3.0
+
+  # Dominios o IPs permitidos en el chat (Whitelist)
+  whitelist:
+    - "dal01.qorehost.com"
+    - "localhost"
+    - "127.0.0.1"
+
+  messages:
+    prefix: "&8[&c&lSPAM&8] "
+    blocked-link: "&cNo está permitido enviar enlaces o sitios web en el chat."
+    blocked-ip: "&cNo está permitido publicar direcciones IP o servidores en el chat."
+    blocked-discord: "&cNo está permitido enviar invitaciones de Discord en el chat."
+    blocked-burst: "&cEstás enviando demasiados mensajes seguidos. ¡Por favor espera un momento!"
+    blocked-symbols: "&cTu mensaje contiene demasiados símbolos o caracteres repetidos."
+    staff-alert: "&8[&cAlerta Staff&8] &e%player% &cbloqueado por spam/enlace: &f%message%"
+
+# ==========================================
+# 24. MÓDULO: ANTI-MAYÚSCULAS (ANTI-CAPS)
+# ==========================================
+anti-caps:
+  enabled: true
+  # Si es false, los operadores también están sujetos a la corrección de mayúsculas (ideal para pruebas)
+  bypass-ops: true
+  bypass-permission: "alcatraz.anticaps.bypass"
+  # Longitud mínima del mensaje para evaluar mayúsculas
+  min-message-length: 5
+  # Máximo de palabras COMPLETAS en mayúsculas permitidas por mensaje (el resto se pasa a minúsculas)
+  max-uppercase-words: 1
+  # Porcentaje máximo de mayúsculas antes de activar el filtro automático
+  max-caps-percentage: 50.0
+
+# ==========================================
+# 25. MÓDULO: RESOURCE PACK MANAGER & BEDROCK FIX
+# ==========================================
+resource-pack:
+  # Activar el gestor avanzado de paquetes de texturas
+  enabled: true
+
+  # URL directa HTTP/HTTPS al archivo .zip del Resource Pack (Java)
+  url: ""
+
+  # Hash SHA-1 de 40 caracteres hexadecimales para verificación de caché del cliente
+  hash: ""
+
+  # Si es true, cuando actualices el hash arriba, el plugin detectará la nueva versión
+  # y volverá a pedirlo 1 sola vez a todos los usuarios elegibles.
+  reset-on-hash-change: true
+
+  # Modo de destino de los jugadores:
+  # "PERMISSION": Solo los jugadores con el permiso configurado abajo lo recibirán
+  # "WHITELIST": Solo los jugadores listados en 'whitelist' lo recibirán
+  # "ALL": Todos los jugadores de Java lo recibirán
+  target-mode: "PERMISSION"
+
+  # Permiso requerido si target-mode es "PERMISSION"
+  permission: "alcatraz.pack.receive"
+
+  # Lista de usuarios si target-mode es "WHITELIST"
+  whitelist:
+    - "UsuarioEjemplo"
+
+  # DESCARGA ÚNICA (SEND-ONLY-ONCE):
+  # Si es true, una vez que el jugador lo descarga con éxito, AlcatrazCore guarda su UUID
+  # y NUNCA más se lo vuelve a enviar al entrar.
+  # Esto EVITA completamente la pantalla de "Cargando recursos" y congelamientos en cada inicio de sesión.
+  send-only-once: true
+
+  # Tiempo de espera (en ticks) tras unirse al servidor antes de enviar la solicitud (20 ticks = 1 segundo)
+  delay-ticks: 30
+
+  # Mensaje que se muestra en la pantalla de confirmación de descarga del cliente
+  prompt: "&b&lAlcatraz &8» &7Descargando paquete de texturas oficial..."
+
+  # Forzar descarga (si es true, el cliente no puede rechazar la pantalla de aviso)
+  force: false
+
+  # Expulsar al jugador si rechaza el paquete de recursos (solo si no tiene alcatraz.pack.bypass)
+  kick-on-decline: false
+  decline-kick-message: "&cDebes aceptar el paquete de recursos para ingresar al servidor."
+
+  # ----------------------------------------------------------
+  # AISLAMIENTO Y COMPATIBILIDAD CON BEDROCK EDITION (GEYSER / FLOODGATE)
+  # ----------------------------------------------------------
+  bedrock:
+    # Si es true, a los jugadores de Bedrock NUNCA se les enviará el paquete de Java.
+    # Esto elimina al 100% los errores de "Cargando paquete de recursos", bloqueos infinitos
+    # o desconexiones en móviles y consolas al conectarse mediante Geyser.
+    bypass-java-pack: true
+
+    # URL opcional exclusiva para Bedrock (enlace directo a .mcpack si se cuenta con uno).
+    # Dejar vacío si Geyser ya maneja las texturas automáticamente desde su carpeta 'packs'.
+    custom-pack-url: ""
+    custom-pack-hash: ""
+
+    # Notificar al jugador de Bedrock por chat que sus texturas están gestionadas por Geyser
+    notify-pack-info: false
+    info-message: "&e[Alcatraz] &7Texturas de Bedrock optimizadas por Geyser. ¡Sin lag ni descargas pesadas!"
+
+# ==========================================================
+# 27. MÓDULO: ANTI-XRAY INTELIGENTE & HEURÍSTICA DE MINERÍA
+# ==========================================================
+antixray:
+  enabled: true
+  ratio-threshold-percent: 8.0
+  fast-ore-count-threshold: 5
+  analysis-window-seconds: 120
+  alert-cooldown-seconds: 45
+
+# ==========================================================
+# 28. MÓDULO: GANCHO DE AGARRE (GRAPPLING HOOK TÁCTICO)
+# ==========================================================
+grapplinghook:
+  enabled: true
+  pull-multiplier: 1.65
+  vertical-boost: 0.35
+  cooldown-seconds: 2.0
+  default-uses: 50
+
+
+# ==========================================================
+# 32. MÓDULO: EVENTO DE HALLOWEEN
+# ==========================================================
+halloween:
+  enabled: true
+  world: "world"
+  grid:
+    # Tamaño de cada región en bloques (3000 = ~187 chunks)
+    region-size: 3000
+    # Cantidad de calabazas a sembrar por región (600 = ~1 calabaza cada 4-5 chunks)
+    heads-per-region: 600
+    # Separación mínima en bloques entre cabezas del evento
+    min-distance-between-heads: 12
+    weights:
+      caves: 45
+      surface: 55
+
+
+
+

@@ -1,0 +1,93 @@
+================================================================================
+               ALCATRAZCOREOPTIMIZER v4.1.0 - GUÍA OFICIAL
+                               Autor: AlcatrazM
+                     Compatibilidad: Minecraft 1.21.x (Paper)
+================================================================================
+
+DESCRIPCIÓN GENERAL:
+AlcatrazCoreOptimizer es la suite definitiva Todo-en-Uno para servidores Paper 1.21.x:
+- 🛡️ Sistema de Menas y Piedras de Protección (Radios: 30, 50, 100, 150, 300 bloques).
+- ⏳ Dos modalidades: Menas Permanentes y Menas Temporales (1 semana).
+- 📦 Bóvedas Privadas Infinitas para Administradores (/pv 1, /pv 2...).
+- 🔮 Esfera Cuántica de Mobs (Mob Catcher / Safari Net).
+- ⚔️ Sistema de Anti-CombatLog y Bloqueo de Portales en Combate.
+- 🗑️ Papelera / Basurero Virtual (/trash).
+- ⛏️ AutoSmelt de Minerales (/autosmelt).
+- 📢 Anunciador de Rendimiento Automático.
+- ⚡ Motor de Alto Rendimiento, Optimización de Aldeanos, TNT, Tolvas y Memoria RAM.
+
+--------------------------------------------------------------------------------
+1. SISTEMA DE PIEDRAS Y MENAS DE PROTECCIÓN
+--------------------------------------------------------------------------------
+¡Tan simple como colocar la mena en el suelo!
+
+▪ Niveles y Radios de Menas de Protección:
+  1. 🪨 Mena de Carbón:     Radio de 30 bloques  (Área: 61x61 bloques)
+  2. ⛏️ Mena de Hierro:      Radio de 50 bloques  (Área: 101x101 bloques)
+  3. 🪙 Mena de Oro:         Radio de 100 bloques (Área: 201x201 bloques)
+  4. 💎 Mena de Diamante:    Radio de 150 bloques (Área: 301x301 bloques)
+  5. 🟢 Mena de Esmeralda:   Radio de 300 bloques (Área: 601x601 bloques)
+
+▪ Dos Modalidades Disponibles:
+  - ✦ Permanentes: No caducan mientras el bloque permanezca colocado.
+  - ⏳ Temporales: Duran exactamente 1 semana (7 días) tras colocarse y luego expiran automáticamente.
+
+▪ Mecánicas del Bloque:
+  - Al colocar: Activa el terreno, dibuja partículas verdes en el límite y envía mensaje de confirmación.
+  - Al romper: Solo el dueño puede picarlo. Al romperlo, recupera el ítem de la mena.
+  - Clic derecho: Muestra información de la zona, tiempo restante (si es temporal), miembros y partículas.
+
+▪ Comandos de Protección (/ps o /claim):
+  - /ps trust <jugador>        - Añade a un amigo a tu terreno.
+  - /ps untrust <jugador>      - Quita a un amigo de tu terreno.
+  - /ps info (o /ps view)      - Muestra información y activa las partículas del borde.
+  - /ps flags                  - Lista los permisos configurables de tu terreno.
+  - /ps flag <flag> <allow|deny> - Cambia permisos (PVP, EXPLOSIONS, INTERACT, etc.).
+  - /ps list                   - Lista todas tus protecciones activas y su tiempo restante.
+  - /ps give <jugador> <carbon|hierro|oro|diamante|esmeralda> [permanente|temporal] [cant]
+    (Comando de administración para entregar menas especiales a jugadores o tiendas).
+
+--------------------------------------------------------------------------------
+2. BÓVEDAS PRIVADAS VIRTUALES (/pv)
+--------------------------------------------------------------------------------
+▪ Bóvedas Infinitas de Administrador:
+  - /pv <número>               - Abre tu bóveda privada (/pv 1, /pv 2, /pv 100...).
+  - /pv <jugador> <número>     - Abre la bóveda de cualquier otro jugador (solo admins).
+  - Permiso exclusivo: alcatraz.pv.admin
+
+--------------------------------------------------------------------------------
+3. MÓDULOS DE COMBATE, CRIATURAS Y UTILIDADES
+--------------------------------------------------------------------------------
+▪ Esfera Cuántica de Criaturas (/mobcatcher):
+  - Atrapa aldeanos con sus tradeos y nivel intactos, caballos o criaturas pacíficas.
+  - Clic derecho en el mob para capturar; clic derecho en el suelo para liberar.
+
+▪ CombatLog (Anti-Desconexión en PvP):
+  - 15s de combate con temporizador en la Action Bar al recibir o dar daño PvP.
+  - Bloquea comandos de escape (/rtp, /spawn, /home, /tpa, /pv, /claim, /fly) y portales.
+  - Morir y soltar inventario si se desconectan durante el combate.
+
+▪ Papelera Virtual (/trash o /basurero):
+  - Abre un menú de 54 slots para destruir objetos permanentemente y evitar lag en el suelo.
+
+▪ AutoSmelt de Minerales (/autosmelt):
+  - Funde automáticamente minerales en lingotes al picar (compatible con Fortuna).
+
+▪ Hoja Sónica & Pechera con Élitra & Life Mending:
+  - Armas y utilidades legendarias del inframundo y el Warden.
+  - Comandos: /hojasonica, /pechera, /libro, /lifemending.
+
+--------------------------------------------------------------------------------
+4. SUITE DE OPTIMIZACIÓN Y CONTROL DE MEMORIA RAM
+--------------------------------------------------------------------------------
+▪ /alcatraz monitor (o /alcatraz lag):
+  - Muestra TPS (1m, 5m, 15m), MSPT de Paper, RAM usada/libre y top 3 chunks con más entidades.
+▪ /alcatraz clean:
+  - Limpieza profunda de ítems en el suelo y recolección de basura (GC).
+▪ Optimizador de Aldeanos (Villager Trade-Lock AI Freeze):
+  - Congela el pathfinding de aldeanos encerrados en salas de tradeo para ahorrar CPU.
+▪ Anti-Lag de TNT y Bloques que Caen:
+  - Agrupa explosiones simultáneas para evitar caídas de TPS.
+▪ Descargador de Chunks de Paso Rápido (Transient Chunk Unloader).
+▪ Pregenerador Asíncrono de Terreno (/alcatraz pregen start).
+================================================================================

@@ -1,0 +1,382 @@
+name: AlcatrazCoreOptimizer
+version: '1.1.0'
+main: com.alcatrazm.plugin.AlcatrazPlugin
+api-version: '1.21'
+author: AlcatrazM
+description: Core y Suite de Optimización Todo-en-Uno para Paper 1.21.x. Combate legendario, utilidades, Player Vaults infinitos, protecciones 80-150b, candados de cofres y puertas privadas (Lockette), optimizador de aldeanos, TNT anti-lag, monitor de rendimiento y más.
+
+commands:
+  sellwand:
+    description: Comando para obtener, listar o recargar las varitas de venta (SellWands).
+    aliases: [varaventa, vara, varitas, sw]
+    permission: alcatraz.sellwand.use
+    usage: /<command> [give|list|prices|reload|help]
+  alcatraz:
+    description: Comando maestro para gestionar todos los módulos de AlcatrazCoreOptimizer.
+    aliases: [alcatrazcore, alcatrazoptimizer, alcatrazopt, alcatrazm]
+    permission: alcatraz.admin
+    usage: /<command> [monitor|clean|mobcatcher|claim|hojasonica|pechera|libro|lifemending|newbie|reload|version|help]
+  alcatrazcore:
+    description: Comando maestro directo de AlcatrazCoreOptimizer.
+    permission: alcatraz.admin
+    usage: /<command> [reload|version|help]
+  alcatrazoptimizer:
+    description: Acceso directo al optimizador de Alcatraz.
+    permission: alcatraz.admin
+    usage: /<command> [monitor|clean|reload|version]
+  hojasonica:
+    description: Comando para obtener la Hoja Sonica o recargar la configuracion.
+    aliases: [sonicblade, hs, wardenblade, wardensword]
+    permission: sonicblade.admin
+    usage: /<command> [jugador|reload] [cantidad]
+  netheriteelytra:
+    description: Comando principal para gestionar el libro y la pechera de netherite élitra.
+    aliases: [ne, netheriteelitra, elitranetherite, elytra]
+    permission: netheriteelytra.admin
+    usage: /<command> [pechera|libro|give|reload|help] [jugador] [cantidad]
+  elytrachest:
+    description: Comando directo para obtener o entregar la pechera de netherite con élitra.
+    aliases: [pechera, elytrachestplate, pecheraelitra, pecheraelytra, givepechera]
+    permission: netheriteelytra.admin
+    usage: /<command> [jugador] [cantidad]
+  elytrabook:
+    description: Comando directo para obtener o entregar el libro de Alas del Inframundo.
+    aliases: [libro, libroelitra, libroelytra, givelibro]
+    permission: netheriteelytra.admin
+    usage: /<command> [jugador] [cantidad]
+  pechera:
+    description: Comando directo para dar la pechera de netherite con élitra.
+    permission: netheriteelytra.admin
+    usage: /<command> [jugador] [cantidad]
+  libro:
+    description: Comando directo para dar el libro encantado Alas del Inframundo.
+    permission: netheriteelytra.admin
+    usage: /<command> [jugador] [cantidad]
+  lifemending:
+    description: Comando principal para obtener libros de Life Mending o aplicarlo a objetos.
+    aliases: [lm, vidamending, reparacionvital, lmbook, vidadurabilidad]
+    permission: lifemending.admin
+    usage: /<command> [jugador|book|apply|reload|help] [cantidad]
+  lm:
+    description: Acceso rápido al comando de Life Mending.
+    permission: lifemending.admin
+    usage: /<command> [jugador|book|apply|reload|help] [cantidad]
+  newbieprotection:
+    description: Gestiona la protección de novatos contra PvP.
+    aliases: [pvp, newbie, proteccionnovato]
+    usage: /<command> [status|on]
+  limpiarparticulas:
+    description: Elimina nubes de partículas y efectos de área residuales en el servidor.
+    aliases: [fixpp, clearparticles, clearp, limpiarp, borrarparticulas, lparticulas]
+    permission: alcatraz.limpiarparticulas
+    usage: /<command> [radio|all]
+  fixpp:
+    description: Acceso rápido para limpiar partículas.
+    permission: alcatraz.limpiarparticulas
+    usage: /<command> [radio|all]
+  playervault:
+    description: Abre una bóveda privada virtual infinita exclusiva para administradores.
+    aliases: [pv, vault]
+    permission: alcatraz.pv.admin
+    usage: /<command> [jugador] <numero>
+  pv:
+    description: Acceso rápido a las bóvedas privadas infinitas para administradores.
+    permission: alcatraz.pv.admin
+    usage: /<command> [jugador] <numero>
+  vault:
+    description: Acceso a bóvedas privadas.
+    permission: alcatraz.pv.admin
+    usage: /<command> [jugador] <numero>
+
+  mobcatcher:
+    description: Entrega Esferas de Contención Cuántica para capturar y liberar criaturas.
+    aliases: [esfera, cazadormobs, safarinet]
+    permission: alcatraz.admin
+    usage: /<command> [jugador] [cantidad]
+  trash:
+    description: Abre la papelera virtual para destruir objetos y evitar lag en el suelo.
+    aliases: [basurero, papelera, disposal]
+    permission: alcatraz.trash.use
+    usage: /<command>
+  basurero:
+    description: Acceso a la papelera del servidor.
+    permission: alcatraz.trash.use
+    usage: /<command>
+  lock:
+    description: Bloquea cofres, barriles y puertas para hacerlos privados (Lockette).
+    aliases: [candado, bloquear, cprivate, privado]
+    permission: alcatraz.lock.use
+    usage: /<command> [add|remove|timer|public|donation|info|unlock]
+  candado:
+    description: Acceso rápido al candado privado de cofres y puertas.
+    permission: alcatraz.lock.use
+    usage: /<command> [add|remove|timer|public|donation|info|unlock]
+  bloquear:
+    description: Bloquea el cofre o puerta que estés mirando.
+    permission: alcatraz.lock.use
+    usage: /<command> [add|remove|timer|public|donation|info|unlock]
+  cprivate:
+    description: Comando clásico de candados privados.
+    permission: alcatraz.lock.use
+    usage: /<command> [add|remove|timer|public|donation|info|unlock]
+  privado:
+    description: Bloquea tu cofre o puerta privada.
+    permission: alcatraz.lock.use
+    usage: /<command> [add|remove|timer|public|donation|info|unlock]
+  monturas:
+    description: Abre el menú interactivo del establo de monturas de Alcatraz.
+    aliases: [montura, mounts, mount, mascotas, mascota, pets, pet]
+    permission: alcatraz.mounts.use
+    usage: /<command> [gui|spawn|dismiss|reload|help]
+  montura:
+    description: Acceso rápido al sistema de monturas.
+    permission: alcatraz.mounts.use
+    usage: /<command> [gui|spawn|dismiss|reload|help]
+  mounts:
+    description: Acceso a monturas.
+    permission: alcatraz.mounts.use
+    usage: /<command>
+  mount:
+    description: Acceso a monturas.
+    permission: alcatraz.mounts.use
+    usage: /<command>
+  mascotas:
+    description: Acceso a mascotas y monturas.
+    permission: alcatraz.mounts.use
+    usage: /<command>
+  mascota:
+    description: Acceso a mascotas y monturas.
+    permission: alcatraz.mounts.use
+    usage: /<command>
+  pets:
+    description: Acceso a mascotas y monturas.
+    permission: alcatraz.mounts.use
+    usage: /<command>
+  pet:
+    description: Acceso a mascotas y monturas.
+    permission: alcatraz.mounts.use
+    usage: /<command>
+  bossdefense:
+    description: Gestiona la defensa y resistencia del 75% contra proyectiles para Bosses de mazmorras.
+    aliases: [defensaboss, bossdef]
+    permission: alcatraz.bossdefense
+    usage: /<command> [check|tag|untag|set|stats|reload]
+  defensaboss:
+    description: Acceso rápido al gestor de defensa de bosses.
+    permission: alcatraz.bossdefense
+    usage: /<command>
+  bossdef:
+    description: Acceso rápido al gestor de defensa de bosses.
+    permission: alcatraz.bossdefense
+    usage: /<command>
+
+  chatbubbles:
+    description: Alterna o recarga los globos de texto sobre la cabeza de los jugadores.
+    aliases: [cb, bocadillos, bocadillo, globos, globo]
+    usage: /<command> [toggle|reload]
+  cb:
+    description: Acceso rápido a los globos de texto.
+    aliases: [bocadillos, bocadillo]
+    usage: /<command> [toggle|reload]
+  pack:
+    description: Gestiona la descarga y estado del paquete de texturas oficial de Alcatraz.
+    aliases: [resourcepack, texturas, texturepack]
+    usage: /<command> [download|link|status|toggle|reset|reload]
+  resourcepack:
+    description: Acceso al paquete de texturas del servidor.
+    aliases: [texturas, texturepack]
+    usage: /<command> [download|link|status|toggle]
+  forcebd:
+    description: Fuerza la sincronización y recarga de texturas exclusiva para jugadores de Bedrock.
+    aliases: [forcebedrock, forzarbd]
+    permission: alcatraz.admin
+    usage: /<command> <jugador|all>
+
+  xray:
+    description: Panel y alertas de Anti-Xray inteligente para moderación.
+    aliases: [antixray, axray]
+    permission: alcatraz.xray.admin
+    usage: /<command> [alerts|check|clear|reload]
+  antixray:
+    description: Acceso directo a Anti-Xray.
+    permission: alcatraz.xray.admin
+    usage: /<command> [alerts|check|clear|reload]
+
+  grapplinghook:
+    description: Entrega y gestión de Ganchos de Agarre tácticos con impulso vectorial.
+    aliases: [gancho, ghook, alcatrazhook]
+    permission: alcatraz.grapplinghook.admin
+    usage: /<command> [give|reload]
+  gancho:
+    description: Acceso rápido al comando de Gancho de Agarre.
+    permission: alcatraz.grapplinghook.admin
+    usage: /<command> [give|reload]
+
+  duel:
+    description: Abre el menú interactivo de duelos y selección de oponentes.
+    aliases: [duels, duelo, duelos]
+    usage: /<command> [accept|deny|cancel|<jugador>]
+
+  halloween:
+    description: Evento de Halloween — panel staff, spawn y siembra de calabazas.
+    aliases: [hw, pumpkin, halloweenevent]
+    permission: alcatraz.halloween.use
+    usage: /<command> [near|staff|spawn|givehead|give|trade|scatter|clear|reload]
+
+permissions:
+  alcatraz.halloween.use:
+    description: Permite usar el comando base del evento de Halloween.
+    default: true
+  alcatraz.halloween.near:
+    description: Permite a los usuarios buscar la calabaza más cercana con cooldown.
+    default: true
+  alcatraz.halloween.near.bypass:
+    description: Permite omitir el cooldown de 15 minutos en /halloween near.
+    default: op
+  alcatraz.xray.alerts:
+    description: Permite recibir alertas interactivas de minería sospechosa y X-Ray.
+    default: op
+  alcatraz.xray.admin:
+    description: Permite administrar el módulo de Anti-Xray y consultar estadísticas.
+    default: op
+  alcatraz.xray.bypass:
+    description: Permite omitir la detección de Anti-Xray.
+    default: op
+
+  alcatraz.grapplinghook.use:
+    description: Permite a los jugadores usar el gancho de agarre.
+    default: true
+  alcatraz.grapplinghook.admin:
+    description: Permite entregar ganchos de agarre y recargar el módulo.
+    default: op
+
+
+  alcatraz.mounts.use:
+    description: Permite abrir el menú de monturas e invocar las monturas disponibles.
+    default: op
+  alcatraz.mounts.mod:
+    description: Permite a los moderadores y staff probar y usar las monturas durante la fase de pruebas.
+    default: op
+  alcatraz.mounts.admin:
+    description: Permite administrar monturas de otros jugadores e invocar forzadamente.
+    default: op
+  alcatraz.mounts.premium:
+    description: Permite utilizar monturas y criaturas de categoría VIP / Premium.
+    default: op
+  alcatraz.mounts.abeja:
+    description: Permite invocar y montar la Abeja Reina Melífera.
+    default: op
+
+  alcatraz.sellwand.use:
+    description: Permite a los jugadores utilizar las varitas de venta en contenedores.
+    default: true
+  alcatraz.sellwand.admin:
+    description: Permite entregar varitas y recargar la configuración de sellwands.
+    default: op
+  alcatraz.sellwand.bypass:
+    description: Permite usar la varita de venta en cofres protegidos o de otros jugadores.
+    default: op
+  alcatraz.admin:
+    description: Acceso total de administración a todos los módulos y comandos de AlcatrazCoreOptimizer.
+    default: op
+  alcatraz.pv.admin:
+    description: Permite abrir y gestionar bóvedas infinitas de administración (/pv 1, /pv 2...).
+    default: op
+  alcatraz.lock.use:
+    description: Permite a los jugadores usar candados y carteles privados en cofres y puertas.
+    default: true
+  alcatraz.lock.admin:
+    description: Permite abrir y romper cofres y puertas privadas de otros jugadores.
+    default: op
+  alcatraz.claim.use:
+    description: Permite a los jugadores crear y gestionar sus protecciones.
+    default: true
+  alcatraz.claim.admin:
+    description: Permite crear protecciones permanentes y gestionar claims de otros jugadores.
+    default: op
+  alcatraz.claim.bypass:
+    description: Permite ignorar restricciones de protecciones.
+    default: op
+  alcatraz.limpiarparticulas:
+    description: Permite utilizar el comando /fixpp y /limpiarparticulas.
+    default: true
+  alcatraz.trash.use:
+    description: Permite abrir el basurero virtual con /trash.
+    default: true
+  alcatraz.combatlog.bypass:
+    description: Ignora el sistema de bloqueo en combate.
+    default: op
+  sonicblade.admin:
+    description: Permite dar la espada y recargar la configuracion.
+    default: op
+  sonicblade.use:
+    description: Permite usar la habilidad del arma del Warden.
+    default: true
+  netheriteelytra.admin:
+    description: Permite utilizar los comandos administrativos de netherite elytra.
+    default: op
+  netheriteelytra.use:
+    description: Permite usar la función de planeo e impulso de la pechera.
+    default: true
+  lifemending.admin:
+    description: Permite utilizar los comandos administrativos de Life Mending.
+    default: op
+  lifemending.use:
+    description: Permite que los objetos con Life Mending se reparen automáticamente.
+    default: true
+  alcatraz.bossdefense:
+    description: Permite gestionar la defensa de bosses y utilizar los comandos de /bossdefense.
+    default: op
+
+  alcatraz.chatbubbles.use:
+    description: Permite ver y emitir globos de texto sobre la cabeza.
+    default: true
+  alcatraz.antiflood.bypass:
+    description: Permite enviar mensajes sin restricciones de cooldown ni duplicados en el chat.
+    default: false
+  alcatraz.chatfilter.bypass:
+    description: Permite enviar mensajes ignorando el filtro de groserías e insultos.
+    default: false
+  alcatraz.chatfilter.admin:
+    description: Permite recibir alertas de groserías del Staff y desmutear jugadores (/alcatraz unmute).
+    default: op
+  alcatraz.antispam.bypass:
+    description: Permite enviar mensajes sin restricciones de enlaces, IPs, discord ni ráfagas.
+    default: false
+  alcatraz.antispam.admin:
+    description: Permite recibir alertas de spam, publicidad y enlaces detectados.
+    default: op
+  alcatraz.anticaps.bypass:
+    description: Permite escribir sin límite de mayúsculas.
+    default: false
+  alcatraz.pack.receive:
+    description: Permite recibir automáticamente la solicitud de descarga del paquete de recursos al ingresar.
+    default: op
+  alcatraz.pack.bypass:
+    description: Permite omitir la expulsión obligatoria en caso de rechazar el paquete o forzados.
+    default: op
+  alcatraz.pack.staff:
+    description: Permite a todos los miembros del Staff forzar y gestionar texturas para Java y Bedrock.
+    default: op
+    children:
+      alcatraz.pack.force: true
+      alcatraz.pack.forcebd: true
+      alcatraz.pack.reset: true
+  alcatraz.pack.force:
+    description: Permite forzar la carga de texturas a jugadores de Java (/pack force).
+    default: op
+  alcatraz.pack.forcebd:
+    description: Permite forzar la carga y sincronización de texturas a jugadores de Bedrock (/pack forceBD).
+    default: op
+  alcatraz.pack.reset:
+    description: Permite resetear el registro de texturas de un jugador (/pack reset).
+    default: op
+  alcatraz.halloween.use:
+    description: Permite a los jugadores ver su saldo de calabazas de Halloween.
+    default: true
+  alcatraz.halloween.admin:
+    description: Permite gestionar el Evento de Halloween (scatter, spawn, give, staff).
+    default: op
+
+softdepend: [Vault, WorldGuard, GriefPrevention, floodgate, Geyser-Spigot]
+

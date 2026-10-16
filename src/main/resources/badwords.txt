@@ -1,0 +1,2675 @@
+# AlcatrazCoreOptimizer - Bad Words Filter List
+# Lista depurada: Se eliminaron palabras de doble sentido, términos de Minecraft, comida, animales y verbos comunes.
+# Solo contiene insultos graves, toxicidad explícita y términos estrictamente ofensivos.
+# Soporta recarga con /alcatraz reload
+0ral seks
+0ral sex
+0rgasms
+0rgsm
+2 girls 1 cup
+2g1c
+3jakulating
+4r5e
+4r5ed
+4r5es
+4skin
+5h17
+5h1t
+5kank
+a_s_s
+abbie
+abeed
+aboe
+aborto
+abrazafarolas
+abron
+acrotomophilia
+adufe
+aguayon
+ahat
+ahole
+alabama hot pocket
+alaskan pipeline
+anal
+anal hole
+anal hore
+anal pirate
+analingus
+analplug
+analplugs
+anilingus
+animal fucker
+aniz
+anus
+anus plug
+ape shit
+ape shite
+apeshit
+apeshite
+ar5e
+ar5ehole
+aranha
+ariano
+arrecho
+arrombado
+ars
+arse
+arse gobbler
+arse hole
+arse-bandit
+arse-bandits
+arse-fucker
+arse-fuckers
+arse-hole
+arse-shagger
+arseface
+arsefuck
+arsefucker
+arsehead
+arsehole
+arseshit
+arsewipe
+artaban
+ashole
+ass
+ass bandit
+ass eating boiolas
+ass eating nob jokeys
+ass fecker
+ass fuck
+ass fucker
+ass fucking boiolas
+ass fucking nob jokeys
+ass hole
+ass kisser
+ass licking
+ass muncher
+ass-bandit
+ass-fucker
+ass-fuckers
+ass-hat
+ass-hole
+assbandit
+assclown
+asses
+assface
+assfck
+assfcker
+assfk
+assfkcer
+assfker
+assfkr
+assfook
+assfuccer
+assfuck
+assfuck3r
+assfucker
+assfuckers
+assfuckerz
+assfukah
+assfukka
+assfukker
+assfukkerz
+assfvck3r
+assfvcker
+asshat
+asshol3
+asshole
+asshole fucker
+assholes
+asskisser
+assmunch
+assmuncher
+asswhole
+asswipe
+atarre
+auto erotic
+autoerotic
+avergallon
+axe wound
+ayotes
+azz
+azzhole
+b to the inch
+b00bz
+b0llock
+b0llocks
+b17ch
+b1ch
+b1otch
+b1otchs
+b1tch
+b1tch1ng
+b1tch35
+b1tch3s
+b1tchees
+b1tches
+b1tchez
+b1tchin
+b1tching
+b1tchs
+b1tchy
+babeland
+baby batter
+baby juice
+baiser
+balalao
+ball gag
+ball gravy
+ball kicking
+ball licking
+ball sack
+ball sucking
+ballbag
+ballbuster
+ballhead
+ballsack
+balurde
+bander
+bangbros
+bangbus
+bareback
+barely legal
+barenaked
+barrabas
+barriobajero
+bassturd
+bastard
+bastardish
+bastardo
+bastards
+basterd
+bastid
+bastinado
+basturd
+batard
+bater
+bates
+batshit
+batshite
+baztad
+bbc
+bbw
+bdsm
+bean queen
+beaner
+beaners
+beastiality
+beat my meat
+beat off
+beat the meat
+beat your meat
+beaver cleaver
+beaver lips
+bebecharcos
+beeotch
+bell end
+bellaco
+bellend
+belloto
+bender
+berzotas
+bestiality
+besugo
+bewbs
+beyoch
+beyotch
+bgger
+bi  ch
+biatch
+bich
+bicha
+biches
+big black
+big breasts
+big knockers
+big tits
+bigornette
+bimbos
+biotch
+biotches
+biotchez
+birdlock
+biscate
+bish
+bishes
+bissexual
+bitch
+bitch3s
+bitchass
+bitchasses
+bitched
+bitcher
+bitchers
+bitches
+bitchez
+bitchfuck
+bitchhole
+bitchin
+bitching
+bitchlike
+bitchness
+bitchs
+bitchslap
+bitchtits
+bitchy
+bitchy ass
+bite
+bitte
+bizzach
+black cock
+blacky
+bldy
+bllocking
+bllocks
+blls
+bloblos
+blonde action
+blonde on blonde action
+bloody
+blow a load
+blow job
+blow your load
+blowjob
+blue waffle
+blumpkin
+blumpkin boy
+bobalicon
+bocabuzon
+bocachancla
+bocallanta
+boceta
+boll0ck
+bollera
+bollito
+bollo
+bollock
+bollockchops
+bollocking
+bollocks
+bollocktician
+bollox
+boludo
+bombin
+bondage
+boner
+boniato
+bonk juice
+boob
+boobs
+booty
+booty call
+boquimuelle
+bordel
+borondanga
+borraja
+borrico
+bosser
+bosta
+bostao
+bostazo
+botarate
+bourre
+bourree
+brackmard
+branlage
+branler
+branlette
+branleur
+branleuse
+brasas
+braulio de borracha
+breasticles
+breasts
+brisco
+brizna
+brocha
+brouter le cresson
+brown showers
+brunette action
+bruta
+bstard
+bstrd
+btch
+bttfck
+btthead
+bttlicker
+buceta
+bucha
+bufarron
+bugger
+bugger off
+bujarra
+bujarron
+bukkake
+bull shit
+bulldyke
+bullet vibe
+bullshi
+bullshit
+bullshite
+bum-bandits
+bum-driller
+bumbum
+bumhole
+bung hole
+bunghole
+busty
+butt
+butt fuck
+butt fucker
+butt hole
+butt pirate
+butt-fucker
+butt-fuckers
+butt-fucking-bandit
+butt-munchers
+buttcheeks
+buttermilk
+buttfuck
+buttfucker
+buttfuckers
+butthead
+butthole
+butthole boy
+buttlicker
+bwc
+bzitch
+c00n
+c00nies
+c0ck
+c0ckhead
+c0cks
+c0cksuccer
+c0cksucked
+c0cksucker
+c0cksuckers
+c0x
+c0xux0r
+caaak
+cabecipelao
+cabestro
+cabezaalberca
+cabezabuque
+cabrao
+cabron
+cabron de mierda
+cabrona
+cabronazo
+cabrones
+caca
+cacete
+cacha
+cachapera
+cachar
+cacheteo
+cachibache
+cachilo
+cachimba
+cachufleta
+cack
+cafre
+cagada
+cagado
+cagalhao
+cagalindes
+cagao
+cagar
+cagarruta
+cagarse
+cagon
+cagone
+cailler
+cajones
+calabazo
+calambuco
+calamidad
+calduo
+calientahielos
+calzamonas
+cambada
+camel jockey
+camel toe
+camelo
+cameltoe
+camgirl
+camisinha
+camslut
+camwhore
+cansalmas
+cantamananas
+cantimplora
+capullo
+cara de pau
+cara de pupu
+caracaballo
+caracarton
+caraculo
+caraflema
+carajaula
+carajo
+carajote
+caralho
+carapapa
+carapijo
+carechimba
+carpet muncher
+carpetmuncher
+carpetmunchers
+carpetmunching
+cawk
+cawk muncher
+cawkmuncher
+cawks
+cawksucker
+cazurro
+cck
+cckhead
+cckscker
+ccksucker
+cebollino
+cenizo
+cenutrio
+ceporro
+cernicalo
+cerote
+cerveja
+ch1nk
+chacon
+chancay
+chapero
+chaqueta
+charran
+chatte
+chesticles
+chiasse
+chiche
+chichi
+chier
+chifar
+chifrudo
+chimar
+chimba
+china-virus
+chinavirus
+chinese-virus
+chinga
+chinga a madre
+chinga tu madre
+chingada
+chingado
+chingar
+chingchong
+chingon
+chink
+chinky
+chiottes
+chiquilicuatre
+chirimbaina
+choad nectar
+chocha
+chocho
+chochota
+chocolate rosebuds
+choke the chicken
+cholo
+chupacables
+chupada
+chupapollas
+chuparla
+chupasangre
+chuperson
+chupeton
+chupoptero
+cialis
+cierrabares
+circlejerk
+cleveland steamer
+clit
+clitlickers
+clito
+clitoris
+closet fuckhead
+clover clamps
+clt
+clusterfuck
+clusterfucked
+clusterfucker
+clusterfucking
+clusterfucks
+cnnt
+cnt
+cntface
+cnts
+cnty
+cobb knobbler
+cocaina
+cocheche
+cochino
+cock
+cock droplets
+cock head
+cock jockey
+cock knocker
+cock licker
+cock munch
+cock rider
+cock smoker
+cock snot
+cock suck
+cock sucker
+cock sucking
+cock sucking boiolas
+cock sucking nob jokeys
+cock tease
+cock-face
+cock-gobbler
+cock-head
+cock-sucker
+cock-suckers
+cockboy
+cockeater
+cockface
+cockgobbler
+cockh3ad
+cockhead
+cockheads
+cockhed
+cockholster
+cockless
+cocklicker
+cockmonger
+cockmunch
+cockmuncher
+cocks
+cockshit
+cockskin
+cocksmoker
+cocksplat
+cocksucc
+cocksuccas
+cocksuccer
+cocksuccers
+cocksuck
+cocksuckas
+cocksucked
+cocksucker
+cocksuckers
+cocksucking
+cocksucking mothafuckers
+cocksucks
+cocksuk
+cocksuka
+cocksukka
+cocones
+cocsuck
+cogollo
+cogote
+coito
+cojido
+cojieron
+cojiste
+cojones
+cokmuncher
+coksucka
+cola
+colgados
+colgazon
+colhoes
+colipato
+colison
+collofe
+colloma
+colon
+comadres
+comebolsas
+comechapas
+comeflores
+comemierda
+comer
+comestacas
+cona
+concha de tu madre
+conchatumadre
+conchetumare
+conchudo
+connard
+connasse
+conne
+cono
+consolo
+coolie
+coon
+coon1es
+cooni3s
+coonie
+coonies
+coons
+coot
+coot coot
+cooter
+cooter shooting
+cooterpuffing
+cooties
+copeton
+coprofagia
+coprolagnia
+coprophilia
+coquimbanos
+cornhole
+corno
+cornudo
+coronta
+corota
+corotas
+corozo
+coso
+cotorra
+cotton picker
+couilles
+couillon
+coyoles
+coyones
+coyos
+cramouille
+crap
+craphead
+crazy mofos
+crazy sob
+creampie
+cretin
+cretino
+crica
+crotch
+crotch fiddler
+crotchy
+crow
+crows
+crp
+crphead
+ctm
+cuacha
+cuaresmeno
+cuates
+cuca
+cuchara
+cucon
+cucona
+cueco
+cuerpoescombro
+cuksuker
+cuksukka
+cul
+culamen
+culeada
+culeado
+culear
+culero
+culiao
+culiaos
+culo
+culopollo
+culos
+cum
+cum goon
+cumball
+cumdump
+cumdumpster
+cumface
+cumfreak
+cumguzzler
+cumhole
+cumming
+cumquatch
+cumrag
+cums
+cumshot
+cumshots
+cumslut
+cumsocket
+cumstain
+cumwagon
+cumz
+cunnilingus
+cunt
+cunt ass
+cunt fart
+cunt lick
+cunt licker
+cunt lips
+cuntasaurus rex
+cuntbag
+cuntbollock
+cuntelope
+cuntface
+cunthead
+cuntits
+cuntless
+cuntlick
+cuntlicker
+cuntlickers
+cuntness
+cunts
+cunty
+cuntz
+cusao
+cuunt
+cuyones
+cuzao
+cyberfck
+cyberfcks
+cyberfuccs
+cyberfucks
+cyberfucs
+cyberfukk
+cyberfukks
+cyberfvcks
+d0ggy style
+d1ck
+d1ckhead
+d1ckheads
+d1cks
+d1cksucker
+d1cksukka
+d1ckz
+d1ldo
+dafuq
+dago
+dam
+damn
+dar o rabo
+darkass
+darkfuck
+darkie
+darkshit
+darktard
+darky
+date rape
+daterape
+dck
+dckhead
+dcks
+deconne
+deconner
+deep throat
+deepthroat
+dendrophilia
+descerebrado
+desgarracalzas
+desgracado
+desgraciado
+desgraciarse
+dick
+dick breath
+dick face
+dick fucker
+dick head
+dick licker
+dick milker
+dick nibbler
+dick smoker
+dick sucker
+dick-face
+dick-gobbler
+dick-head
+dickface
+dickfucker
+dickhead
+dickheads
+dickhole
+dickjockies
+dickless
+dicklicker
+dickmilk
+dickmuncher
+dicks
+dickskin
+dickslapper
+dicksmoker
+dicksucker
+dickvag
+dickwad
+dickweasel
+dickweed
+dickz
+diddle
+dikhead
+diks
+dild0
+dildo
+dingleberries
+dingleberry
+dipsh1t
+dipsh1tty
+dipshat
+dipshidiot
+dipshit
+dipshite
+dipshits
+dipshitter
+dipshitty
+dipstick
+dirty pillows
+dirty sanchez
+dix
+dlck
+dlcks
+dld0
+dldo
+dmbass
+dmn
+dngleberry
+dog fuck
+dog fucker
+dog fucking
+dog shit
+dog style
+dog-fucker
+doggie style
+doggiestyle
+doggo style
+doggy style
+doggy_style
+doggystyle
+dogie style
+dogs bollocks
+dogsh1t
+dogsh1ts
+dogshit
+dogshits
+dogstyle
+dolcett
+dolt
+domination
+dominatrix
+dommes
+dondiego
+dong
+donkey punch
+donnadie
+doosh
+dothead
+double dick
+double dicking
+double dong
+double pen
+double penetration
+double-dong
+douche
+douche bag
+douche canoe
+douchebag
+douchecanoe
+douchewaffle
+dp action
+dpshit
+drague
+drogas
+dry hump
+duche
+duchebag
+duchecanoe
+dum raio
+dumasses
+dumb bastard
+dumb fucker
+dumb-ass
+dumb-shit
+dumbarrassed
+dumbass
+dumbass fucker
+dumbass mofoes
+dumbass mothafuckers
+dumbass son-of-a-bitch
+dumbasses
+dumbfucks
+dumbshit
+dumbss
+dump a load
+dune coon
+dvda
+dyke
+eat my ass
+ecchi
+echacantos
+eescolimoso
+ejaculation
+ejarramantas
+el puto ese
+el puto que te pario
+emmerdant
+emmerder
+emmerdeur
+emmerdeuse
+empiernarse
+emputado
+emputecido
+encule
+encule de ta mere
+encule de tes morts
+enculee
+enculer
+enculer ta mere
+enculeur
+enculeurs
+energumeno
+enfoire
+enfoiree
+erectoplasm
+erotic
+erotism
+esbaratabailes
+escolimoso
+escornacabras
+escort
+escroto
+espece de con
+esperma
+esporra
+estafiate
+estulto
+estupido
+etron
+eunuch
+f0ck
+f0cked
+f0cker
+f0ckers
+f_u_c_k
+face fuck
+fachar
+fack
+fackuhs
+fag
+fag asses
+fag bag
+fag hag
+fag queen
+fag0t
+faget
+fagg0t
+fagging
+faggo
+faggot
+faggot mofoes
+faggot mothafuckers
+faggot nob jokeys
+faggot nobjockies
+faggot son-of-a-bitch
+faggoting
+faggots
+faggs
+faggy
+fagit
+fagot
+fags
+fagshit
+fanfosquero
+fantoche
+fariseo
+fart-fucker
+fartknocker
+fatass
+fatasses
+fccuker
+fck
+fck you
+fcka
+fckahz
+fckbag
+fckboy
+fcked
+fckedup
+fcker
+fckface
+fckin
+fcking
+fckk
+fckked
+fckking
+fckn
+fckr
+fcks
+fcktard
+fckwit
+fckyeah
+fcuk
+fcuked
+fcuker
+fcukers
+fcuking
+fcukker
+fcuks
+fcvking
+fecal
+feck
+feck arse
+fecker
+fed
+feg
+felch
+felcher
+fellatio
+fellatio aficionado
+fellator
+feltch
+female squirting
+femdom
+fer
+fgg0t
+fgging
+fggot
+fggt
+fgot
+fgs
+fgshit
+fick
+fiesta de salchichas
+fifar
+figging
+filho da puta
+filiberto
+filimincias
+fille de pute
+fils de chien
+fils de pute
+fils de ta mere
+finger
+finger fuck
+fingerbang
+fingerbanged
+fingering
+fingerpop
+fiotte
+fisting
+fkbny
+fked
+fker
+fking
+fkings
+fkk
+fkker
+flamer
+flamers
+fleto
+focker
+foda
+foda-se
+foder
+foligoso
+follador
+follar
+folle
+fook
+fooker
+fookuh
+foot fetish
+footjob
+forked
+forrar
+fothermuckers
+foutre
+foutu
+foutue
+frango assado
+frotting
+fubar
+fuc
+fucc
+fucca
+fuccers
+fuccing
+fuccs
+fuck
+fuck arse
+fuck buttons
+fuck face
+fuck faces
+fuck goblin
+fuck head
+fuck off
+fuck up
+fuck y0u
+fuck you
+fuck your
+fuck your mother
+fucka
+fuckahs
+fuckass
+fuckasses
+fuckaz
+fuckbag
+fuckball
+fuckbasket
+fuckboy
+fuckbubble
+fuckbucket
+fucked
+fucked up
+fuckem
+fucker
+fucker off
+fuckers
+fuckface
+fuckfaces
+fuckfest
+fuckhead
+fuckheaded
+fuckheads
+fuckhole
+fuckin
+fucking
+fucking a
+fucking asshole
+fucking bastard
+fucking hell
+fucking me
+fucking retard
+fucking shit
+fuckk
+fuckknuckle
+fuckless
+fuckmachine
+fuckmeat
+fucknuckle
+fucknugget
+fucknut
+fucknuts
+fuckpig
+fuckpuppet
+fucks
+fuckshit
+fuckshitface
+fuckshithead
+fuckstar
+fuckster
+fuckstick
+fucktard
+fucktards
+fuckup
+fuckwad
+fuckwhistle
+fuckwhore
+fuckwit
+fucs
+fucx
+fudge packer
+fudgefucker
+fudgepacker
+fudgepackers
+fudgepackershitter
+fudgepacking fucker
+fugged
+fugger
+fuggerz
+fuggings
+fugly
+fuk
+fuk1n
+fuk1ng
+fukcs
+fuker
+fukheads
+fukin
+fuking
+fukk
+fukka
+fukked
+fukker
+fukkers
+fukking
+fukkings
+fukkuh
+fuks
+fuku
+fukwhore
+fukwit
+fulastre
+full of shit
+funbags
+fundillo
+fuq
+futanari
+futhamucka
+fux
+fux0r
+fvck
+fvck you
+fvcka
+fvcker
+fvckers
+fvckin
+fvcking
+fvckker
+fvckwhi
+fxck
+fxcked
+fxcker
+fxcking
+g-spot
+g0ddamn
+g0ddamned
+g0ddamnit
+ganan
+ganapan
+ganapio
+gandul
+gang bang
+gangbang
+garchar
+garompa
+gash-stabber
+gatfcker
+gay sex
+gaylord
+gaylords
+gaytard
+gaznapiro
+gddammit
+gddamn
+geebag
+genitals
+gerbe
+gerber
+giant cock
+gilipichis
+gilipollas
+gilipuertas
+gin jockey
+giraesquinas
+girl on
+girl on top
+girlieboy
+girls gone wild
+girly bits
+girlyboy
+go fuck yourself
+go to hell
+goatcx
+goatfucker
+goatse
+gobshite
+god dammit
+god damn
+god damn it
+god damned
+god damnit
+god-dam
+god-damned
+godamnit
+goddammit
+goddamn
+goddamn mothafuckers
+goddamn son of a bitch
+goddamn son-of-a-bitch
+goddamned
+goddamnit
+goddmnit
+gokkun
+golden shower
+gonorrea
+goo girl
+gooch
+goodpoop
+gook
+goregasm
+gorrino
+gorrumino
+gouine
+gowl
+gozar
+grande folle
+greaser
+grelho
+grogniasse
+groid
+grope
+groper
+group sex
+guaranga
+guarrada
+guebo
+gueule
+guitarro
+guro
+gurriato
+gustarle
+gy b1tch
+gylord
+gyp
+gyshit
+habahela
+hacer una mamada
+hacer una paja
+haciendo el amor
+hand job
+handjob
+hang urself
+hang yourself
+hard core
+hardcore
+harry palms
+hdp
+heeb
+hell
+hentai
+heroina
+heterosexual
+higg
+higg3r
+higga
+higger
+higgers
+hija de puta
+hijadeputa
+hijaputa
+hijo de mil putas
+hijo de puta
+hijodeputa
+hijoputa
+hll
+hoar
+hoe
+hoe-asses
+hoebag
+hoes
+holy fuck
+homem gay
+homo
+homo asses
+homoerotic
+homoerotico
+homos
+homosexual
+honkey
+hooker
+hope you die
+horny
+horseshit
+hostia
+hot carl
+hot chick
+how to kill
+how to murder
+hrseht
+huelegateras
+huge fat
+humping
+idiota
+imbecil
+imbeciles
+incest
+inferno
+infierno
+injun
+intercourse
+j-offs
+j3rk
+ja1lbait
+jack off
+jack-ass
+jack-off
+jack-offs
+jackarse
+jackass
+jackasses
+jackasss
+jackhole
+jackoff
+jackoffs
+jackoffz
+jagoff
+jail bait
+jailbait
+jailbat
+jalbait
+jap
+jckass
+jckoff
+jelly donut
+jerk
+jerk off
+jerk-0ff
+jerk-0ffs
+jerk-off
+jerk-offs
+jerking off
+jerkoff
+jerkoff jerking off
+jerkoffs
+jerks off
+jewboy
+jgoff
+jigaboo
+jigaboos
+jigga
+jiggaboo
+jiggabooboo
+jiggaboos
+jiggabu
+jiggas
+jigger
+jiggerboo
+jiggerboos
+jiggs
+jiggyboo
+jigro
+jilipollas
+jim crow
+jism
+jizz
+jizz eater
+jizz licker
+jizz-jockey
+jizzbags
+jizzed
+jizzes
+jizzface
+jizzfucker
+jizzing
+jizzmopper
+jizzsacks
+jizzstain
+jizzy
+joder
+joto
+jouir
+jrk
+jsm
+juggs
+jzz
+jzzmopper
+k1k3
+k1ke
+kapullo
+kid diddler
+kiddy touch
+kike
+kikes
+kinbaku
+kinkster
+kinky
+kiss ass
+kiss my ass
+kitty puncher
+kk3
+kke
+kkk
+klan
+klitoris
+knb
+knbhead
+kneegrows
+knickers
+knob
+knob eater
+knob gobbler
+knob jockey
+knob-face
+knob-gobbler
+knob-head
+knob3d
+knob3nd
+knobbing
+knobd
+knobe
+knobead
+knobeads
+knobed
+knobeds
+knobend
+knobender
+knobends
+knobendy
+knobendz
+knober
+knobes
+knobgobbler
+knobhead
+knobheads
+knobjockies
+knobjocky
+knobjokey
+knobjokeys
+knt
+kob
+kock
+ku kluxer
+kyke
+l3i  ch
+l3ich
+l3itch
+l3itches
+la puta que te pario
+la puta que te recontrapario
+la putain de ta mere
+ladboys
+ladboyz
+ladiboy
+ladilla
+lady-boy
+ladyb0i
+ladyb0y
+ladyboy
+ladyboys
+ladyboyz
+lamecharcos
+lameculos
+lameplatos
+lardass
+ldyb0i
+ldyb0y
+ldyboy
+leather restraint
+leather straight jacket
+leches
+lechuguino
+lemon party
+lerdo
+lesbica
+lesbo
+letrin
+limp dick
+livesex
+lixo
+lloramigas
+lmp dck
+lolas
+lolita
+longanizas
+loose woman
+lovemaking
+lrdass
+lumbreras
+m0f0
+m0f0s
+m0fo
+m0foes
+m0fos
+m0ng0l0id
+m0ngoloid
+maciza
+macizorra
+maganto
+majadero
+make me come
+malasangre
+malasombra
+maldita
+malditas
+maldito
+malditos
+male squirting
+maleton
+malparida
+malparido
+malpt
+mama
+mama huevos
+mamada
+mamar
+mamarla
+mameluco
+mamey
+mamon
+mamplora
+mamporrero
+manchas
+manegueta
+mangarran
+mangurrian
+manseed
+maraco
+marica
+maricon
+mariconazo
+maricones
+maricos
+mariposon
+markasses
+martillo
+marujo
+masterbated
+mastuerzo
+masturbacion
+masturbate
+masturbating
+masturbation
+matacandiles
+mayate
+me cago en dios
+me cago en dios y en la puta mar
+me cago en dios y en la puta virgen
+me cago en la hostia
+me cago en la hostia puta
+me cago en la hostia puta virgen
+me cago en la leche
+me cago en la leche de tu puta madre
+me cago en la leche merengada
+me cago en la leche que mamaste
+me cago en la madre que te pario
+me cago en la mar
+me cago en la puta
+me cago en la puta hostia
+me cago en la puta hostia mar
+me cago en la puta leche
+me cago en la puta madre
+me cago en la puta madre que te pario
+me cago en la puta mar
+me cago en la puta mar salada
+me cago en la puta vida
+me cago en la virgen
+me cago en todo
+me cago en tu madre
+me cago en tu puta madre
+me cago en tu puta madre en vinagre
+me cago en tus muertos
+meapilas
+meat curtains
+meat-sword
+mecha fag
+mecos
+mega fag
+menage a trois
+mendrugo
+mentecato
+mequetrefe
+merda
+merda na cara
+merde
+merdeuse
+merdeux
+meretriz
+merluzo
+metemuertos
+metijaco
+meuf
+mfckers
+mfer
+mfers
+mfing
+mfk
+mfs
+mfukk
+mfukker
+mico
+mierda
+mierdas
+milf
+mindfuck
+mindundi
+minga
+missionary position
+mmangurrian
+mof0es
+mof0s
+mofcker
+mofo
+mofo ass
+mofoes
+mofos
+mofoshit
+mofuccers
+mofucckers
+mofuck
+mofucker
+mofuckkas
+mofuk
+mofukkas
+mojar el bizcocho
+mojar el chingolo
+molester
+mong
+mongoloid
+mongrel
+morfarse
+morlaco
+morroestufa
+morrongo
+motherfucker
+motherfucking
+mound of venus
+mr hands
+mtherfcker
+mtherfcking
+muerdesartenes
+muff diver
+muffdiving
+n0bhead
+n0bj0cky
+n1ckker
+n1g3r
+n1g3rz
+n1gg
+n1gg3r
+n1gg3rs
+n1gga
+n1ggah
+n1ggahs
+n1ggas
+n1ggazes
+n1gger
+n1ggers
+n1gghs
+n1gguh
+n3gro
+naco
+nambla
+nawashi
+nazi
+negga
+neggar
+negr0
+negre
+negroes
+negroid
+neonazi
+niccer
+nicka
+nickas
+nicker
+nickk3r
+nickker
+nig
+nig nog
+nig-nog
+niga
+nigah
+nigasses
+nigers
+nigg
+nigg3r
+nigg3rs
+nigg4h
+nigg4hs
+nigga
+nigga lover
+niggah
+niggahs
+niggahz
+niggas
+niggass
+niggaz
+niggazzes
+nigger
+nigger lover
+niggers
+niggerz
+nigghs
+niggir
+niggress
+niggs
+nigguh
+nigguhs
+nigguhz
+niggz
+niggzzes
+niglet
+nignigs
+nignog
+nigra
+nigre
+nigs
+niguh
+nikk3r
+nikkas
+nikker
+nimphomania
+ninfo
+nip
+nipple
+nipples
+nique
+nique ta mere
+nique ta race
+nmbnuts
+nob jockey
+nob jokeys
+nobbyhead
+nobhead
+nobheads
+nobj0key
+nobjockies
+nobjocky
+nobjokey
+nobjokeys
+nobs
+nonce
+nsfw
+nsfw images
+nts
+nuckas
+nude
+nudity
+numbnuts
+numpty
+nutjob
+nutsack
+nutsacks
+nutten
+nympho
+nymphomania
+nymphomaniac
+octopussy
+ojete
+omorashi
+one cup two girls
+one guy one jar
+orate
+orgasm
+orgy
+orto
+otario
+ovejo
+oven dodger
+p0rn
+p3n1shead
+p3nisfcker
+p3nisfcukers
+p3nisfvcker
+p3nisfvckers
+pack my fudge
+packerfudgehead
+packing fudge
+packing fudgehead
+packingfudge
+packingfudgefucker
+packingfudgefucking
+packsomefudgefucker
+paedophile
+pagafantas
+pajeado
+pajearse
+paki
+palhaco
+palm jockey
+palucher
+palurdo
+pamplinas
+panarra
+pancake face
+paneleiro
+panocha
+panoli
+panties
+panty
+papafrita
+papallona
+papanatas
+papayona
+papirote
+pardillo
+pargo
+parguela
+pasmarote
+pasmasuegras
+paspalho
+passar um cheque
+pataliebre
+patan
+pau
+pavitonto
+pazguato
+pecholata
+pecker
+peckerhead
+pedale
+pede
+pedobear
+pedobears
+pedophile
+pedophl
+pedoz
+peen
+peener
+pegging
+peidar
+peinabombillas
+peinaovejas
+pelagallos
+pelagambas
+pelagatos
+pelatigres
+pelazarzas
+pelma
+pendeja
+pendejada
+pendejadas
+pendejas
+pendejo
+pendejos
+penis
+penisfcker
+penisfuccer
+penisfucker
+penisfuckers
+penisfvcker
+penisfvckers
+penishead
+pepa
+percebe
+perrocostra
+perroflauta
+pervertido
+petasse
+peter
+peterete
+petimetre
+phaggot
+phaggots
+phagot
+phags
+phggots
+phone sex
+phuc
+phucc
+phuccer
+phucchead
+phuccing
+phuck
+phuck3r
+phucked
+phucker
+phuckin
+phucking
+phuckings
+phucks
+phucup
+phuk
+phuked
+phukeds
+phukhead
+phuking
+phukings
+phukk
+phukked
+phukkeds
+phukker
+phukking
+phuks
+phukshit
+phuku
+phukup
+phuq
+phuqs
+phvckings
+picapleitos
+picha
+pichabrava
+piece of shit
+pig fucker
+pigfucker
+pigfuckers
+pigfucking
+pigfukker
+piggyfuck
+pigshit
+pikey
+pilantra
+pillavispas
+pillow biter
+pillow-biter
+pinchauvas
+pinche
+pinga
+pintamonas
+pinto
+pipe
+piranha
+piroca
+pirocudo
+piss
+piss face
+piss off
+piss off fuckhead
+piss pig
+piss shit
+pisser
+pissflaps
+pisshead
+pissing
+pissmonger
+pissoff
+pissoffs
+pisspants
+pisspig
+pisspot
+pissrag
+pistola
+pitanoso
+pitofloro
+playboy
+playo
+pleasure chest
+plomo
+pocasluces
+pole licker
+pole smoker
+pole sucker
+polesmoker
+pollopera
+ponyplay
+poof
+poon
+poontang
+poop chute
+poopchute
+porcaria
+porch monkey
+porn
+porno
+pornography
+poronga
+porra
+pouffiasse
+pousse-crotte
+prck
+prckr
+prick
+prick-face
+prick-gobbler
+prick-head
+prickface
+pricks
+prince albert piercing
+prn
+prostituta
+prostituto
+pss
+pss off
+pssflaps
+psshead
+psspants
+psspot
+pssy
+pthc
+ptm
+pu55y
+pubes
+pull the pud
+punani
+punany
+punk ass mofoes
+punk-ass
+punkasses
+puss
+pusses
+pussie
+pussies
+pussless
+pusslicker
+pussy
+pussy cat
+pussy fucker
+pussy lick
+pussy licker
+pussy licking
+pussylickers
+pussys
+pussywhipped
+pusy
+puta
+puta que pariu
+puta que te pariu
+putain
+putain de con
+putain de merde
+putamadre
+putaria
+putas
+pute
+puto
+putos
+puussy
+puzzies
+puzzy
+queaf
+quebracho
+quebrachon
+queca
+queef
+quim
+quitahipos
+r3tard
+r3trd
+r3trded
+racista
+raghead
+ragheads
+raging boner
+ragtard
+ramera
+ramoner
+ramrod
+rap3
+rap3d
+rape
+raped
+raping
+rapist
+rastrapajo
+reacharound
+rebanasandias
+rectum
+redskin
+remame
+repisas
+retard
+retardo
+retardotron
+retazo
+reverse cowgirl
+revientabaules
+rice monkey
+rieleches
+rim job
+rimjob
+rimming
+robaperas
+rosy palm
+rosy palm and her 5 sisters
+rse
+rsehole
+rulacho
+rusty trombone
+s-lut
+s_h_i_
+s_h_i_s
+sabandija
+sac a foutre
+sac a merde
+sacamuelas
+sacana
+sacanagem
+sack
+sadico
+sadism
+safado
+sagarote
+salaud
+sale con
+salopard
+salope
+saloperie
+sambo
+sand nigger
+sanguijuela
+santorum
+scamfuck
+scat
+schlong
+scissoring
+scmbag
+scrote
+scrotum
+scrubber
+scumbag
+scumfuck
+scumfucker
+scumfvck
+scummy
+scut
+sd off
+se foder
+semen
+sex
+sexcam
+sexo
+sexo oral
+sexual
+sexuality
+sexually
+sexy
+sh1s
+sh1t
+sh1t3
+sh1td1ck
+sh1tdick
+sh1te
+sh1tfuck
+sh1th3ad
+sh1theads
+sh1ts
+sh1tsome
+sh1tt
+sh1tty
+sh3mal3
+sh3male
+shat
+shaved beaver
+shaved pussy
+she-male
+sheeeet
+sheet
+sheister
+shemal3
+shemale
+shemales
+shet
+shi
+shiat
+shibari
+shiddick
+shie
+shiester
+shiesterfuck
+shiesterfuckface
+shiesterfuckhead
+shiesterfucks
+shipdit
+shit
+shit face
+shit for brains
+shit fuck
+shit fucker
+shit head
+shit licker
+shit stain
+shit-arse
+shit-ass
+shit-bag
+shit-bandit
+shit-fucker
+shit-stuffers
+shit3
+shitass
+shitasses
+shitassfucker
+shitassfuckface
+shitbag
+shitbird
+shitblimp
+shitblimps
+shitbrain
+shitcock
+shitd1ck
+shitdick
+shitdicks
+shitdikk
+shitdip
+shite
+shiteater
+shiteblimps
+shited
+shitedick
+shitefuck
+shitefulls
+shitehawk
+shitehead
+shites
+shitey
+shitface
+shitfaced
+shitfacefuck
+shitfacefucker
+shitfck
+shitfk
+shitfreak
+shitfuck
+shitfucker
+shitfuckhead
+shitfuckmotherfucker
+shitfucks
+shitfudgefucker
+shitfvck
+shithead
+shitheadfucker
+shitheadfuckface
+shitheads
+shitheel
+shithole
+shits
+shitsdick
+shitsfuck
+shitsful
+shitshow
+shitstain
+shitstorm
+shittastic
+shittasticfuck
+shitte
+shitted
+shitter
+shitterfucker
+shitti
+shitties
+shittiest
+shitting
+shittings
+shitty
+shitty mofoes
+shittydick
+shittydicks
+shittyfuck
+shittyfuckface
+shittyful
+shitweasel
+shiy
+shlong
+shmale
+shota
+shrimping
+sht
+shtbag
+shte
+shteater
+shtfaced
+shtfuk
+shthead
+shtheel
+shtshow
+shtstorm
+shtter
+shtty
+shut the fuck up
+shylock
+shyt
+shytfeisterfuck
+sinentraero
+singar
+sissy
+sixty-nine
+skank
+skanks
+skanky
+skankz
+skeet
+sknk
+sknks
+sknky
+sknkz
+slag
+slantard
+slanteye
+slanteye b1tch
+slanteyes
+slanteyeshit
+slantfreak
+slanty
+slit
+slnteye
+slt
+sltty
+slut
+slut hole
+slutbag
+sluts
+slutty
+smeghead
+smegma
+smghead
+smut
+sn of a btch
+sn of a whre
+snatch
+snatch licker
+snowballing
+soab
+sob
+sobarsela
+sobo
+sobs
+sod
+sod off
+sodomize
+sodomy
+son o bitch
+son of a bitch
+son of a whore
+son-of-a-bitch
+sonajas
+sonna bitch
+sonofabitch
+sonofbitches
+sons of b1tches
+sons of bitches
+sons-of-bitches
+sonso
+sonz of bitchez
+sopladores
+soplagaitas
+soplaguindas
+soplanucas
+soplapollas
+soppy bollucks
+sorete
+sosco
+spanking
+spastic
+sperm
+sphincter
+spic
+spicfuck
+spick
+spics
+spicshit
+spig
+spik
+spix
+splooge
+splooge moose
+spnk
+spooge
+spread legs
+spunk
+ssfcker
+ssfucker
+ssfvcker
+sshole
+stfu
+strap on
+strapon
+strappado
+strip club
+stump chewer
+stupid fucker
+stupid hoe
+stupidasses
+style doggy
+suce
+sucer
+suck
+suck my cock
+suck my d
+suck my dick
+suck off
+suck-ass
+sucks
+suicide girls
+sultry women
+sum of a bitch
+sumbitch
+swastika
+swinger
+ta gueule
+tadger
+tagarote
+tainted love
+tajarse
+taking the piss
+tallywacker
+tanche
+tapette
+tar-baby
+tarado
+tard
+tard asses
+tart
+taste my
+tea bagging
+tereso
+tetas
+tetas grandes
+tete de nud
+teuch
+teuf
+threesome
+throat yogurt
+throater
+throating
+thumbzilla
+tia buena
+tickle the pickle
+tied up
+tight white
+timber nigger
+tiralevitas
+tit
+tits
+titties
+titty
+tocapelotas
+tompeates
+tonga
+tongue in a
+tontaco
+tonto del culo
+tontucio
+topless
+torneira
+tortillera
+tosser
+tossing salad
+towelhead
+towelheads
+towelshithead
+tragaldabas
+tragasables
+tramp
+tranny
+transvestite
+travesti
+trd
+tribadism
+tringler
+trio
+trique
+trollop
+troncher
+trou du cul
+trouser snake
+trousersnake
+tsser
+ttty
+tub girl
+tubgirl
+tunante
+turd
+turdcutter
+turdhead
+turlute
+tushy
+twa
+twat
+twat waffle
+twatface
+twats
+twatt
+twattish
+twatzilla
+twink
+twinkie
+twit
+two girls one cup
+twt
+twunt
+undressing
+upskirt
+upskirts
+urethra play
+urophilia
+va te faire foutre
+vadia
+vag
+vagina
+vai a merda
+vai tomar no cu
+vai-te foder
+vajayjay
+veado
+venus mound
+verga
+vergallito
+vergallo
+vergas
+vete a la mierda
+veuve
+viagra
+vibrador
+vibrator
+violador
+violar
+violet wand
+voltearse la rosca
+voltearse la tortilla
+vorarephilia
+voyeur
+voyeurweb
+voyuer
+vulva
+w4nk3r
+w4nker
+wang
+wang wrangler
+wank
+wank off
+wank3r
+wank3rs
+wankbastard
+wanked
+wanker
+wankers
+wankface
+wankies
+wanking
+wankmagnet
+wanks
+wankstain
+we1back
+weenie
+weiner
+wet back
+wet dream
+wetback
+wetbacks
+wh0r3
+wh0re
+whack off
+what the fuck
+white power
+whoar
+whoars
+whor3
+whore
+whorebag
+whores
+whre
+wigger
+willy-whacker
+window licker
+wise ass
+wnk
+wnker
+wnkers
+wnkstain
+wop
+wophead
+worldsex
+wrapping men
+wrinkled starfish
+xana
+xochota
+xxx
+yaoi
+yellow showers
+yiffy
+zamugo
+zascandil
+zigounette
+zip in the wire
+zipperhead
+zizi
+zoophilia
+zopenco
+zullenco
+zurcefrenillos
