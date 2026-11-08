@@ -53,6 +53,15 @@ public class FlightListener implements Listener {
             return;
         }
 
+        if (plugin.getCombatLogManager() != null &&
+                (plugin.getCombatLogManager().isInCombat(player.getUniqueId()) ||
+                 plugin.getCombatLogManager().isNoFlyZone(player.getLocation()))) {
+            elytraFlightEnabled.remove(player.getUniqueId());
+            event.setCancelled(true);
+            plugin.getCombatLogManager().disableFlightNow(player);
+            return;
+        }
+
         // Si el jugador está volando legítimamente con /fly (Essentials u otros plugins), no interferir
         if (!elytraFlightEnabled.contains(player.getUniqueId())) {
             return;
@@ -84,6 +93,12 @@ public class FlightListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityToggleGlide(EntityToggleGlideEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
+
+        if (plugin.getCombatLogManager() != null &&
+                (plugin.getCombatLogManager().isInCombat(player.getUniqueId()) ||
+                 plugin.getCombatLogManager().isNoFlyZone(player.getLocation()))) {
+            return;
+        }
 
         ItemStack chestplate = player.getInventory().getChestplate();
         if (itemManager.isElytraChestplate(chestplate)) {
@@ -182,6 +197,15 @@ public class FlightListener implements Listener {
 
         // Si el jugador ya está volando con /fly (modo vuelo normal), NUNCA interferir
         if (player.isFlying() && !elytraFlightEnabled.contains(player.getUniqueId())) {
+            return;
+        }
+
+        if (plugin.getCombatLogManager() != null &&
+                (plugin.getCombatLogManager().isInCombat(player.getUniqueId()) ||
+                 plugin.getCombatLogManager().isNoFlyZone(player.getLocation()))) {
+            if (elytraFlightEnabled.remove(player.getUniqueId())) {
+                player.setAllowFlight(false);
+            }
             return;
         }
 

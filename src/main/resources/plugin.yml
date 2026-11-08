@@ -323,7 +323,7 @@ permissions:
     default: true
   alcatraz.combatlog.bypass:
     description: Ignora el sistema de bloqueo en combate.
-    default: op
+    default: false
   sonicblade.admin:
     description: Permite dar la espada y recargar la configuracion.
     default: op
