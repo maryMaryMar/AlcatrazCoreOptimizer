@@ -59,6 +59,14 @@ public class CombatLogManager {
             }
         }
 
+        // Desactivar vuelo de inmediato por completo al entrar en combate PvP
+        if (player.isFlying() || player.getAllowFlight()) {
+            player.setFlying(false);
+            player.setAllowFlight(false);
+            player.setFallDistance(0.0f);
+            player.sendMessage(color("&8[&c⚔ Combate&8] &cTu modo de vuelo ha sido desactivado por entrar en combate PvP."));
+        }
+
         boolean alreadyInCombat = isInCombat(player.getUniqueId());
         long expiration = System.currentTimeMillis() + (combatDurationSeconds * 1000L);
         combatUntil.put(player.getUniqueId(), expiration);
@@ -136,6 +144,10 @@ public class CombatLogManager {
                 } else {
                     Player p = Bukkit.getPlayer(uuid);
                     if (p != null && p.isOnline()) {
+                        if (p.isFlying() || p.getAllowFlight()) {
+                            p.setFlying(false);
+                            p.setAllowFlight(false);
+                        }
                         int rem = (int) Math.ceil((exp - now) / 1000.0);
                         String msg = color("&c⚔ ¡En Combate! &e" + rem + "s &crestantes &7(No te desconectes)");
                         p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(msg));

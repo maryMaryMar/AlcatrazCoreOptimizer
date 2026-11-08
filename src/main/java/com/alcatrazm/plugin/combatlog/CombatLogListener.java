@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerToggleFlightEvent;
 
 public class CombatLogListener implements Listener {
 
@@ -84,6 +85,19 @@ public class CombatLogListener implements Listener {
                 event.setCancelled(true);
                 player.sendMessage(color("&8[&c⚔ Combate&8] &cNo puedes teletransportarte mientras estás en combate."));
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onToggleFlight(PlayerToggleFlightEvent event) {
+        if (!manager.isEnabled()) return;
+        Player player = event.getPlayer();
+
+        if (manager.isInCombat(player.getUniqueId())) {
+            event.setCancelled(true);
+            player.setFlying(false);
+            player.setAllowFlight(false);
+            player.sendMessage(color("&8[&c⚔ Combate&8] &cNo puedes volar mientras estás en combate PvP."));
         }
     }
 
