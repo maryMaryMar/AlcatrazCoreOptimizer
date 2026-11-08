@@ -95,6 +95,10 @@ A partir de la versión **v1.1.0**, la arquitectura fue completamente saneada, d
 - **Purga Masiva de 180 Palabras Inofensivas en `badwords.txt`:**
   - Erradicación de palabras cotidianas que bloqueaban la charla de los jugadores (`comer`, `mama`, `martillo`, `trio`, `pepa`, `plomo`, `pipe`, `chaqueta`, `brocha`, `cuchara`, `maldito/a`, `racista`, `heroina`, etc.).
 
+- **Jerarquía y Permisos Staff en 2 Niveles:**
+  - `alcatraz.chatfilter.unmute`: Permite `/alcatraz unmute` y `/alcatraz mutes` (asignado a Helper y superiores).
+  - `alcatraz.chatfilter.filter`: Permite gestionar y ver filtros con `/alcatraz filter` (reservado a Moderadores y Administradores para arriba).
+
 ### 🌟 [v1.1.0-Patch2] - 08 de Noviembre de 2026 *(Remediación de ChatFilter, Expiración de Strikes y Desactivación de SoftMute)*
 - **Remediación Total de Falsos Positivos en ChatFilter:**
   - Supresión de la regla ciega de palabras cortas (`length <= 3`). Las palabras exactas en `badwords.txt` ahora exigen un mínimo estricto de 4 caracteres.

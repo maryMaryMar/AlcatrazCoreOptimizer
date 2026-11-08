@@ -269,7 +269,11 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleUnmuteCommand(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("alcatraz.chatfilter.admin") && !sender.hasPermission("alcatraz.admin")) {
+        if (!sender.hasPermission("alcatraz.chatfilter.unmute") &&
+            !sender.hasPermission("alcatraz.chatfilter.mod") &&
+            !sender.hasPermission("alcatraz.chatfilter.admin") &&
+            !sender.hasPermission("alcatraz.admin") &&
+            !sender.isOp()) {
             sender.sendMessage(color("&cNo tienes permisos para gestionar silencios de chat."));
             return;
         }
@@ -303,7 +307,11 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleMutesListCommand(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("alcatraz.chatfilter.admin") && !sender.hasPermission("alcatraz.admin")) {
+        if (!sender.hasPermission("alcatraz.chatfilter.unmute") &&
+            !sender.hasPermission("alcatraz.chatfilter.mod") &&
+            !sender.hasPermission("alcatraz.chatfilter.admin") &&
+            !sender.hasPermission("alcatraz.admin") &&
+            !sender.isOp()) {
             sender.sendMessage(color("&cNo tienes permisos para ver los silencios de chat."));
             return;
         }
@@ -329,7 +337,10 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
     }
 
     private void handleFilterCommand(CommandSender sender, String[] args) {
-        if (!sender.hasPermission("alcatraz.chatfilter.admin") && !sender.hasPermission("alcatraz.admin")) {
+        if (!sender.hasPermission("alcatraz.chatfilter.filter") &&
+            !sender.hasPermission("alcatraz.chatfilter.admin") &&
+            !sender.hasPermission("alcatraz.admin") &&
+            !sender.isOp()) {
             sender.sendMessage(color("&cNo tienes permisos para configurar el filtro de chat."));
             return;
         }
@@ -673,26 +684,38 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendHelp(CommandSender sender, String label) {
+        boolean isAdmin = sender.hasPermission("alcatraz.admin") || sender.isOp();
+        boolean canFilter = isAdmin || sender.hasPermission("alcatraz.chatfilter.filter") || sender.hasPermission("alcatraz.chatfilter.admin");
+        boolean canUnmute = canFilter || sender.hasPermission("alcatraz.chatfilter.unmute") || sender.hasPermission("alcatraz.chatfilter.mod");
+
         sender.sendMessage(color("&8&m----------------------------------------"));
         sender.sendMessage(color("&b&lAlcatrazCoreOptimizer &7v" + plugin.getDescription().getVersion() + " &8- &ePanel Principal"));
-        sender.sendMessage(color("&e/" + label + " ps [give|trust|flags|info|view|list] &7- Piedras de protección."));
-        sender.sendMessage(color("&e/" + label + " skills [sync|fix <jugador>] &7- Corrige y sincroniza perfiles de AuraSkills."));
-        sender.sendMessage(color("&e/" + label + " monitor &8| &elag &7- Diagnóstico de TPS, MSPT, RAM y top chunks con lag."));
-        sender.sendMessage(color("&e/" + label + " clean &8| &egc &7- Limpieza profunda de memoria y entidades residuales."));
-        sender.sendMessage(color("&e/" + label + " mobcatcher [jugador] [cant] &7- Entrega Esferas de Contención de mobs."));
-        sender.sendMessage(color("&e/" + label + " claim [create_perm|delete|list] &7- Gestiona protecciones de administrador."));
-        sender.sendMessage(color("&e/" + label + " hojasonica [jugador] [cant] &7- Entrega la Hoja Sónica del Warden."));
-        sender.sendMessage(color("&e/" + label + " pechera [jugador] [cant] &7- Entrega la Pechera con Élitra."));
-        sender.sendMessage(color("&e/" + label + " libro [jugador] [cant] &7- Entrega el libro 'Alas del Inframundo'."));
-        sender.sendMessage(color("&e/" + label + " lifemending [jugador] [cant] &7- Entrega el libro 'Life Mending'."));
-        sender.sendMessage(color("&e/" + label + " newbie <jugador> <minutos|remove> &7- Gestiona protección de novatos."));
-        sender.sendMessage(color("&e/" + label + " monturas &7- Abre el establo de monturas (Zorro, Sniffer, Phantom, Panda)."));
-        sender.sendMessage(color("&e/" + label + " bossdefense &7- Defensa 75% proyectiles a bosses (/bossdefense)."));
-        sender.sendMessage(color("&e/" + label + " unmute <jugador> &7- Levanta el silencio de chat a un jugador."));
-        sender.sendMessage(color("&e/" + label + " mutes &7- Lista los jugadores actualmente silenciados por groserías."));
-        sender.sendMessage(color("&e/" + label + " filter <whitelist|add|remove|list> &7- Gestión de palabras y categorías del filtro."));
-        sender.sendMessage(color("&e/" + label + " reload &7- Recarga toda la configuración y optimizadores."));
-        sender.sendMessage(color("&e/" + label + " version &7- Información y estado del optimizador."));
+        if (isAdmin) {
+            sender.sendMessage(color("&e/" + label + " ps [give|trust|flags|info|view|list] &7- Piedras de protección."));
+            sender.sendMessage(color("&e/" + label + " skills [sync|fix <jugador>] &7- Corrige y sincroniza perfiles de AuraSkills."));
+            sender.sendMessage(color("&e/" + label + " monitor &8| &elag &7- Diagnóstico de TPS, MSPT, RAM y top chunks con lag."));
+            sender.sendMessage(color("&e/" + label + " clean &8| &egc &7- Limpieza profunda de memoria y entidades residuales."));
+            sender.sendMessage(color("&e/" + label + " mobcatcher [jugador] [cant] &7- Entrega Esferas de Contención de mobs."));
+            sender.sendMessage(color("&e/" + label + " claim [create_perm|delete|list] &7- Gestiona protecciones de administrador."));
+            sender.sendMessage(color("&e/" + label + " hojasonica [jugador] [cant] &7- Entrega la Hoja Sónica del Warden."));
+            sender.sendMessage(color("&e/" + label + " pechera [jugador] [cant] &7- Entrega la Pechera con Élitra."));
+            sender.sendMessage(color("&e/" + label + " libro [jugador] [cant] &7- Entrega el libro 'Alas del Inframundo'."));
+            sender.sendMessage(color("&e/" + label + " lifemending [jugador] [cant] &7- Entrega el libro 'Life Mending'."));
+            sender.sendMessage(color("&e/" + label + " newbie <jugador> <minutos|remove> &7- Gestiona protección de novatos."));
+            sender.sendMessage(color("&e/" + label + " monturas &7- Abre el establo de monturas (Zorro, Sniffer, Phantom, Panda)."));
+            sender.sendMessage(color("&e/" + label + " bossdefense &7- Defensa 75% proyectiles a bosses (/bossdefense)."));
+        }
+        if (canUnmute) {
+            sender.sendMessage(color("&e/" + label + " unmute <jugador> &7- Levanta el silencio de chat a un jugador."));
+            sender.sendMessage(color("&e/" + label + " mutes &7- Lista los jugadores actualmente silenciados por groserías."));
+        }
+        if (canFilter) {
+            sender.sendMessage(color("&e/" + label + " filter <whitelist|add|remove|list> &7- Gestión de palabras y categorías del filtro."));
+        }
+        if (isAdmin) {
+            sender.sendMessage(color("&e/" + label + " reload &7- Recarga toda la configuración y optimizadores."));
+            sender.sendMessage(color("&e/" + label + " version &7- Información y estado del optimizador."));
+        }
         sender.sendMessage(color("&8&m----------------------------------------"));
     }
 
@@ -708,12 +731,16 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
             }
         }
 
-        if (!sender.hasPermission("alcatraz.admin")) {
+        boolean isAdmin = sender.hasPermission("alcatraz.admin") || sender.isOp();
+        boolean canFilter = isAdmin || sender.hasPermission("alcatraz.chatfilter.filter") || sender.hasPermission("alcatraz.chatfilter.admin");
+        boolean canUnmute = canFilter || sender.hasPermission("alcatraz.chatfilter.unmute") || sender.hasPermission("alcatraz.chatfilter.mod");
+
+        if (!canUnmute && !canFilter && !isAdmin) {
             return Collections.emptyList();
         }
 
         if (args.length >= 2 && (args[0].equalsIgnoreCase("bossdefense") || args[0].equalsIgnoreCase("bossdef") || args[0].equalsIgnoreCase("defensaboss"))) {
-            if (plugin.getBossDefenseManager() != null) {
+            if (plugin.getBossDefenseManager() != null && isAdmin) {
                 BossDefenseCommand bdc = new BossDefenseCommand(plugin, plugin.getBossDefenseManager());
                 String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
                 return bdc.onTabComplete(sender, command, alias, subArgs);
@@ -721,7 +748,18 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
-            List<String> subs = Arrays.asList("ps", "monturas", "bossdefense", "unmute", "mutes", "filter", "filtro", "skills", "fixskills", "monitor", "clean", "mobcatcher", "claim", "proteccion", "hojasonica", "pechera", "libro", "lifemending", "newbie", "xray", "gancho", "reload", "version", "help");
+            List<String> subs = new ArrayList<>();
+            if (canUnmute) {
+                subs.add("unmute");
+                subs.add("mutes");
+            }
+            if (canFilter) {
+                subs.add("filter");
+                subs.add("filtro");
+            }
+            if (isAdmin) {
+                subs.addAll(Arrays.asList("ps", "monturas", "bossdefense", "skills", "fixskills", "monitor", "clean", "mobcatcher", "claim", "proteccion", "hojasonica", "pechera", "libro", "lifemending", "newbie", "xray", "gancho", "reload", "version", "help"));
+            }
 
             List<String> completions = new ArrayList<>();
             for (String sub : subs) {
@@ -733,10 +771,10 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2) {
-            if (args[0].equalsIgnoreCase("filter") || args[0].equalsIgnoreCase("filtro")) {
+            if (canFilter && (args[0].equalsIgnoreCase("filter") || args[0].equalsIgnoreCase("filtro"))) {
                 return Arrays.asList("list", "whitelist", "add", "remove");
             }
-            if (args[0].equalsIgnoreCase("unmute") || args[0].equalsIgnoreCase("desmutear")) {
+            if (canUnmute && (args[0].equalsIgnoreCase("unmute") || args[0].equalsIgnoreCase("desmutear"))) {
                 List<String> mutedNames = new ArrayList<>();
                 if (plugin.getChatFilterManager() != null) {
                     for (com.alcatrazm.plugin.chatfilter.ChatFilterManager.MuteEntry e : plugin.getChatFilterManager().getActiveMutes().values()) {
@@ -752,13 +790,13 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
                 }
                 return mutedNames;
             }
-            if (args[0].equalsIgnoreCase("skills") || args[0].equalsIgnoreCase("fixskills") || args[0].equalsIgnoreCase("auraskills")) {
+            if (isAdmin && (args[0].equalsIgnoreCase("skills") || args[0].equalsIgnoreCase("fixskills") || args[0].equalsIgnoreCase("auraskills"))) {
                 return Arrays.asList("sync", "fix");
             }
-            if (args[0].equalsIgnoreCase("claim")) {
+            if (isAdmin && args[0].equalsIgnoreCase("claim")) {
                 return Arrays.asList("create_perm", "delete", "list");
             }
-            if (Arrays.asList("mobcatcher", "hojasonica", "pechera", "libro", "lifemending", "newbie").contains(args[0].toLowerCase())) {
+            if (isAdmin && Arrays.asList("mobcatcher", "hojasonica", "pechera", "libro", "lifemending", "newbie").contains(args[0].toLowerCase())) {
                 List<String> completions = new ArrayList<>();
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (p.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
@@ -773,10 +811,10 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 3) {
-            if ((args[0].equalsIgnoreCase("filter") || args[0].equalsIgnoreCase("filtro")) && (args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("listar") || args[1].equalsIgnoreCase("ver"))) {
+            if (canFilter && (args[0].equalsIgnoreCase("filter") || args[0].equalsIgnoreCase("filtro")) && (args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("listar") || args[1].equalsIgnoreCase("ver"))) {
                 return Arrays.asList("permitidas", "prohibidas", "abreviaciones", "frases", "base");
             }
-            if ((args[0].equalsIgnoreCase("skills") || args[0].equalsIgnoreCase("fixskills") || args[0].equalsIgnoreCase("auraskills")) && args[1].equalsIgnoreCase("fix")) {
+            if (isAdmin && (args[0].equalsIgnoreCase("skills") || args[0].equalsIgnoreCase("fixskills") || args[0].equalsIgnoreCase("auraskills")) && args[1].equalsIgnoreCase("fix")) {
                 List<String> players = new ArrayList<>();
                 for (Player p : Bukkit.getOnlinePlayers()) {
                     if (p.getName().toLowerCase().startsWith(args[2].toLowerCase())) {
@@ -785,10 +823,12 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
                 }
                 return players;
             }
-            if (args[0].equalsIgnoreCase("newbie")) {
+            if (isAdmin && args[0].equalsIgnoreCase("newbie")) {
                 return Arrays.asList("5", "10", "15", "30", "60", "remove");
             }
-            return Arrays.asList("1", "2", "5", "10", "64");
+            if (isAdmin) {
+                return Arrays.asList("1", "2", "5", "10", "64");
+            }
         }
 
         return Collections.emptyList();

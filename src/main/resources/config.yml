@@ -1039,7 +1039,13 @@ chat-filter:
   # Si es false, los operadores también están sujetos al filtro (ideal para pruebas)
   bypass-ops: true
 
-  # Permiso para gestionar mutes y desmutear (/alcatraz unmute)
+  # Permiso para gestionar mutes y desmutear (/alcatraz unmute, /alcatraz mutes) - Helpers y superiores
+  unmute-permission: "alcatraz.chatfilter.unmute"
+
+  # Permiso para ver y gestionar palabras del filtro (/alcatraz filter) - Moderadores y superiores
+  filter-permission: "alcatraz.chatfilter.filter"
+
+  # Permiso de administración global del filtro (Staff superior)
   admin-permission: "alcatraz.chatfilter.admin"
 
   # Notificar al Staff conectado cuando un jugador comete una infracción

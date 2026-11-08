@@ -53,6 +53,15 @@ Este documento registra la evolución cronológica, historial de modificaciones 
   - **Términos de denuncia / Discusión:** `racista`, `heterosexual`, `homosexual`, `heroina`, `peter`, `filiberto`, `lolas`, `pinto`, `sonso`, `lerdo`, `dolt`, `twit`, `sack`, `sobs`, `finger`, `bloody`, `diddle`, `bender`, `panty`, `patan`, `pelma`, `tonga`, `tramp`, `fecal`, `genitals`, `erotism`, `escroto`, `esperma`, `nudity`, `sexual`, `sexually`, `undressing`, `aborto`.
   - **Insultos literarios arcaicos del siglo XIX:** `abrazafarolas`, `rebanasandias`, `peinabombillas`, `chiquilicuatre`, `zurcefrenillos`, `calientahielos`, `cabezaalberca`, `zascandil`, `pamplinas`, `zopenco`, `fariseo`, `papanatas`, `bobalicon`, etc.
 
+### 🔐 4. Jerarquía y Separación de Permisos Staff
+- **Nivel Moderación y Desmuteo (`alcatraz.chatfilter.unmute`):**
+  - Otorga acceso a `/alcatraz unmute <jugador>` y `/alcatraz mutes`.
+  - Asignado a: `helper`, `thelper`, `mod`, `admin`, `head-admin`, `dev`, `co-owner`, `owner`, `fundador`, `ceo`.
+- **Nivel Gestión de Filtros (`alcatraz.chatfilter.filter`):**
+  - Otorga acceso a `/alcatraz filter <whitelist|add|remove|list>`.
+  - Reservado estrictamente para: `mod`, `admin`, `head-admin`, `dev`, `co-owner`, `owner`, `fundador`, `ceo`. (Helpers excluidos).
+- **TabComplete y Ayuda Inteligente:** La consola y el autocompletado en el chat ahora filtran las opciones según el rango exacto del staff, ocultando los comandos de filtro a los Helpers para prevenir ejecuciones no autorizadas.
+
 ---
 
 ## Versión 1.1.0-Patch2 - 08 de Noviembre de 2026
