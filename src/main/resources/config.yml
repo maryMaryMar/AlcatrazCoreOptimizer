@@ -977,10 +977,24 @@ chat-filter:
   enabled: true
 
   # Sistema de Advertencias (Strikes) antes del Mute
-  max-strikes: 3
+  max-strikes: 4
 
-  # Duración del Mute automático al alcanzar los 3 strikes (en minutos)
-  mute-duration-minutes: 25
+  # Duración del Mute automático al alcanzar los strikes (en minutos)
+  mute-duration-minutes: 10
+
+  # Tiempo de caducidad de cada strike en segundos (si no vuelve a insultar en 5 min, se reinicia)
+  strike-expiration-seconds: 300
+
+  # Lista explícita y exclusiva de abreviaciones ofensivas sancionables (sin detección automática por letras cortas)
+  offensive-abbreviations:
+    - "ctm"
+    - "hdp"
+    - "ptm"
+    - "alv"
+    - "cdtm"
+    - "hdpm"
+    - "kys"
+    - "stfu"
 
   # Permiso para ignorar el filtro (Staff/Admins)
   bypass-permission: "alcatraz.chatfilter.bypass"

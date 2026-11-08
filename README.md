@@ -2,7 +2,7 @@
 
 [![Paper Version](https://img.shields.io/badge/Paper-1.21.1-blue.svg)](https://papermc.io)
 [![Java Version](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.org)
-[![Version](https://img.shields.io/badge/Version-1.1.0-emerald.svg)](https://github.com/maryMaryMar/AlcatrazCoreOptimizer)
+[![Version](https://img.shields.io/badge/Version-1.1.0--Patch2-emerald.svg)](https://github.com/maryMaryMar/AlcatrazCoreOptimizer)
 [![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](#-licencia)
 
@@ -82,6 +82,22 @@ A partir de la versión **v1.1.0**, la arquitectura fue completamente saneada, d
 ---
 
 ## 📜 Historial Completo de Versiones
+
+### 🌟 [v1.1.0-Patch2] - 08 de Noviembre de 2026 *(Remediación de ChatFilter, Expiración de Strikes y Desactivación de SoftMute)*
+- **Remediación Total de Falsos Positivos en ChatFilter:**
+  - Supresión de la regla ciega de palabras cortas (`length <= 3`). Las palabras exactas en `badwords.txt` ahora exigen un mínimo estricto de 4 caracteres.
+  - Purga de 137 términos normales en español y jerga de Minecraft (`cola`, `cono`, `coso`, `infierno`, `cholo`, `bite`, `crow`, etc.) que causaban muteos accidentales.
+  - Supresión de sustituciones numéricas leetspeak (`0->o`, `1->i`, `3->e`, `4->a`, etc.) para evitar colisiones con coordenadas, precios de subasta y cantidades de ítems.
+- **Lista Controlada de Abreviaciones Explícitas:**
+  - Filtrado específico para abreviaciones ofensivas (`ctm`, `hdp`, `ptm`, `alv`, `cdtm`, `hdpm`, `kys`, `stfu`) configurables desde `config.yml`, evitando algoritmos ciegos.
+- **Sistema de Expiración de Strikes con TTL Dinámico:**
+  - Implementación de `StrikeRecord` con ventana móvil de expiración (300 segundos / 5 minutos por defecto configurable en `strike-expiration-seconds`). Si el jugador no reincide, sus advertencias expiran.
+  - Ajuste del ratio y tolerancia: tolerancia aumentada a 4 strikes (`max-strikes: 4`) y reducción del tiempo de mute automático a 10 minutos (`mute-duration-minutes: 10`).
+  - Trazabilidad y transparencia completa mediante registros en consola de Bukkit (`logger.warning` en strike y `logger.severe` en mute).
+  - Limpieza automática de strikes acumulados al ejecutar `/alcatraz unmute <jugador>`.
+- **Desactivación Forense de SoftMute (AEGrief / Servidor):**
+  - Desactivación y vaciado de `plugins/GriefPreventionData/softMute.txt`.
+  - Liberación inmediata del jugador `AlexnaterYT` (`9303492c-7427-3c31-b86f-f68b4cb6e444`) tras más de 6 días con mensajes ocultos.
 
 ### 🌟 [v1.1.0-Patch] - 01 de Noviembre de 2026 *(Cosméticos 3D, Anuncios Dedicados y Refinamiento de ChatBubbles)*
 - **Módulo Autónomo de Cosméticos 3D (`/acosmetics`):** Menú interactivo con GUI y soporte de efectos orbitales/halos (Espadas de Blaze y Halo de Tenebris) desacoplado y de alto rendimiento.

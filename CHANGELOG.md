@@ -5,6 +5,7 @@ Este documento registra la evolución cronológica, historial de modificaciones 
 ---
 
 ## 📌 Índice Cronológico
+- [v1.1.0-Patch2 (08 de Noviembre de 2026)](#versión-110-patch2---08-de-noviembre-de-2026) — *Remediación de Falsos Positivos en ChatFilter, Expiración de Strikes y Desactivación de SoftMute*
 - [v1.1.0-Patch (01 de Noviembre de 2026)](#versión-110-patch---01-de-noviembre-de-2026) — *Módulo Autónomo de Cosméticos 3D, Anuncios Dedicados y Refinamiento de ChatBubbles*
 - [v1.1.0 (16 de Octubre de 2026)](#versión-110---16-de-octubre-de-2026) — *Gran Remasterización Forense, Purga Modular y Blindaje Zero-Bugs*
 - [v1.0.9 (04 de Octubre de 2026)](#versión-109---04-de-octubre-de-2026) — *Protecciones Temporales y Candados de Cofres*
@@ -17,6 +18,26 @@ Este documento registra la evolución cronológica, historial de modificaciones 
 - [v1.0.2 (07 de Septiembre de 2026)](#versión-102---07-de-septiembre-de-2026) — *Compatibilidad con AuraSkills 5.0*
 - [v1.0.1 (06 de Septiembre de 2026)](#versión-101---06-de-septiembre-de-2026) — *Ajustes de Telemetría y Límites de Bloques*
 - [v1.0.0 (01 de Septiembre de 2026)](#versión-100---01-de-septiembre-de-2026) — *Lanzamiento Inicial del Núcleo Unificado*
+
+---
+
+## Versión 1.1.0-Patch2 - 08 de Noviembre de 2026
+**Tipo:** Parche Crítico de Moderación, Remediación de ChatFilter y Desactivación de SoftMute  
+**Entorno de Compilación:** Paper 1.21.1 / Java 21 / Maven 3.9+  
+
+### 🛡️ 1. Remediación Integral del Filtro de Chat (`ChatFilterManager`)
+- **Fin de la Detección Automática por Letras Cortas:** Se erradicó la categorización automática ciega de palabras de 2 a 3 letras y la sustitución de números por letras (leetspeak numérico), la cual generaba colisiones falsas masivas con coordenadas, precios, cantidades y acrónimos del juego.
+- **Lista Explícita y Exclusiva de Abreviaciones:** Las abreviaciones ofensivas ahora se gestionan a través de una lista explícita configurable (`offensive-abbreviations`: `ctm`, `hdp`, `ptm`, `alv`, `cdtm`, `hdpm`, `kys`, `stfu`), evaluadas únicamente como palabras completas aisladas.
+- **Saneamiento de `badwords.txt`:** Se purgaron más de 135 términos cotidianos en español y Minecraft que disparaban sanciones indebidas (`cola`, `cono`, `coso`, `infierno`, `cholo`, `bite`, `crow`, etc.). Solo se sancionan palabras completas de 4 o más caracteres presentes en la lista.
+
+### ⏱️ 2. Nuevo Ratio Justo y Caducidad de Strikes
+- **Caducidad Automática de Infracciones:** Incorporación de `StrikeRecord` con timestamp. Las advertencias ahora expiran automáticamente tras **300 segundos (5 minutos)** de buen comportamiento, evitando que faltas aisladas se acumulen indefinidamente a lo largo de días.
+- **Ajuste de Margen:** Se incrementó la tolerancia de 3 a **4 strikes de gracia** (`max-strikes: 4`).
+- **Reducción de Mute Automático:** Se redujo la duración del mute automático de 25 minutos a **10 minutos** (`mute-duration-minutes: 10`).
+- **Trazabilidad en Consola:** Se agregó logging directo con niveles `warning` y `severe` en la consola del servidor (`[ChatFilter]`), permitiendo al Staff auditar inmediatamente cualquier strike o mute en `latest.log`.
+
+### 🔓 3. Desactivación de SoftMute en AEGrief (GriefPrevention)
+- **Erradicación del Shadow-Mute Permanente:** Vaciado total de `plugins/GriefPreventionData/softMute.txt` y liberación inmediata de `AlexnaterYT` de la lista negra silenciosa de AEGrief mediante comando de consola en vivo.
 
 ---
 

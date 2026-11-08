@@ -20,8 +20,9 @@ public class ChatFilterManager {
     private final AlcatrazPlugin plugin;
 
     private boolean enabled = true;
-    private int maxStrikes = 3;
-    private int muteDurationMinutes = 25;
+    private int maxStrikes = 4;
+    private int muteDurationMinutes = 10;
+    private int strikeExpirationSeconds = 300; // 5 minutos de caducidad
     private String bypassPermission = "alcatraz.chatfilter.bypass";
     private boolean bypassOps = false;
     private String adminPermission = "alcatraz.chatfilter.admin";
@@ -41,13 +42,22 @@ public class ChatFilterManager {
     private String msgStaffStrikeAlert = "&8[&cAlerta Staff&8] &e%player% &cintentó usar groserías &7(%strike%/%max%)&c: &f%message%";
     private String msgStaffMuteAlert = "&8[&cAlerta Staff&8] &e%player% &4ha sido silenciado automáticamente por %duration% minutos tras %max% faltas.";
 
-    // Conjuntos de palabras prohibidas
+    // Conjuntos de palabras prohibidas y abreviaciones explícitas
     private final Set<String> exactBadWords = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final Set<String> phraseBadWords = Collections.newSetFromMap(new ConcurrentHashMap<>());
-    private final Set<String> subBadWords = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<String> offensiveAbbreviations = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
-    // Sistema de strikes (en memoria por sesión)
-    private final Map<UUID, Integer> playerStrikes = new ConcurrentHashMap<>();
+    // Registro de strikes con timestamp para caducidad automática
+    public static class StrikeRecord {
+        public final int count;
+        public final long timestamp;
+
+        public StrikeRecord(int count, long timestamp) {
+            this.count = count;
+            this.timestamp = timestamp;
+        }
+    }
+    private final Map<UUID, StrikeRecord> playerStrikes = new ConcurrentHashMap<>();
 
     // Sistema de Mutes persistentes (mutes.yml)
     private final Map<UUID, MuteEntry> activeMutes = new ConcurrentHashMap<>();
@@ -55,7 +65,6 @@ public class ChatFilterManager {
     private YamlConfiguration mutesConfig;
 
     private static final Pattern DIACRITICS_PATTERN = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-    private static final Pattern NON_ALPHANUMERIC = Pattern.compile("[^a-z0-9]");
     private static final Pattern REPEATED_LETTERS = Pattern.compile("([a-z0-9])\\1+");
 
     public ChatFilterManager(AlcatrazPlugin plugin) {
@@ -68,14 +77,28 @@ public class ChatFilterManager {
 
     public void loadConfig() {
         this.enabled = plugin.getConfig().getBoolean("chat-filter.enabled", true);
-        this.maxStrikes = plugin.getConfig().getInt("chat-filter.max-strikes", 3);
-        this.muteDurationMinutes = plugin.getConfig().getInt("chat-filter.mute-duration-minutes", 25);
+        this.maxStrikes = plugin.getConfig().getInt("chat-filter.max-strikes", 4);
+        this.muteDurationMinutes = plugin.getConfig().getInt("chat-filter.mute-duration-minutes", 10);
+        this.strikeExpirationSeconds = plugin.getConfig().getInt("chat-filter.strike-expiration-seconds", 300);
         this.bypassPermission = plugin.getConfig().getString("chat-filter.bypass-permission", "alcatraz.chatfilter.bypass");
         this.bypassOps = plugin.getConfig().getBoolean("chat-filter.bypass-ops", true);
         this.adminPermission = plugin.getConfig().getString("chat-filter.admin-permission", "alcatraz.chatfilter.admin");
         this.notifyStaff = plugin.getConfig().getBoolean("chat-filter.notify-staff", true);
         this.warningSound = plugin.getConfig().getString("chat-filter.warning-sound", "ENTITY_VILLAGER_NO");
         this.muteSound = plugin.getConfig().getString("chat-filter.mute-sound", "ENTITY_ENDER_DRAGON_GROWL");
+
+        // Cargar lista explícita y controlada de abreviaciones ofensivas
+        offensiveAbbreviations.clear();
+        List<String> abbrevs = plugin.getConfig().getStringList("chat-filter.offensive-abbreviations");
+        if (abbrevs == null || abbrevs.isEmpty()) {
+            offensiveAbbreviations.addAll(Arrays.asList("ctm", "hdp", "ptm", "alv", "cdtm", "hdpm", "kys", "stfu"));
+        } else {
+            for (String a : abbrevs) {
+                if (a != null && !a.trim().isEmpty()) {
+                    offensiveAbbreviations.add(normalize(a.trim()));
+                }
+            }
+        }
 
         ConfigurationSection msgSec = plugin.getConfig().getConfigurationSection("chat-filter.messages");
         if (msgSec != null) {
@@ -115,7 +138,6 @@ public class ChatFilterManager {
     public void loadBadWords() {
         exactBadWords.clear();
         phraseBadWords.clear();
-        subBadWords.clear();
 
         File wordsFile = new File(plugin.getDataFolder(), "badwords.txt");
         if (!wordsFile.exists()) {
@@ -131,7 +153,6 @@ public class ChatFilterManager {
             return;
         }
 
-        int count = 0;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(wordsFile), StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -143,14 +164,12 @@ public class ChatFilterManager {
 
                 if (normalized.contains(" ")) {
                     phraseBadWords.add(normalized);
-                } else if (normalized.length() <= 3) {
+                } else if (normalized.length() >= 4) {
+                    // Solo palabras completas de 4 o más letras; abreviaciones cortas van en lista explícita
                     exactBadWords.add(normalized);
-                } else {
-                    subBadWords.add(normalized);
                 }
-                count++;
             }
-            plugin.getLogger().info("[ChatFilter] Cargadas " + count + " palabras prohibidas desde badwords.txt.");
+            plugin.getLogger().info("[ChatFilter] Cargadas " + exactBadWords.size() + " palabras completas y " + phraseBadWords.size() + " frases prohibidas (" + offensiveAbbreviations.size() + " abreviaciones explícitas).");
         } catch (Exception e) {
             plugin.getLogger().severe("[ChatFilter] Error al leer badwords.txt: " + e.getMessage());
         }
@@ -196,7 +215,7 @@ public class ChatFilterManager {
         try {
             mutesConfig.save(mutesFile);
         } catch (IOException e) {
-            plugin.getLogger().severe("[ChatFilter] Error al guardar mutes.yml: " + e.getMessage());
+            plugin.getLogger().warning("[ChatFilter] No se pudo guardar mutes.yml: " + e.getMessage());
         }
     }
 
@@ -243,6 +262,7 @@ public class ChatFilterManager {
                 activeMutes.remove(entry.getKey());
                 playerStrikes.remove(entry.getKey());
                 saveMutes();
+                plugin.getLogger().info("[ChatFilter] " + name + " fue desmuteado exitosamente.");
                 return true;
             }
         }
@@ -292,17 +312,29 @@ public class ChatFilterManager {
             return new FilterResult(ResultType.ALLOWED, null);
         }
 
-        // 3. Análisis de malas palabras
+        // 3. Análisis de malas palabras (sin falsos positivos)
         String detectedWord = findBadWord(rawMessage);
         if (detectedWord == null) {
             return new FilterResult(ResultType.ALLOWED, null);
         }
 
-        // 4. Infracción detectada -> Incrementar strike
-        int currentStrike = playerStrikes.getOrDefault(uuid, 0) + 1;
+        // 4. Infracción detectada -> Gestión de strikes con caducidad
+        long now = System.currentTimeMillis();
+        StrikeRecord record = playerStrikes.get(uuid);
+        int currentStrike = 1;
+
+        if (record != null) {
+            long elapsedSeconds = (now - record.timestamp) / 1000L;
+            if (elapsedSeconds > strikeExpirationSeconds) {
+                // El strike anterior ya caducó por buen comportamiento
+                currentStrike = 1;
+            } else {
+                currentStrike = record.count + 1;
+            }
+        }
 
         if (currentStrike < maxStrikes) {
-            playerStrikes.put(uuid, currentStrike);
+            playerStrikes.put(uuid, new StrikeRecord(currentStrike, now));
             playSound(player, warningSound);
 
             String warn = color(msgPrefix + msgStrikeWarn
@@ -316,13 +348,14 @@ public class ChatFilterManager {
                 player.sendMessage(finalWarn);
             }
 
+            plugin.getLogger().warning("[ChatFilter] Strike (" + currentStrike + "/" + maxStrikes + ") a " + player.getName() + " por palabra '" + detectedWord + "' en: " + rawMessage);
             notifyStaffStrike(player, currentStrike, maxStrikes, rawMessage);
             return new FilterResult(ResultType.BLOCKED_WARN, warn);
         } else {
             // Mute automático al alcanzar el tope de strikes
             playerStrikes.remove(uuid);
-            long until = System.currentTimeMillis() + ((long) muteDurationMinutes * 60 * 1000);
-            activeMutes.put(uuid, new MuteEntry(player.getName(), until, "Acumulación de " + maxStrikes + " groserías"));
+            long until = now + ((long) muteDurationMinutes * 60 * 1000L);
+            activeMutes.put(uuid, new MuteEntry(player.getName(), until, "Acumulación de " + maxStrikes + " groserías ('" + detectedWord + "')"));
             saveMutes();
 
             playSound(player, muteSound);
@@ -332,85 +365,68 @@ public class ChatFilterManager {
                     .replace("%duration%", String.valueOf(muteDurationMinutes)));
             player.sendMessage(muteMsg);
 
+            plugin.getLogger().severe("[ChatFilter] ¡MUTE AUTOMÁTICO! " + player.getName() + " silenciado por " + muteDurationMinutes + " min tras " + maxStrikes + " strikes. Palabra final: '" + detectedWord + "'");
             notifyStaffMute(player, muteDurationMinutes, maxStrikes);
             return new FilterResult(ResultType.BLOCKED_MUTED, muteMsg);
         }
     }
 
     /**
-     * Busca si el texto contiene alguna grosería mediante normalizaciones múltiples.
+     * Busca si el texto contiene alguna grosería o abreviación ofensiva explícita.
      */
     public String findBadWord(String rawText) {
         if (rawText == null || rawText.isEmpty()) return null;
 
-        String norm1 = normalize(rawText);
-        String norm2 = decodeLeetspeak(norm1);
-        String norm3 = NON_ALPHANUMERIC.matcher(norm2).replaceAll("");
-        String norm4 = REPEATED_LETTERS.matcher(norm3).replaceAll("$1");
+        String norm = normalize(rawText);
 
-        // 1. Frases completas (ej. "hijo de puta", "2 girls 1 cup")
+        // 1. Frases completas explícitas (ej. "hijo de puta", "vete a la mierda")
         for (String phrase : phraseBadWords) {
-            if (norm1.contains(phrase) || norm2.contains(phrase)) {
+            if (containsPhrase(norm, phrase)) {
                 return phrase;
             }
         }
 
-        // 2. Tokenizar palabras para comprobación exacta por palabra (evita falsos positivos de subcadena como 'computadora' -> 'puta' o 'hermano' -> 'ano')
-        String[] tokens = norm2.split("[^a-z0-9]+");
+        // 2. Tokenizar palabras individuales para comprobación exacta (cero adivinanzas ciegas)
+        String[] tokens = norm.split("[^a-z0-9_]+");
         for (String token : tokens) {
             if (token.isEmpty()) continue;
-            if (exactBadWords.contains(token) || subBadWords.contains(token)) {
+
+            // A. Abreviaciones ofensivas explícitas (ej: ctm, hdp, alv)
+            if (offensiveAbbreviations.contains(token)) {
                 return token;
+            }
+
+            // B. Palabras completas prohibidas (longitud >= 4)
+            if (token.length() >= 4 && exactBadWords.contains(token)) {
+                return token;
+            }
+
+            // C. Palabras con letras repetidas intencionales (ej: "puuuutaaaa" -> "puta")
+            String collapsed = REPEATED_LETTERS.matcher(token).replaceAll("$1");
+            if (collapsed.length() >= 4 && exactBadWords.contains(collapsed)) {
+                return collapsed;
             }
         }
 
         return null;
     }
 
+    private boolean containsPhrase(String text, String phrase) {
+        int idx = text.indexOf(phrase);
+        if (idx == -1) return false;
+        boolean startOk = (idx == 0) || !Character.isLetterOrDigit(text.charAt(idx - 1));
+        int endIdx = idx + phrase.length();
+        boolean endOk = (endIdx == text.length()) || !Character.isLetterOrDigit(text.charAt(endIdx));
+        return startOk && endOk;
+    }
+
     public static String normalize(String input) {
         if (input == null) return "";
         String lower = input.toLowerCase(Locale.ROOT);
         String decomposed = Normalizer.normalize(lower, Normalizer.Form.NFD);
-        return DIACRITICS_PATTERN.matcher(decomposed).replaceAll("");
-    }
-
-    public static String decodeLeetspeak(String input) {
-        if (input == null) return "";
-        StringBuilder sb = new StringBuilder(input.length());
-        for (int i = 0; i < input.length(); i++) {
-            char c = input.charAt(i);
-            switch (c) {
-                case '@':
-                case '4':
-                    sb.append('a');
-                    break;
-                case '3':
-                    sb.append('e');
-                    break;
-                case '1':
-                case '!':
-                case '|':
-                    sb.append('i');
-                    break;
-                case '0':
-                    sb.append('o');
-                    break;
-                case '5':
-                case '$':
-                    sb.append('s');
-                    break;
-                case '7':
-                    sb.append('t');
-                    break;
-                case '8':
-                    sb.append('b');
-                    break;
-                default:
-                    sb.append(c);
-                    break;
-            }
-        }
-        return sb.toString();
+        String noAccents = DIACRITICS_PATTERN.matcher(decomposed).replaceAll("");
+        // Solo normalizar símbolos decorativos sin alterar números
+        return noAccents.replace('@', 'a').replace('$', 's');
     }
 
     private void playSound(Player player, String soundName) {
