@@ -1,0 +1,90 @@
+# ==========================================================
+#     ✦ PIPÓN MC - SISTEMA DE ANUNCIOS Y CONSEJOS ✦
+# ==========================================================
+# Archivo exclusivo e independiente para gestionar avisos rotativos.
+# Para aplicar cambios sin reiniciar el servidor escribe: /alcatraz reload
+
+configuracion:
+  # Activar o desactivar los anuncios automáticos
+  activado: true
+
+  # Intervalo de tiempo entre cada anuncio (en segundos)
+  # 180 = 3 minutos | 200 = 3.3 minutos | 240 = 4 minutos
+  intervalo-segundos: 200
+
+  # Modo de reproducción: false = SECUENCIAL (en orden) | true = ALEATORIO
+  modo-aleatorio: false
+
+  # Prefijo global opcional (déjalo vacío si prefieres definirlo en cada mensaje)
+  prefijo: "&8[&#31d8d7&lPIPÓN MC&8] "
+
+  # Sonido sutil al emitir el anuncio para captar atención (opcional)
+  sonido:
+    activado: true
+    nombre: "BLOCK_NOTE_BLOCK_PLING" # Sonido suave tipo campana
+    volumen: 0.8
+    tono: 1.2
+
+# ==========================================================
+#                   LISTA DE ANUNCIOS
+# ==========================================================
+# Puedes usar colores clásicos (&a, &e, &f) y colores HEX (&#31d8d7, &#ffdb60)
+# Puedes escribir una sola línea o varias líneas usando listas (-)
+
+mensajes:
+
+  # 1. PROTECCIONES (Piedras de Protección)
+  - - "&8&m----------------------------------------------------"
+    - "&#31d8d7&l✦ PROTECCIÓN DE TERRENOS ✦"
+    - "&7¡Asegura tu casa y cofres fácilmente!"
+    - "&7Coloca una &ePiedra de Protección &7en el suelo para proteger tu zona."
+    - "&7Gestiona permisos, amigos y banderas con &f/ps &7o &f/claim&7."
+    - "&8&m----------------------------------------------------"
+
+  # 2. BUGS Y RECOMPENSAS POR TICKETS
+  - "&#ffdb60¿Encontraste algún error o bug? &7¡Ayúdanos a mejorar! No dudes en abrir un ticket en nuestro Discord oficial y el Staff te recompensará: &bhttps://discord.gg/p3jsXtCf3j"
+
+  # 3. DISCORD Y COMUNIDAD
+  - "&#5865F2¡Únete a nuestra comunidad de Discord! &7Entérate de sorteos, actualizaciones y convive con la comunidad en: &fhttps://discord.gg/p3jsXtCf3j &7(o escribe &e/discord&7)."
+
+  # 4. HABILIDADES (AuraSkills)
+  - "&#a855f7¡Desbloquea tu verdadero poder! &7Mina, tala, pesca y combate para subir niveles, conseguir maná y desbloquear estadísticas pasivas únicas con &e/skills&7."
+
+  # 5. MONTURAS ESPECIALES
+  - "&#f59e0b¿Cansado de caminar distancias largas? &7Descubre e invoca monturas místicas como la &eAbeja Reina &7escribiendo &e/monturas &7(o &e/alcatraz mount&7)."
+
+  # 6. DUNGEONS Y DIMENSIONES
+  - "&#ef4444¿Buscas un verdadero reto? &7Explora las &cDungeons &7y el &cNether Personalizado&7. Los enemigos son más agresivos pero los botines son legendarios."
+
+  # 7. BOSSES Y ENEMIGOS DE ÉLITE
+  - "&#f97316¡Alerta de Jefes! &7Ponte tu mejor armadura y enfréntate a los &cBosses Míticos &7del servidor. Revisa sus tiempos de reaparición con tu clan."
+
+  # 8. TRÍADA MÍSTICA Y ENCANTAMIENTOS (ACE)
+  - "&#10b981¡Potencia tus armas y armaduras! &7Usa el &fCincel de Vacío &7para abrir ranuras rúnicas y aplica pergaminos &a/ace &7como &bSoulbound &7para no perder tu equipo al morir."
+
+  # 9. TUMBAS Y RECUPERACIÓN DE ÍTEMS
+  - "&#06b6d4¿Moriste en combate o minería? &7No te preocupes: tus ítems quedan guardados a salvo en una tumba. Ubícala con tu brújula o consulta tus coordenadas con &e/graves&7."
+
+  # 10. COMERCIO SEGURO Y SUBASTAS
+  - "&#22c55e¡Evita robos y estafas! &7Intercambia ítems y monedas con otros jugadores cara a cara de forma segura con &e/trade <jugador>&7, o subástalos en &e/ah&7."
+
+  # 11. TRABAJOS Y ECONOMÍA
+  - "&#eab308¿Necesitas dinero para tus construcciones? &7Únete a hasta 3 profesiones activas y gana dinero automáticamente jugando: &e/jobs join&7."
+
+  # 12. CHAT DE VOZ POR PROXIMIDAD
+  - "&#3b82f6¡Habla en vivo con tus amigos en el juego! &7Contamos con &9Chat de Voz 3D &7por proximidad. Presiona la tecla &e[ V ] &7en tu teclado para configurarlo."
+
+  # 13. CLANES Y ALIANZAS
+  - "&#8b5cf6¡La unión hace la fuerza! &7Crea tu clan, comparte banco con tus aliados, sube de nivel y domina el ranking del servidor con &e/clan&7."
+
+  # 14. TELETRANSPORTE Y EXPLORACIÓN
+  - "&#14b8a6¿Buscando un lugar perfecto para tu base? &7Escribe &e/rtp &7para teletransportarte aleatoriamente por el mundo o visita las tiendas de otros jugadores con &e/pwarp&7."
+
+  # 15. TIENDA WEB Y RANGOS VIP
+  - "&#f43f5e¿Quieres apoyar al servidor y conseguir beneficios exclusivos? &7Visita nuestra tienda web oficial: &fhttps://piponmc.shop &7(o escribe &e/tienda&7)."
+
+  # 16. PAPELERA VIRTUAL ANTI-LAG
+  - "&#64748b¿Tienes bloques inservibles en tu inventario? &7No los tires al suelo para evitar lag; elimínalos al instante usando la papelera con &e/trash&7."
+
+  # 17. PROTECCIÓN DE JUGADORES NUEVOS
+  - "&#a3e635¿Eres nuevo en Pipón? &7Tienes protección contra PvP temporal para iniciar tu aventura con calma. Revisa tu tiempo restante con &e/pvp status&7."

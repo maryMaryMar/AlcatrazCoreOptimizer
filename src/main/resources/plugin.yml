@@ -128,6 +128,11 @@ commands:
     aliases: [montura, mounts, mount, mascotas, mascota, pets, pet]
     permission: alcatraz.mounts.use
     usage: /<command> [gui|spawn|dismiss|reload|help]
+  acosmetics:
+    description: Abre el menú de cosméticos exclusivos de Alcatraz o gestiona tus efectos.
+    aliases: [acosmetic, alcatrazcosmetics, alcatrazcosmeticos]
+    permission: alcatraz.cosmetics.use
+    usage: /<command> [menu|equip|clear|give]
   montura:
     description: Acceso rápido al sistema de monturas.
     permission: alcatraz.mounts.use
@@ -265,6 +270,19 @@ permissions:
     default: op
   alcatraz.mounts.abeja:
     description: Permite invocar y montar la Abeja Reina Melífera.
+    default: op
+
+  alcatraz.cosmetics.use:
+    description: Permite abrir el menú de cosméticos /acosmetics y ver los cosméticos disponibles.
+    default: true
+  alcatraz.cosmetics.blaze_swords:
+    description: Permite equipar las 4 Espadas del Blaze en órbita horizontal.
+    default: op
+  alcatraz.cosmetics.tenebris_halo:
+    description: Permite equipar los 8 Orbes de Tenebris en halo vertical de espalda.
+    default: op
+  alcatraz.cosmetics.admin:
+    description: Permite dar y equipar cosméticos a otros jugadores mediante vouchers y comandos.
     default: op
 
   alcatraz.sellwand.use:

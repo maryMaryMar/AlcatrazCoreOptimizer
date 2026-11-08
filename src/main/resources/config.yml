@@ -959,6 +959,10 @@ chat-bubbles:
   vertical-offset: 0.95 # Altura sobre los ojos (~2.6 bloques desde el suelo)
   max-chars-per-line: 32
   max-lines: 3
+  # Ocultar globos si el jugador/admin está en modo Vanish
+  ignore-vanished: true
+  # Radio máximo de visibilidad (en bloques). Jugadores más allá no ven el globo
+  max-view-distance: 18.0
   crowd-limit:
     # Si hay más de max-players juntos en el radio, no se muestra ningún globo para evitar saturar la pantalla
     enabled: true

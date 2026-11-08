@@ -27,6 +27,9 @@ import com.alcatrazm.plugin.lifemending.commands.LifeMendingCommand;
 import com.alcatrazm.plugin.lifemending.listeners.LifeMendingListener;
 import com.alcatrazm.plugin.lifemending.managers.LifeMendingManager;
 import com.alcatrazm.plugin.lifemending.tasks.LifeMendingTask;
+import com.alcatrazm.plugin.cosmetics.CosmeticsCommand;
+import com.alcatrazm.plugin.cosmetics.CosmeticsListener;
+import com.alcatrazm.plugin.cosmetics.CosmeticsManager;
 import com.alcatrazm.plugin.listeners.BackpackAntiDupeListener;
 import com.alcatrazm.plugin.mobcatcher.MobCatcherCommand;
 import com.alcatrazm.plugin.mobcatcher.MobCatcherListener;
@@ -114,6 +117,7 @@ public final class AlcatrazPlugin extends JavaPlugin {
     private AuraSkillsFixer auraSkillsFixer;
     private AuraSkillsListener auraSkillsListener;
     private MountManager mountManager;
+    private CosmeticsManager cosmeticsManager;
     private BossDefenseManager bossDefenseManager;
     private BossDefenseListener bossDefenseListener;
     private ChatBubbleManager chatBubbleManager;
@@ -425,6 +429,13 @@ public final class AlcatrazPlugin extends JavaPlugin {
         // 16. Seguridad Anti-Dupe de Mochilas
         getServer().getPluginManager().registerEvents(new BackpackAntiDupeListener(this), this);
 
+        // 33. Módulo Autónomo de Cosméticos 3D (/acosmetics)
+        this.cosmeticsManager = new CosmeticsManager(this);
+        getServer().getPluginManager().registerEvents(new CosmeticsListener(this, cosmeticsManager), this);
+        CosmeticsCommand cosmeticsCmd = new CosmeticsCommand(this, cosmeticsManager);
+        registerPluginCommand("acosmetics", cosmeticsCmd, cosmeticsCmd);
+        getLogger().info("  33. Módulo de Cosméticos /acosmetics [ACTIVO]");
+
         // 17. Iniciar Tareas Periódicas
         startTasks();
 
@@ -510,6 +521,10 @@ public final class AlcatrazPlugin extends JavaPlugin {
 
         if (chatBubbleManager != null) {
             chatBubbleManager.cleanAll();
+        }
+
+        if (cosmeticsManager != null) {
+            cosmeticsManager.cleanAll();
         }
 
         if (resourcePackManager != null) {
@@ -619,6 +634,7 @@ public final class AlcatrazPlugin extends JavaPlugin {
     public GrapplingHookManager getGrapplingHookManager() { return grapplingHookManager; }
     public DuelMenuManager getDuelMenuManager() { return duelMenuManager; }
     public HalloweenManager getHalloweenManager() { return halloweenManager; }
+    public CosmeticsManager getCosmeticsManager() { return cosmeticsManager; }
 
     public void reloadBanList() {
         try {

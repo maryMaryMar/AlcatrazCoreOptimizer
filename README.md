@@ -37,7 +37,7 @@
 
 ---
 
-## 🏛️ Arquitectura Modular (27 Módulos Activos)
+## 🏛️ Arquitectura Modular (30 Módulos Activos)
 
 A partir de la versión **v1.1.0**, la arquitectura fue completamente saneada, desacoplada y blindada:
 - **🧹 Módulos Retirados y Purgados (0 dependencias residuales):**
@@ -47,7 +47,7 @@ A partir de la versión **v1.1.0**, la arquitectura fue completamente saneada, d
   4. `achat` — Reemplazado por chat nativo y `ChatGroupManager`.
   5. `autosmelt` — Removido para prevenir duplicación con encantamientos personalizados de ACE.
 
-- **🛡️ 27 Módulos Activos en Producción:**
+- **🛡️ 30 Módulos Activos en Producción:**
   1. `protection` — Protección de reclamos por menas de protección (radios 30, 50, 100, 150, 300).
   2. `chestlock` — Candados de seguridad para cofres y puertas privadas.
   3. `sellwand` — Varitas de venta configurables con multiplicadores y usos.
@@ -76,10 +76,18 @@ A partir de la versión **v1.1.0**, la arquitectura fue completamente saneada, d
   26. `villagers` — Optimizador de IA y pathfinding para aldeanos encapsulados.
   27. `tnt` — Limitador de densidad de explosiones concurrentes por chunk.
   28. `monitor` — Monitor en tiempo real de métricas Paper (TPS, MSPT, memoria).
+  29. `announcer` — Sistema avanzado de anuncios rotativos multilínea y colores HEX con sonido.
+  30. `cosmetics` — Módulo autónomo de cosméticos 3D (/acosmetics), órbitas y halos interactivos.
 
 ---
 
 ## 📜 Historial Completo de Versiones
+
+### 🌟 [v1.1.0-Patch] - 01 de Noviembre de 2026 *(Cosméticos 3D, Anuncios Dedicados y Refinamiento de ChatBubbles)*
+- **Módulo Autónomo de Cosméticos 3D (`/acosmetics`):** Menú interactivo con GUI y soporte de efectos orbitales/halos (Espadas de Blaze y Halo de Tenebris) desacoplado y de alto rendimiento.
+- **Sistema de Anuncios Dedicado (`anuncios.yml`):** Soporte RGB/HEX (`&#RRGGBB`), avisos multilínea, efectos de sonido (`BLOCK_NOTE_BLOCK_PLING`) y recarga en vivo con `/alcatraz reload`.
+- **Refinamiento de ChatBubbles:** Sanitización de tags residuales de `InteractiveChat`, respeto estricto del modo Vanish para administradores y rango dinámico de visibilidad a 18 bloques para optimizar FPS del cliente.
+- **Hook ModelEngine 4:** Vinculación de biblioteca API local `ModelEngine-4.0.9.jar`.
 
 ### 🌟 [v1.1.0] - 16 de Octubre de 2026 *(Gran Remasterización y Blindaje Zero-Bugs)*
 - **Purga de Código:** Eliminación completa de 5 módulos obsoletos (`sellchest`, `hoppers`, `pregen`, `achat`, `autosmelt`).

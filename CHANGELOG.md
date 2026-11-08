@@ -5,6 +5,7 @@ Este documento registra la evolución cronológica, historial de modificaciones 
 ---
 
 ## 📌 Índice Cronológico
+- [v1.1.0-Patch (01 de Noviembre de 2026)](#versión-110-patch---01-de-noviembre-de-2026) — *Módulo Autónomo de Cosméticos 3D, Anuncios Dedicados y Refinamiento de ChatBubbles*
 - [v1.1.0 (16 de Octubre de 2026)](#versión-110---16-de-octubre-de-2026) — *Gran Remasterización Forense, Purga Modular y Blindaje Zero-Bugs*
 - [v1.0.9 (04 de Octubre de 2026)](#versión-109---04-de-octubre-de-2026) — *Protecciones Temporales y Candados de Cofres*
 - [v1.0.8 (28 de Septiembre de 2026)](#versión-108---28-de-septiembre-de-2026) — *Parches de Siembra Halloween y Trades de Aldeanos*
@@ -16,6 +17,37 @@ Este documento registra la evolución cronológica, historial de modificaciones 
 - [v1.0.2 (07 de Septiembre de 2026)](#versión-102---07-de-septiembre-de-2026) — *Compatibilidad con AuraSkills 5.0*
 - [v1.0.1 (06 de Septiembre de 2026)](#versión-101---06-de-septiembre-de-2026) — *Ajustes de Telemetría y Límites de Bloques*
 - [v1.0.0 (01 de Septiembre de 2026)](#versión-100---01-de-septiembre-de-2026) — *Lanzamiento Inicial del Núcleo Unificado*
+
+---
+
+## Versión 1.1.0-Patch - 01 de Noviembre de 2026
+**Tipo:** Actualización Funcional, Módulo Autónomo de Cosméticos y Refinamiento de UI/Chat  
+**Entorno de Compilación:** Paper 1.21.1 / Java 21 / Maven 3.9+  
+
+### 🎨 1. Nuevo Módulo Autónomo de Cosméticos 3D (`/acosmetics`)
+- **Implementación:** Paquete dedicado `com.alcatrazm.plugin.cosmetics` (`CosmeticsManager`, `CosmeticsCommand`, `CosmeticsListener`, `CosmeticsGUI`, `CosmeticType`).
+- **Características:**
+  - Menú GUI interactivo para equipar y desequipar efectos visuales sin depender de plugins de terceros sobrecargados.
+  - Efectos orbitales y halos: 4 Espadas del Blaze en órbita horizontal y 8 Orbes de Tenebris en halo vertical de espalda.
+  - Permisos granulares (`alcatraz.cosmetics.use`, `alcatraz.cosmetics.blaze_swords`, `alcatraz.cosmetics.tenebris_halo`, `alcatraz.cosmetics.admin`).
+  - Limpieza y descarte automático de entidades visuales temporales al desconectarse o morir el jugador (`cleanAll()`).
+
+### 📢 2. Sistema Avanzado e Independiente de Anuncios (`anuncios.yml`)
+- **Desacoplamiento:** Migración del sistema de anuncios desde `config.yml` a su propio archivo dedicado `anuncios.yml`.
+- **Mejoras Técnicas:**
+  - Soporte completo para colores RGB / HEX mediante sintaxis `&#RRGGBB` y códigos clásicos `&`.
+  - Soporte para anuncios compuestos multilínea.
+  - Modos de emisión secuencial y aleatorio con intervalo en segundos configurable.
+  - Efectos de sonido sutiles (`BLOCK_NOTE_BLOCK_PLING`) al emitir avisos para captar la atención del jugador.
+  - Recarga en caliente en vivo mediante `/alcatraz reload` sin requerir reinicio del servidor.
+
+### 💬 3. Refinamiento y Blindaje de Globos de Chat (`chatbubbles`)
+- **Limpieza de Sintaxis Externa:** Sanitización estricta por regex de etiquetas de `InteractiveChat` (`<chat=uuid:...:>` y `<cmd=uuid>`) para evitar caracteres residuales o basura visual flotante sobre los jugadores.
+- **Respeto a Administradores en Vanish:** Integración de comprobación `isVanished(player)` (metadatos `vanished`) para silenciar globos visuales automáticamente en modo invisible, garantizando sigilo administrativo.
+- **Rango Dinámico de Visibilidad:** Límite de renderizado configurable (`max-view-distance: 18.0` bloques) que oculta dinámicamente los `TextDisplay` a jugadores distantes para optimizar los FPS del cliente y evitar contaminación visual.
+
+### ⚙️ 4. Dependencias y Ecosistema
+- **ModelEngine 4 Hook:** Adición de dependencia de sistema `libs/ModelEngine-4.0.9.jar` en `pom.xml` para integración limpia y compilación sin fallos en entornos CI/CD y locales.
 
 ---
 

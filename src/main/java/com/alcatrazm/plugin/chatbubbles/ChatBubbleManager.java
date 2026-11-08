@@ -9,7 +9,9 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
@@ -28,10 +30,14 @@ public class ChatBubbleManager {
     private int durationTicks = 80; // 4 segundos
     private int maxCharsPerLine = 32;
     private int maxLines = 3;
-    private double verticalOffset = 0.95; // Flota a ~2.6 bloques desde el suelo, bien despegado de la cabeza
+    private double verticalOffset = 0.95; // Flota a ~2.6 bloques desde el suelo
     private boolean crowdLimitEnabled = true;
     private int maxNearbyPlayers = 15;
     private double crowdRadius = 15.0;
+
+    // Nuevas configuraciones de privacidad y sigilo
+    private boolean ignoreVanished = true;
+    private double maxViewDistance = 18.0; // Invisible para usuarios a más de 18 bloques
 
     private static class ActiveBubble {
         final TextDisplay entity;
@@ -59,6 +65,9 @@ public class ChatBubbleManager {
         this.crowdLimitEnabled = plugin.getConfig().getBoolean("chat-bubbles.crowd-limit.enabled", true);
         this.maxNearbyPlayers = plugin.getConfig().getInt("chat-bubbles.crowd-limit.max-players", 15);
         this.crowdRadius = plugin.getConfig().getDouble("chat-bubbles.crowd-limit.radius", 15.0);
+
+        this.ignoreVanished = plugin.getConfig().getBoolean("chat-bubbles.ignore-vanished", true);
+        this.maxViewDistance = plugin.getConfig().getDouble("chat-bubbles.max-view-distance", 18.0);
 
         List<String> disabled = plugin.getConfig().getStringList("chat-bubbles.disabled-players");
         disabledPlayers.clear();
@@ -96,6 +105,41 @@ public class ChatBubbleManager {
         return !disabledPlayers.contains(uuid);
     }
 
+    /**
+     * Comprueba si el jugador está en modo Vanish (EssentialsX, RyzenStaff, PremiumVanish, Bukkit).
+     */
+    public boolean isVanished(Player player) {
+        if (!ignoreVanished || player == null) return false;
+
+        // 1. Verificación por Metadata nativa
+        if (player.hasMetadata("vanished")) {
+            for (MetadataValue meta : player.getMetadata("vanished")) {
+                if (meta.asBoolean()) return true;
+            }
+        }
+        if (player.hasMetadata("vanish")) {
+            for (MetadataValue meta : player.getMetadata("vanish")) {
+                if (meta.asBoolean()) return true;
+            }
+        }
+
+        // 2. Verificación por EssentialsX si está cargado (vía Reflection desacoplado)
+        try {
+            Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
+            if (essPlugin != null) {
+                Object user = essPlugin.getClass().getMethod("getUser", Player.class).invoke(essPlugin, player);
+                if (user != null) {
+                    Boolean isVanished = (Boolean) user.getClass().getMethod("isVanished").invoke(user);
+                    if (Boolean.TRUE.equals(isVanished)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Throwable ignored) {}
+
+        return false;
+    }
+
     private void startTask() {
         if (updateTask != null) {
             updateTask.cancel();
@@ -105,13 +149,15 @@ public class ChatBubbleManager {
             if (activeBubbles.isEmpty()) return;
 
             Iterator<Map.Entry<UUID, ActiveBubble>> it = activeBubbles.entrySet().iterator();
+            double maxDistSq = maxViewDistance * maxViewDistance;
+
             while (it.hasNext()) {
                 Map.Entry<UUID, ActiveBubble> entry = it.next();
                 UUID uuid = entry.getKey();
                 ActiveBubble bubble = entry.getValue();
 
                 Player player = Bukkit.getPlayer(uuid);
-                if (player == null || !player.isOnline() || player.isDead() || bubble.entity == null || !bubble.entity.isValid()) {
+                if (player == null || !player.isOnline() || player.isDead() || bubble.entity == null || !bubble.entity.isValid() || isVanished(player)) {
                     if (bubble.entity != null && bubble.entity.isValid()) {
                         bubble.entity.remove();
                     }
@@ -126,9 +172,20 @@ public class ChatBubbleManager {
                     continue;
                 }
 
-                // Seguimiento fluido de la cabeza del jugador con la altura configurada
+                // Seguimiento fluido de la cabeza del jugador
                 Location targetLoc = player.getLocation().add(0, player.getEyeHeight() + verticalOffset, 0);
                 bubble.entity.teleport(targetLoc);
+
+                // Dinamismo de rango: actualizar visibilidad por si otros jugadores se alejan o acercan
+                for (Player viewer : player.getWorld().getPlayers()) {
+                    if (viewer.equals(player)) continue;
+                    boolean canSee = viewer.canSee(player) && viewer.getLocation().distanceSquared(targetLoc) <= maxDistSq;
+                    if (canSee) {
+                        viewer.showEntity(plugin, bubble.entity);
+                    } else {
+                        viewer.hideEntity(plugin, bubble.entity);
+                    }
+                }
             }
         }, 1L, 1L);
     }
@@ -138,13 +195,18 @@ public class ChatBubbleManager {
             return;
         }
 
-        // Filtro de multitud: si hay más de X jugadores cerca, no mostrar globo
+        // Admins en Vanish: Cero globos para mantener sigilo absoluto
+        if (isVanished(player)) {
+            return;
+        }
+
+        // Filtro de multitud
         if (crowdLimitEnabled) {
             long nearbyCount = player.getNearbyEntities(crowdRadius, crowdRadius, crowdRadius).stream()
                     .filter(e -> e instanceof Player && !e.getUniqueId().equals(player.getUniqueId()))
                     .count();
             if (nearbyCount >= maxNearbyPlayers) {
-                return; // Supera el límite de multitud
+                return;
             }
         }
 
@@ -155,25 +217,40 @@ public class ChatBubbleManager {
 
         ActiveBubble existing = activeBubbles.get(player.getUniqueId());
         if (existing != null && existing.entity != null && existing.entity.isValid()) {
-            // Actualizar texto del globo existente y reiniciar tiempo
             existing.entity.setText(formattedText);
             existing.remainingTicks = durationTicks;
             return;
         }
 
         try {
+            float viewRangeMultiplier = (float) Math.max(0.1, Math.min(1.0, maxViewDistance / 64.0));
+            double maxDistSq = maxViewDistance * maxViewDistance;
+
             TextDisplay display = spawnLoc.getWorld().spawn(spawnLoc, TextDisplay.class, td -> {
-                td.setPersistent(false); // No guardar en disco / chunk .mca
+                td.setPersistent(false);
                 td.getPersistentDataContainer().set(bubbleKey, PersistentDataType.BYTE, (byte) 1);
                 td.setBillboard(Display.Billboard.CENTER);
                 td.setText(formattedText);
-                // Fondo blanco nítido estilo viñeta cómic
                 td.setBackgroundColor(Color.fromARGB(245, 255, 255, 255));
                 td.setShadowed(false);
                 td.setSeeThrough(false);
                 td.setAlignment(TextDisplay.TextAlignment.CENTER);
-                td.setTeleportDuration(2); // Suavizado nativo
+                td.setTeleportDuration(2);
+                td.setViewRange(viewRangeMultiplier);
+
+                // Ocultar por defecto para gestionar visibilidad precisa de 15-20 bloques
+                td.setVisibleByDefault(false);
             });
+
+            // Mostrar el globo únicamente al emisor y a jugadores a menos de maxViewDistance
+            player.showEntity(plugin, display);
+            for (Player viewer : player.getWorld().getPlayers()) {
+                if (!viewer.equals(player)) {
+                    if (viewer.canSee(player) && viewer.getLocation().distanceSquared(spawnLoc) <= maxDistSq) {
+                        viewer.showEntity(plugin, display);
+                    }
+                }
+            }
 
             activeBubbles.put(player.getUniqueId(), new ActiveBubble(display, durationTicks));
         } catch (Exception e) {
@@ -249,4 +326,8 @@ public class ChatBubbleManager {
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public double getVerticalOffset() { return verticalOffset; }
     public void setVerticalOffset(double verticalOffset) { this.verticalOffset = verticalOffset; }
+    public double getMaxViewDistance() { return maxViewDistance; }
+    public void setMaxViewDistance(double maxViewDistance) { this.maxViewDistance = maxViewDistance; }
+    public boolean isIgnoreVanished() { return ignoreVanished; }
+    public void setIgnoreVanished(boolean ignoreVanished) { this.ignoreVanished = ignoreVanished; }
 }
