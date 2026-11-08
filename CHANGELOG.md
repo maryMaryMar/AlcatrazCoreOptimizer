@@ -5,6 +5,7 @@ Este documento registra la evolución cronológica, historial de modificaciones 
 ---
 
 ## 📌 Índice Cronológico
+- [v1.1.0-Patch3 (08 de Noviembre de 2026)](#versión-110-patch3---08-de-noviembre-de-2026) — *Gestión Dinámica 100% por YAML, Whitelist, Pestañas Interactivas y Purga de 180 Palabras Inofensivas*
 - [v1.1.0-Patch2 (08 de Noviembre de 2026)](#versión-110-patch2---08-de-noviembre-de-2026) — *Remediación de Falsos Positivos en ChatFilter, Expiración de Strikes y Desactivación de SoftMute*
 - [v1.1.0-Patch (01 de Noviembre de 2026)](#versión-110-patch---01-de-noviembre-de-2026) — *Módulo Autónomo de Cosméticos 3D, Anuncios Dedicados y Refinamiento de ChatBubbles*
 - [v1.1.0 (16 de Octubre de 2026)](#versión-110---16-de-octubre-de-2026) — *Gran Remasterización Forense, Purga Modular y Blindaje Zero-Bugs*
@@ -18,6 +19,39 @@ Este documento registra la evolución cronológica, historial de modificaciones 
 - [v1.0.2 (07 de Septiembre de 2026)](#versión-102---07-de-septiembre-de-2026) — *Compatibilidad con AuraSkills 5.0*
 - [v1.0.1 (06 de Septiembre de 2026)](#versión-101---06-de-septiembre-de-2026) — *Ajustes de Telemetría y Límites de Bloques*
 - [v1.0.0 (01 de Septiembre de 2026)](#versión-100---01-de-septiembre-de-2026) — *Lanzamiento Inicial del Núcleo Unificado*
+
+---
+
+## Versión 1.1.0-Patch3 - 08 de Noviembre de 2026
+**Tipo:** Remediación de Palabras Completas, Arquitectura 100% Configurable por YAML y Pestañas Interactivas  
+**Entorno de Compilación:** Paper 1.21.1 / Java 21 / Maven 3.9+  
+
+### ⚙️ 1. Arquitectura 100% Configurable por YAML (Cero Recompilaciones)
+- **Fin a las Recompilaciones Continuas:** Toda la gestión de palabras permitidas, palabras prohibidas adicionales, abreviaciones y frases se centraliza en `config.yml`. El staff puede agregar o quitar palabras directamente desde el archivo o mediante comandos en vivo con guardado automático.
+- **Lista Blanca (Whitelist) de Palabras Permitidas:** Nueva sección `chat-filter.palabras-permitidas`. Cualquier palabra incluida en esta lista es evaluada previamente y queda estrictamente blindada contra sanciones o mutes, anulando coincidencias por letras repetidas o semejanzas con malas palabras.
+- **Palabras Prohibidas Personalizadas (`palabras-prohibidas-extra`):** Permite incorporar palabras ofensivas locales desde YAML sin alterar el diccionario general `badwords.txt`.
+
+### 📂 2. Pestañas Interactivas y Comandos en Vivo (`/alcatraz filter`)
+- **Visualización por Pestañas:** Nuevo comando `/alcatraz filter list [categoría] [página]` con soporte para 5 categorías navegables:
+  1. `[Permitidas]` (`whitelist`): Palabras seguras garantizadas.
+  2. `[Prohibidas]` (`extra`): Palabras bloqueadas añadidas por YAML.
+  3. `[Abreviaciones]`: Siglas ofensivas controladas (`ctm`, `hdp`, etc.).
+  4. `[Frases]`: Frases completas bloqueadas.
+  5. `[Base]`: Diccionario base general (`badwords.txt`).
+- **Pestañas Clicables e Interactivas:** Para jugadores en chat, las pestañas y la paginación (`[◀ Anterior]`, `[Siguiente ▶]`) cuentan con eventos de clic (`ClickEvent.RUN_COMMAND`) y hover (`HoverEvent.SHOW_TEXT`), permitiendo saltar entre categorías con un solo clic.
+- **Gestión Dinámica en Caliente:**
+  - `/alcatraz filter whitelist <palabra>` — Añade a la lista blanca y guarda en YAML al instante.
+  - `/alcatraz filter add <palabra>` — Añade palabra prohibida a YAML al instante.
+  - `/alcatraz filter remove <palabra>` — Remueve la palabra del YAML al instante.
+
+### 🧹 3. Purga Masiva de 180 Palabras Inofensivas en `badwords.txt`
+- Se retiraron del diccionario términos comunes que causaban muteos absurdos:
+  - **Comida y Botánica:** `comer`, `pepa`, `papafrita`, `bollo`, `bollito`, `boniato`, `cebollino`, `longanizas`, `buttermilk`, `mamey`, `borraja`, `calabazo`, `estafiate`, `quebracho`, `mastuerzo`, `ayotes`, `corozo`, `cogollo`, `coronta`.
+  - **Herramientas y Minecraft:** `martillo`, `cuchara`, `chaqueta`, `pistola`, `pipe`, `sheet`, `repisas`, `brasas`, `brocha`, `cantimplora`, `plomo`, `domination`, `bombin`, `brizna`, `retazo`, `forrar`, `forked`, `sonajas`, `drogas`.
+  - **Animales / Fauna:** `aranha`, `mico`, `cotorra`, `piranha`, `sanguijuela`, `crows`, `borrico`, `ovejo`, `besugo`, `cernicalo`, `percebe`, `morlaco`, `copeton`.
+  - **Habla cotidiana / Familia:** `mama`, `trio`, `cuates`, `comadres`, `ganan`, `gozar`, `gustarle`, `manchas`, `calamidad`, `maldito/a/s`, `colgados`, `leches`, `maciza`, `chancay`, `hostia`.
+  - **Términos de denuncia / Discusión:** `racista`, `heterosexual`, `homosexual`, `heroina`, `peter`, `filiberto`, `lolas`, `pinto`, `sonso`, `lerdo`, `dolt`, `twit`, `sack`, `sobs`, `finger`, `bloody`, `diddle`, `bender`, `panty`, `patan`, `pelma`, `tonga`, `tramp`, `fecal`, `genitals`, `erotism`, `escroto`, `esperma`, `nudity`, `sexual`, `sexually`, `undressing`, `aborto`.
+  - **Insultos literarios arcaicos del siglo XIX:** `abrazafarolas`, `rebanasandias`, `peinabombillas`, `chiquilicuatre`, `zurcefrenillos`, `calientahielos`, `cabezaalberca`, `zascandil`, `pamplinas`, `zopenco`, `fariseo`, `papanatas`, `bobalicon`, etc.
 
 ---
 

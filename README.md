@@ -2,7 +2,7 @@
 
 [![Paper Version](https://img.shields.io/badge/Paper-1.21.1-blue.svg)](https://papermc.io)
 [![Java Version](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.org)
-[![Version](https://img.shields.io/badge/Version-1.1.0--Patch2-emerald.svg)](https://github.com/maryMaryMar/AlcatrazCoreOptimizer)
+[![Version](https://img.shields.io/badge/Version-1.1.0--Patch3-emerald.svg)](https://github.com/maryMaryMar/AlcatrazCoreOptimizer)
 [![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)]()
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](#-licencia)
 
@@ -82,6 +82,18 @@ A partir de la versión **v1.1.0**, la arquitectura fue completamente saneada, d
 ---
 
 ## 📜 Historial Completo de Versiones
+
+### 🌟 [v1.1.0-Patch3] - 08 de Noviembre de 2026 *(Gestión Dinámica 100% por YAML, Whitelist, Pestañas Interactivas y Purga Masiva)*
+- **Arquitectura 100% Configurable por YAML (Cero Recompilaciones):**
+  - Toda la gestión del filtro se controla desde `config.yml` sin recompilar código Java ni tocar repositorios.
+  - **Lista Blanca (Whitelist):** Sección `palabras-permitidas` que exime estrictamente las palabras seguras contra cualquier sanción.
+  - **Palabras Prohibidas Personalizadas (`palabras-prohibidas-extra`):** Añadidas por YAML en caliente.
+- **Visualización por Pestañas Interactivas (`/alcatraz filter list`):**
+  - Pestañas navegables con soporte de clics para jugadores (`[✔ Permitidas]`, `[✖ Prohibidas]`, `[⚡ Abreviaciones]`, `[💬 Frases]`, `[📖 Base]`).
+  - Navegación paginada (`[◀ Anterior]` / `[Siguiente ▶]`).
+  - Comandos en vivo: `/alcatraz filter whitelist <palabra>`, `/alcatraz filter add <palabra>`, `/alcatraz filter remove <palabra>`.
+- **Purga Masiva de 180 Palabras Inofensivas en `badwords.txt`:**
+  - Erradicación de palabras cotidianas que bloqueaban la charla de los jugadores (`comer`, `mama`, `martillo`, `trio`, `pepa`, `plomo`, `pipe`, `chaqueta`, `brocha`, `cuchara`, `maldito/a`, `racista`, `heroina`, etc.).
 
 ### 🌟 [v1.1.0-Patch2] - 08 de Noviembre de 2026 *(Remediación de ChatFilter, Expiración de Strikes y Desactivación de SoftMute)*
 - **Remediación Total de Falsos Positivos en ChatFilter:**

@@ -238,6 +238,11 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
                 handleMutesListCommand(sender, args);
                 return true;
 
+            case "filter":
+            case "filtro":
+                handleFilterCommand(sender, args);
+                return true;
+
             case "xray":
             case "antixray":
                 if (plugin.getAntiXrayManager() != null) {
@@ -321,6 +326,102 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(color(" &8» &e" + e.getValue().playerName + " &7- Restante: &c" + remaining + " &7(" + e.getValue().reason + ")"));
         }
         sender.sendMessage(color("&8&m----------------------------------------"));
+    }
+
+    private void handleFilterCommand(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("alcatraz.chatfilter.admin") && !sender.hasPermission("alcatraz.admin")) {
+            sender.sendMessage(color("&cNo tienes permisos para configurar el filtro de chat."));
+            return;
+        }
+
+        if (plugin.getChatFilterManager() == null) {
+            sender.sendMessage(color("&cEl módulo de filtro de chat no está activo."));
+            return;
+        }
+
+        if (args.length < 2) {
+            sender.sendMessage(color("&8&m----------------------------------------"));
+            sender.sendMessage(color("&b&lComandos del Filtro de Chat Alcatraz:"));
+            sender.sendMessage(color("&e/alcatraz filter list [categoría] [página] &7- Ver lista de palabras por pestañas."));
+            sender.sendMessage(color("&e/alcatraz filter whitelist <palabra> &7- Permitir una palabra para que nunca sea muteada."));
+            sender.sendMessage(color("&e/alcatraz filter add <palabra> &7- Bloquear una palabra personalizada en YAML."));
+            sender.sendMessage(color("&e/alcatraz filter remove <palabra> &7- Remover una palabra de la configuración."));
+            sender.sendMessage(color("&e/alcatraz reload &7- Recargar configuraciones en caliente sin reiniciar."));
+            sender.sendMessage(color("&8&m----------------------------------------"));
+            return;
+        }
+
+        String subAction = args[1].toLowerCase(Locale.ROOT);
+
+        switch (subAction) {
+            case "list":
+            case "listar":
+            case "ver":
+                String cat = args.length >= 3 ? args[2] : "permitidas";
+                int page = 1;
+                if (args.length >= 4) {
+                    try {
+                        page = Integer.parseInt(args[3]);
+                    } catch (NumberFormatException ignored) {}
+                } else if (args.length == 3) {
+                    try {
+                        page = Integer.parseInt(args[2]);
+                        cat = "permitidas";
+                    } catch (NumberFormatException ignored) {}
+                }
+                plugin.getChatFilterManager().sendFilterList(sender, cat, page);
+                break;
+
+            case "whitelist":
+            case "permitir":
+            case "allow":
+                if (args.length < 3) {
+                    sender.sendMessage(color("&eUso: /alcatraz filter whitelist <palabra>"));
+                    return;
+                }
+                String wWord = args[2].trim().toLowerCase(Locale.ROOT);
+                if (plugin.getChatFilterManager().addWhitelistedWord(wWord)) {
+                    sender.sendMessage(color("&8[&c&lFILTRO&8] &aLa palabra '&e" + wWord + "&a' fue añadida a la lista blanca (&bpalabras-permitidas&a) en YAML. ¡Ya no será bloqueada!"));
+                } else {
+                    sender.sendMessage(color("&cPalabra inválida."));
+                }
+                break;
+
+            case "add":
+            case "bloquear":
+            case "prohibir":
+                if (args.length < 3) {
+                    sender.sendMessage(color("&eUso: /alcatraz filter add <palabra>"));
+                    return;
+                }
+                String bWord = args[2].trim().toLowerCase(Locale.ROOT);
+                if (plugin.getChatFilterManager().addCustomBadWord(bWord)) {
+                    sender.sendMessage(color("&8[&c&lFILTRO&8] &aLa palabra '&c" + bWord + "&a' fue añadida a las palabras prohibidas (&bpalabras-prohibidas-extra&a) en YAML."));
+                } else {
+                    sender.sendMessage(color("&cPalabra inválida."));
+                }
+                break;
+
+            case "remove":
+            case "quitar":
+            case "delete":
+            case "borrar":
+                if (args.length < 3) {
+                    sender.sendMessage(color("&eUso: /alcatraz filter remove <palabra>"));
+                    return;
+                }
+                String rWord = args[2].trim().toLowerCase(Locale.ROOT);
+                if (plugin.getChatFilterManager().removeWord(rWord)) {
+                    sender.sendMessage(color("&8[&c&lFILTRO&8] &aLa palabra '&e" + rWord + "&a' fue removida exitosamente de la configuración YAML."));
+                } else {
+                    sender.sendMessage(color("&8[&c&lFILTRO&8] &eLa palabra '&f" + rWord + "&e' no estaba registrada en la configuración YAML."));
+                }
+                break;
+
+            default:
+                sender.sendMessage(color("&eAcción desconocida. Usa: /alcatraz filter <whitelist|add|remove|list>"));
+                break;
+        }
     }
 
     private void handleGiveMobCatcher(CommandSender sender, String[] args) {
@@ -589,6 +690,7 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(color("&e/" + label + " bossdefense &7- Defensa 75% proyectiles a bosses (/bossdefense)."));
         sender.sendMessage(color("&e/" + label + " unmute <jugador> &7- Levanta el silencio de chat a un jugador."));
         sender.sendMessage(color("&e/" + label + " mutes &7- Lista los jugadores actualmente silenciados por groserías."));
+        sender.sendMessage(color("&e/" + label + " filter <whitelist|add|remove|list> &7- Gestión de palabras y categorías del filtro."));
         sender.sendMessage(color("&e/" + label + " reload &7- Recarga toda la configuración y optimizadores."));
         sender.sendMessage(color("&e/" + label + " version &7- Información y estado del optimizador."));
         sender.sendMessage(color("&8&m----------------------------------------"));
@@ -619,7 +721,7 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
-            List<String> subs = Arrays.asList("ps", "monturas", "bossdefense", "unmute", "mutes", "skills", "fixskills", "monitor", "clean", "mobcatcher", "claim", "proteccion", "hojasonica", "pechera", "libro", "lifemending", "newbie", "xray", "gancho", "reload", "version", "help");
+            List<String> subs = Arrays.asList("ps", "monturas", "bossdefense", "unmute", "mutes", "filter", "filtro", "skills", "fixskills", "monitor", "clean", "mobcatcher", "claim", "proteccion", "hojasonica", "pechera", "libro", "lifemending", "newbie", "xray", "gancho", "reload", "version", "help");
 
             List<String> completions = new ArrayList<>();
             for (String sub : subs) {
@@ -631,6 +733,9 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("filter") || args[0].equalsIgnoreCase("filtro")) {
+                return Arrays.asList("list", "whitelist", "add", "remove");
+            }
             if (args[0].equalsIgnoreCase("unmute") || args[0].equalsIgnoreCase("desmutear")) {
                 List<String> mutedNames = new ArrayList<>();
                 if (plugin.getChatFilterManager() != null) {
@@ -668,6 +773,9 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 3) {
+            if ((args[0].equalsIgnoreCase("filter") || args[0].equalsIgnoreCase("filtro")) && (args[1].equalsIgnoreCase("list") || args[1].equalsIgnoreCase("listar") || args[1].equalsIgnoreCase("ver"))) {
+                return Arrays.asList("permitidas", "prohibidas", "abreviaciones", "frases", "base");
+            }
             if ((args[0].equalsIgnoreCase("skills") || args[0].equalsIgnoreCase("fixskills") || args[0].equalsIgnoreCase("auraskills")) && args[1].equalsIgnoreCase("fix")) {
                 List<String> players = new ArrayList<>();
                 for (Player p : Bukkit.getOnlinePlayers()) {

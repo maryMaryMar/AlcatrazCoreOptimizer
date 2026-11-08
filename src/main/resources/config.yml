@@ -985,8 +985,43 @@ chat-filter:
   # Tiempo de caducidad de cada strike en segundos (si no vuelve a insultar en 5 min, se reinicia)
   strike-expiration-seconds: 300
 
+  # LISTA BLANCA / WHITELIST: Palabras que el filtro NUNCA bloqueará ni sancionará.
+  # Puedes añadir o quitar palabras aquí o con el comando /alcatraz filter whitelist <palabra>
+  palabras-permitidas:
+    - "comer"
+    - "mama"
+    - "martillo"
+    - "trio"
+    - "pepa"
+    - "plomo"
+    - "pipe"
+    - "chaqueta"
+    - "brocha"
+    - "cuchara"
+    - "repisas"
+    - "brasas"
+    - "maldito"
+    - "maldita"
+    - "racista"
+    - "heroina"
+    - "heterosexual"
+    - "homosexual"
+    - "calabazo"
+    - "bollo"
+    - "cuates"
+    - "comadres"
+    - "aranha"
+    - "mico"
+    - "cotorra"
+    - "ganan"
+    - "gozar"
+
+  # PALABRAS PROHIBIDAS EXTRA: Añadidas directamente por YAML sin recompilar ni editar badwords.txt.
+  # Gestionable con /alcatraz filter add <palabra> y /alcatraz filter remove <palabra>
+  palabras-prohibidas-extra: []
+
   # Lista explícita y exclusiva de abreviaciones ofensivas sancionables (sin detección automática por letras cortas)
-  offensive-abbreviations:
+  abreviaciones-ofensivas:
     - "ctm"
     - "hdp"
     - "ptm"
@@ -995,6 +1030,9 @@ chat-filter:
     - "hdpm"
     - "kys"
     - "stfu"
+
+  # FRASES PROHIBIDAS EXTRA: Frases completas que bloquean el mensaje si se detectan juntas
+  frases-prohibidas-extra: []
 
   # Permiso para ignorar el filtro (Staff/Admins)
   bypass-permission: "alcatraz.chatfilter.bypass"

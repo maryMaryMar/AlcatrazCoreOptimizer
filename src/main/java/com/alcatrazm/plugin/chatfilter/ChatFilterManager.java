@@ -1,9 +1,14 @@
 package com.alcatrazm.plugin.chatfilter;
 
 import com.alcatrazm.plugin.AlcatrazPlugin;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -42,10 +47,13 @@ public class ChatFilterManager {
     private String msgStaffStrikeAlert = "&8[&cAlerta Staff&8] &e%player% &cintentó usar groserías &7(%strike%/%max%)&c: &f%message%";
     private String msgStaffMuteAlert = "&8[&cAlerta Staff&8] &e%player% &4ha sido silenciado automáticamente por %duration% minutos tras %max% faltas.";
 
-    // Conjuntos de palabras prohibidas y abreviaciones explícitas
+    // Conjuntos de palabras prohibidas, abreviaciones y lista blanca (whitelist)
     private final Set<String> exactBadWords = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final Set<String> phraseBadWords = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final Set<String> offensiveAbbreviations = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<String> whitelistedWords = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<String> customBadWords = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<String> customPhrases = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     // Registro de strikes con timestamp para caducidad automática
     public static class StrikeRecord {
@@ -87,15 +95,51 @@ public class ChatFilterManager {
         this.warningSound = plugin.getConfig().getString("chat-filter.warning-sound", "ENTITY_VILLAGER_NO");
         this.muteSound = plugin.getConfig().getString("chat-filter.mute-sound", "ENTITY_ENDER_DRAGON_GROWL");
 
-        // Cargar lista explícita y controlada de abreviaciones ofensivas
+        // 1. Cargar lista blanca (whitelist) de palabras que NUNCA deben mutearse
+        whitelistedWords.clear();
+        List<String> whitelist = plugin.getConfig().getStringList("chat-filter.palabras-permitidas");
+        if (whitelist != null) {
+            for (String w : whitelist) {
+                if (w != null && !w.trim().isEmpty()) {
+                    whitelistedWords.add(normalize(w.trim()));
+                }
+            }
+        }
+
+        // 2. Cargar palabras prohibidas extra desde YAML
+        customBadWords.clear();
+        List<String> extraWords = plugin.getConfig().getStringList("chat-filter.palabras-prohibidas-extra");
+        if (extraWords != null) {
+            for (String w : extraWords) {
+                if (w != null && !w.trim().isEmpty()) {
+                    customBadWords.add(normalize(w.trim()));
+                }
+            }
+        }
+
+        // 3. Cargar lista explícita y controlada de abreviaciones ofensivas
         offensiveAbbreviations.clear();
-        List<String> abbrevs = plugin.getConfig().getStringList("chat-filter.offensive-abbreviations");
+        List<String> abbrevs = plugin.getConfig().getStringList("chat-filter.abreviaciones-ofensivas");
+        if (abbrevs == null || abbrevs.isEmpty()) {
+            abbrevs = plugin.getConfig().getStringList("chat-filter.offensive-abbreviations");
+        }
         if (abbrevs == null || abbrevs.isEmpty()) {
             offensiveAbbreviations.addAll(Arrays.asList("ctm", "hdp", "ptm", "alv", "cdtm", "hdpm", "kys", "stfu"));
         } else {
             for (String a : abbrevs) {
                 if (a != null && !a.trim().isEmpty()) {
                     offensiveAbbreviations.add(normalize(a.trim()));
+                }
+            }
+        }
+
+        // 4. Cargar frases prohibidas extra desde YAML
+        customPhrases.clear();
+        List<String> extraPhrases = plugin.getConfig().getStringList("chat-filter.frases-prohibidas-extra");
+        if (extraPhrases != null) {
+            for (String f : extraPhrases) {
+                if (f != null && !f.trim().isEmpty()) {
+                    customPhrases.add(normalize(f.trim()));
                 }
             }
         }
@@ -379,7 +423,12 @@ public class ChatFilterManager {
 
         String norm = normalize(rawText);
 
-        // 1. Frases completas explícitas (ej. "hijo de puta", "vete a la mierda")
+        // 1. Frases completas explícitas (personalizadas de YAML y base de badwords.txt)
+        for (String phrase : customPhrases) {
+            if (containsPhrase(norm, phrase)) {
+                return phrase;
+            }
+        }
         for (String phrase : phraseBadWords) {
             if (containsPhrase(norm, phrase)) {
                 return phrase;
@@ -391,20 +440,36 @@ public class ChatFilterManager {
         for (String token : tokens) {
             if (token.isEmpty()) continue;
 
+            // COMPROBACIÓN DE LISTA BLANCA (WHITELIST):
+            // Si la palabra está explícitamente permitida, se ignora por completo
+            if (whitelistedWords.contains(token)) {
+                continue;
+            }
+
             // A. Abreviaciones ofensivas explícitas (ej: ctm, hdp, alv)
             if (offensiveAbbreviations.contains(token)) {
                 return token;
             }
 
-            // B. Palabras completas prohibidas (longitud >= 4)
+            // B. Palabras prohibidas añadidas por YAML
+            if (customBadWords.contains(token)) {
+                return token;
+            }
+
+            // C. Palabras completas prohibidas del diccionario base (longitud >= 4)
             if (token.length() >= 4 && exactBadWords.contains(token)) {
                 return token;
             }
 
-            // C. Palabras con letras repetidas intencionales (ej: "puuuutaaaa" -> "puta")
+            // D. Palabras con letras repetidas intencionales (ej: "puuuutaaaa" -> "puta")
             String collapsed = REPEATED_LETTERS.matcher(token).replaceAll("$1");
-            if (collapsed.length() >= 4 && exactBadWords.contains(collapsed)) {
-                return collapsed;
+            if (!whitelistedWords.contains(collapsed)) {
+                if (customBadWords.contains(collapsed)) {
+                    return collapsed;
+                }
+                if (collapsed.length() >= 4 && exactBadWords.contains(collapsed)) {
+                    return collapsed;
+                }
             }
         }
 
@@ -470,6 +535,193 @@ public class ChatFilterManager {
         if (text == null) return "";
         return ChatColor.translateAlternateColorCodes('&', text);
     }
+
+    public boolean addWhitelistedWord(String word) {
+        String norm = normalize(word);
+        if (norm.isEmpty()) return false;
+        whitelistedWords.add(norm);
+        customBadWords.remove(norm);
+
+        List<String> list = plugin.getConfig().getStringList("chat-filter.palabras-permitidas");
+        if (!list.contains(norm)) {
+            list.add(norm);
+            plugin.getConfig().set("chat-filter.palabras-permitidas", list);
+            plugin.saveConfig();
+        }
+        return true;
+    }
+
+    public boolean addCustomBadWord(String word) {
+        String norm = normalize(word);
+        if (norm.isEmpty()) return false;
+        customBadWords.add(norm);
+        whitelistedWords.remove(norm);
+
+        List<String> list = plugin.getConfig().getStringList("chat-filter.palabras-prohibidas-extra");
+        if (!list.contains(norm)) {
+            list.add(norm);
+            plugin.getConfig().set("chat-filter.palabras-prohibidas-extra", list);
+            plugin.saveConfig();
+        }
+        return true;
+    }
+
+    public boolean removeWord(String word) {
+        String norm = normalize(word);
+        if (norm.isEmpty()) return false;
+        boolean removed = false;
+
+        if (whitelistedWords.remove(norm)) removed = true;
+        if (customBadWords.remove(norm)) removed = true;
+        if (offensiveAbbreviations.remove(norm)) removed = true;
+        if (customPhrases.remove(norm)) removed = true;
+
+        List<String> wl = plugin.getConfig().getStringList("chat-filter.palabras-permitidas");
+        if (wl.remove(norm)) {
+            plugin.getConfig().set("chat-filter.palabras-permitidas", wl);
+            removed = true;
+        }
+        List<String> extra = plugin.getConfig().getStringList("chat-filter.palabras-prohibidas-extra");
+        if (extra.remove(norm)) {
+            plugin.getConfig().set("chat-filter.palabras-prohibidas-extra", extra);
+            removed = true;
+        }
+        List<String> abbrevs = plugin.getConfig().getStringList("chat-filter.abreviaciones-ofensivas");
+        if (abbrevs.remove(norm)) {
+            plugin.getConfig().set("chat-filter.abreviaciones-ofensivas", abbrevs);
+            removed = true;
+        }
+        if (removed) {
+            plugin.saveConfig();
+        }
+        return removed;
+    }
+
+    public void sendFilterList(CommandSender sender, String category, int page) {
+        String cat = (category == null || category.trim().isEmpty()) ? "permitidas" : category.trim().toLowerCase(Locale.ROOT);
+
+        // Visualización de cabecera con pestañas interactivas
+        sender.sendMessage(color("&8&m--------------------------------------------------"));
+        sender.sendMessage(color("&b&lFILTRO DE CHAT &8| &ePestañas de Configuración:"));
+
+        if (sender instanceof Player p) {
+            TextComponent tabs = new TextComponent();
+
+            TextComponent t1 = new TextComponent(color((cat.startsWith("perm") || cat.startsWith("white") ? "&a&l[✔ Permitidas (" + whitelistedWords.size() + ")] " : "&7[Permitidas (" + whitelistedWords.size() + ")] ")));
+            t1.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/alcatraz filter list permitidas"));
+            t1.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color("&aClic para ver palabras permitidas (whitelist)")).create()));
+
+            TextComponent t2 = new TextComponent(color((cat.startsWith("proh") || cat.startsWith("extra") ? "&c&l[✖ Prohibidas (" + customBadWords.size() + ")] " : "&7[Prohibidas (" + customBadWords.size() + ")] ")));
+            t2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/alcatraz filter list prohibidas"));
+            t2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color("&cClic para ver palabras prohibidas de YAML")).create()));
+
+            TextComponent t3 = new TextComponent(color((cat.startsWith("abrev") || cat.startsWith("siglas") ? "&6&l[⚡ Abreviaciones (" + offensiveAbbreviations.size() + ")] " : "&7[Abreviaciones (" + offensiveAbbreviations.size() + ")] ")));
+            t3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/alcatraz filter list abreviaciones"));
+            t3.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color("&6Clic para ver abreviaciones ofensivas")).create()));
+
+            TextComponent t4 = new TextComponent(color((cat.startsWith("fras") ? "&d&l[💬 Frases (" + (customPhrases.size() + phraseBadWords.size()) + ")] " : "&7[Frases (" + (customPhrases.size() + phraseBadWords.size()) + ")] ")));
+            t4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/alcatraz filter list frases"));
+            t4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color("&dClic para ver frases prohibidas")).create()));
+
+            TextComponent t5 = new TextComponent(color((cat.startsWith("base") || cat.startsWith("dic") ? "&e&l[📖 Base (" + exactBadWords.size() + ")]" : "&7[Base (" + exactBadWords.size() + ")]")));
+            t5.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/alcatraz filter list base"));
+            t5.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color("&eClic para ver el diccionario base (badwords.txt)")).create()));
+
+            tabs.addExtra(t1);
+            tabs.addExtra(t2);
+            tabs.addExtra(t3);
+            tabs.addExtra(t4);
+            tabs.addExtra(t5);
+
+            p.spigot().sendMessage(tabs);
+        } else {
+            sender.sendMessage(color("&a[1. Permitidas: " + whitelistedWords.size() + "] &c[2. Prohibidas: " + customBadWords.size() + "] &6[3. Abreviaciones: " + offensiveAbbreviations.size() + "] &d[4. Frases: " + (customPhrases.size() + phraseBadWords.size()) + "] &e[5. Base: " + exactBadWords.size() + "]"));
+            sender.sendMessage(color("&7Usa: &b/alcatraz filter list <permitidas|prohibidas|abreviaciones|frases|base> [página]"));
+        }
+        sender.sendMessage(color("&8&m--------------------------------------------------"));
+
+        // Selección de lista según pestaña
+        List<String> items;
+        String title;
+        String colorCode;
+
+        if (cat.startsWith("proh") || cat.startsWith("extra")) {
+            items = new ArrayList<>(customBadWords);
+            title = "&cPalabras Prohibidas Personalizadas (YAML)";
+            colorCode = "&c";
+            cat = "prohibidas";
+        } else if (cat.startsWith("abrev") || cat.startsWith("siglas")) {
+            items = new ArrayList<>(offensiveAbbreviations);
+            title = "&6Abreviaciones Ofensivas Controladas";
+            colorCode = "&6";
+            cat = "abreviaciones";
+        } else if (cat.startsWith("fras")) {
+            items = new ArrayList<>(customPhrases);
+            items.addAll(phraseBadWords);
+            title = "&dFrases Prohibidas";
+            colorCode = "&d";
+            cat = "frases";
+        } else if (cat.startsWith("base") || cat.startsWith("dic")) {
+            items = new ArrayList<>(exactBadWords);
+            title = "&eDiccionario Base (badwords.txt)";
+            colorCode = "&e";
+            cat = "base";
+        } else {
+            items = new ArrayList<>(whitelistedWords);
+            title = "&aPalabras Permitidas (Whitelist)";
+            colorCode = "&a";
+            cat = "permitidas";
+        }
+
+        Collections.sort(items);
+
+        if (items.isEmpty()) {
+            sender.sendMessage(color("&ePestaña: " + title + " &7- &o(No hay elementos registrados)"));
+            sender.sendMessage(color("&8&m--------------------------------------------------"));
+            return;
+        }
+
+        int pageSize = 18;
+        int totalPages = (int) Math.ceil((double) items.size() / pageSize);
+        if (totalPages <= 0) totalPages = 1;
+        if (page < 1) page = 1;
+        if (page > totalPages) page = totalPages;
+
+        int fromIndex = (page - 1) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, items.size());
+        List<String> pageItems = items.subList(fromIndex, toIndex);
+
+        sender.sendMessage(color("&ePestaña actual: " + title + " &8» &7Página &e" + page + "&7/&e" + totalPages + " &7(&f" + items.size() + " &7totales):"));
+        sender.sendMessage(color(colorCode + String.join("&7, " + colorCode, pageItems)));
+
+        // Botones de navegación interactivos para jugadores
+        if (sender instanceof Player p && totalPages > 1) {
+            TextComponent nav = new TextComponent(color("&7Navegación: "));
+            if (page > 1) {
+                TextComponent prev = new TextComponent(color("&b&l[◀ Anterior] "));
+                prev.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/alcatraz filter list " + cat + " " + (page - 1)));
+                prev.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color("&bPágina " + (page - 1))).create()));
+                nav.addExtra(prev);
+            }
+            if (page < totalPages) {
+                TextComponent next = new TextComponent(color("&b&l[Siguiente ▶]"));
+                next.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/alcatraz filter list " + cat + " " + (page + 1)));
+                next.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(color("&bPágina " + (page + 1))).create()));
+                nav.addExtra(next);
+            }
+            p.spigot().sendMessage(nav);
+        } else if (totalPages > 1) {
+            sender.sendMessage(color("&7Para cambiar de página usa: &b/alcatraz filter list " + cat + " <número>"));
+        }
+        sender.sendMessage(color("&8&m--------------------------------------------------"));
+    }
+
+    public Set<String> getWhitelistedWords() { return Collections.unmodifiableSet(whitelistedWords); }
+    public Set<String> getCustomBadWords() { return Collections.unmodifiableSet(customBadWords); }
+    public Set<String> getOffensiveAbbreviations() { return Collections.unmodifiableSet(offensiveAbbreviations); }
+    public Set<String> getCustomPhrases() { return Collections.unmodifiableSet(customPhrases); }
+    public Set<String> getExactBadWords() { return Collections.unmodifiableSet(exactBadWords); }
+    public Set<String> getPhraseBadWords() { return Collections.unmodifiableSet(phraseBadWords); }
 
     public String getMsgPrefix() { return msgPrefix; }
     public String getMsgUnmutedTarget() { return msgUnmutedTarget; }
