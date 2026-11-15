@@ -107,6 +107,7 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
                 if (plugin.getResourcePackManager() != null) plugin.getResourcePackManager().reload();
                 if (plugin.getAntiXrayManager() != null) plugin.getAntiXrayManager().loadConfig();
                 if (plugin.getGrapplingHookManager() != null) plugin.getGrapplingHookManager().loadConfig();
+                if (plugin.getModuleRegistry() != null) plugin.getModuleRegistry().reloadAll(plugin.getLogger());
                 plugin.reloadBanList();
 
                 if (plugin.getAuraSkillsFixer() != null) plugin.getAuraSkillsFixer().syncAllOnlinePlayers();

@@ -91,6 +91,10 @@ public class ResourcePackListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPackStatus(PlayerResourcePackStatusEvent event) {
+        if (!manager.isEnabled() || manager.getPackUrl() == null || manager.getPackUrl().trim().isEmpty()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         PlayerResourcePackStatusEvent.Status status = event.getStatus();
 

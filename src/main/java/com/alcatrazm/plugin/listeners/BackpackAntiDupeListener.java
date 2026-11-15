@@ -3,24 +3,37 @@ package com.alcatrazm.plugin.listeners;
 import com.alcatrazm.plugin.AlcatrazPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class BackpackAntiDupeListener implements Listener {
 
+    private static final long INTERACT_DROP_COOLDOWN_MS = 500L;
+
     private final AlcatrazPlugin plugin;
+    private final Map<UUID, Long> lastBackpackInteract = new ConcurrentHashMap<>();
 
     public BackpackAntiDupeListener(AlcatrazPlugin plugin) {
         this.plugin = plugin;
@@ -31,6 +44,16 @@ public class BackpackAntiDupeListener implements Listener {
      */
     private boolean isBackpackInventory(InventoryView view) {
         if (view == null) return false;
+        Inventory top = view.getTopInventory();
+        if (top != null) {
+            InventoryHolder holder = top.getHolder();
+            if (holder != null) {
+                String holderClass = holder.getClass().getName();
+                if (holderClass.contains("BackpackInventoryHolder") || holderClass.contains("pl.ziomalu.backpackplus")) {
+                    return true;
+                }
+            }
+        }
         String title = view.getTitle().toLowerCase();
         return title.contains("backpack") || title.contains("ʙᴀᴄᴋᴘᴀᴄᴋ") || title.contains("mochila");
     }
@@ -43,7 +66,15 @@ public class BackpackAntiDupeListener implements Listener {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
 
-        // BackpackPlus usa FLINT con CustomModelData 7, 8 o 9
+        // 1. Identificación determinista vía PersistentDataContainer de BackpackPlus
+        PersistentDataContainer pdc = meta.getPersistentDataContainer();
+        for (NamespacedKey key : pdc.getKeys()) {
+            if ("backpackplus".equalsIgnoreCase(key.getNamespace())) {
+                return true;
+            }
+        }
+
+        // 2. BackpackPlus clásico usa FLINT con CustomModelData 7, 8 o 9
         if (item.getType() == Material.FLINT && meta.hasCustomModelData()) {
             int cmd = meta.getCustomModelData();
             if (cmd == 7 || cmd == 8 || cmd == 9) {
@@ -51,7 +82,7 @@ public class BackpackAntiDupeListener implements Listener {
             }
         }
 
-        // Detección por nombre o lore
+        // 3. Detección por nombre
         if (meta.hasDisplayName()) {
             String name = ChatColor.stripColor(meta.getDisplayName()).toLowerCase();
             if (name.contains("backpack") || name.contains("mochila") || name.contains("ʙᴀᴄᴋᴘᴀᴄᴋ")) {
@@ -60,6 +91,22 @@ public class BackpackAntiDupeListener implements Listener {
         }
 
         return false;
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Action action = event.getAction();
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+        if (isBackpackItem(event.getItem())) {
+            lastBackpackInteract.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        lastBackpackInteract.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -83,6 +130,7 @@ public class BackpackAntiDupeListener implements Listener {
         if (click == ClickType.DROP || click == ClickType.CONTROL_DROP) {
             if (isBackpackItem(current)) {
                 event.setCancelled(true);
+                player.updateInventory();
                 return;
             }
         }
@@ -94,6 +142,7 @@ public class BackpackAntiDupeListener implements Listener {
                 ItemStack hotbarItem = player.getInventory().getItem(hotbarSlot);
                 if (isBackpackItem(hotbarItem) || isBackpackItem(current)) {
                     event.setCancelled(true);
+                    player.updateInventory();
                     return;
                 }
             }
@@ -103,6 +152,7 @@ public class BackpackAntiDupeListener implements Listener {
         if (click == ClickType.SWAP_OFFHAND) {
             if (isBackpackItem(player.getInventory().getItemInOffHand()) || isBackpackItem(current)) {
                 event.setCancelled(true);
+                player.updateInventory();
                 return;
             }
         }
@@ -111,6 +161,7 @@ public class BackpackAntiDupeListener implements Listener {
         if (event.getClickedInventory() != null && event.getClickedInventory().equals(player.getInventory())) {
             if (isBackpackItem(current)) {
                 event.setCancelled(true);
+                player.updateInventory();
                 return;
             }
         }
@@ -145,14 +196,22 @@ public class BackpackAntiDupeListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        InventoryView openView = player.getOpenInventory();
+        ItemStack dropped = event.getItemDrop().getItemStack();
+        if (!isBackpackItem(dropped)) {
+            return;
+        }
 
+        // Bloquear drop inmediato tras clic derecho para evitar race condition al abrir mochila
+        Long lastInteract = lastBackpackInteract.get(player.getUniqueId());
+        if (lastInteract != null && (System.currentTimeMillis() - lastInteract) < INTERACT_DROP_COOLDOWN_MS) {
+            event.setCancelled(true);
+            return;
+        }
+
+        InventoryView openView = player.getOpenInventory();
         if (isBackpackInventory(openView)) {
-            ItemStack dropped = event.getItemDrop().getItemStack();
-            if (isBackpackItem(dropped)) {
-                event.setCancelled(true);
-                player.closeInventory();
-            }
+            event.setCancelled(true);
+            player.closeInventory();
         }
     }
 

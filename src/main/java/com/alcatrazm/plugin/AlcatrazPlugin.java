@@ -15,6 +15,8 @@ import com.alcatrazm.plugin.anticaps.AntiCapsManager;
 import com.alcatrazm.plugin.antispam.AntiSpamListener;
 import com.alcatrazm.plugin.antispam.AntiSpamManager;
 import com.alcatrazm.plugin.announcer.AutoAnnouncer;
+import com.alcatrazm.plugin.autorestart.AutoRestartCommand;
+import com.alcatrazm.plugin.autorestart.AutoRestartManager;
 import com.alcatrazm.plugin.chestlock.ChestLockCommand;
 import com.alcatrazm.plugin.chestlock.ChestLockListener;
 import com.alcatrazm.plugin.chestlock.ChestLockManager;
@@ -83,10 +85,13 @@ import com.alcatrazm.plugin.grapplinghook.GrapplingHookManager;
 import com.alcatrazm.plugin.halloween.HalloweenCommand;
 import com.alcatrazm.plugin.halloween.HalloweenListener;
 import com.alcatrazm.plugin.halloween.HalloweenManager;
+import com.alcatrazm.plugin.module.AlcatrazModule;
+import com.alcatrazm.plugin.module.ModuleRegistry;
 import org.bukkit.Bukkit;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -134,6 +139,8 @@ public final class AlcatrazPlugin extends JavaPlugin {
     private DuelMenuManager duelMenuManager;
     private DuelMenuListener duelMenuListener;
     private HalloweenManager halloweenManager;
+    private AutoRestartManager autoRestartManager;
+    private ModuleRegistry moduleRegistry;
 
 
     // Módulos Optimizadores de Rendimiento y Memoria
@@ -167,6 +174,7 @@ public final class AlcatrazPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
+        this.moduleRegistry = new ModuleRegistry();
 
         // 1. Módulo Sonic Blade (Hoja Sónica)
         this.sonicBladeManager = new SonicBladeManager(this);
@@ -364,7 +372,18 @@ public final class AlcatrazPlugin extends JavaPlugin {
         // 26. Módulo Resource Pack Manager & Bedrock Fix (Descarga única & Zero-Lag Bedrock)
         this.resourcePackManager = new ResourcePackManager(this);
         this.resourcePackListener = new ResourcePackListener(this, resourcePackManager);
-        getServer().getPluginManager().registerEvents(resourcePackListener, this);
+        this.moduleRegistry.register(new AlcatrazModule() {
+            @Override public String getId() { return "resource-pack"; }
+            @Override public String getDisplayName() { return "Resource Pack Manager"; }
+            @Override public boolean isEnabled() { return resourcePackManager.isEnabled(); }
+            @Override public void enable() {
+                getServer().getPluginManager().registerEvents(resourcePackListener, AlcatrazPlugin.this);
+            }
+            @Override public void disable() {
+                HandlerList.unregisterAll(resourcePackListener);
+                resourcePackManager.saveData();
+            }
+        });
 
         ResourcePackCommand packCmd = new ResourcePackCommand(this, resourcePackManager);
         registerPluginCommand("pack", packCmd, packCmd);
@@ -436,6 +455,15 @@ public final class AlcatrazPlugin extends JavaPlugin {
         registerPluginCommand("acosmetics", cosmeticsCmd, cosmeticsCmd);
         getLogger().info("  33. Módulo de Cosméticos /acosmetics [ACTIVO]");
 
+        // 34. Módulo de Reinicios Automáticos (Absorbe UltimateAutoRestart)
+        this.autoRestartManager = new AutoRestartManager(this);
+        this.moduleRegistry.register(autoRestartManager);
+        AutoRestartCommand autoRestartCmd = new AutoRestartCommand(this, autoRestartManager);
+        registerPluginCommand("ultimateautorestart", autoRestartCmd, autoRestartCmd);
+
+        // Habilitar módulos registrados en ModuleRegistry según config.yml
+        this.moduleRegistry.enableAll(getLogger());
+
         // 17. Iniciar Tareas Periódicas
         startTasks();
 
@@ -470,6 +498,10 @@ public final class AlcatrazPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         cancelTasks();
+
+        if (moduleRegistry != null) {
+            moduleRegistry.disableAll(getLogger());
+        }
 
         if (playerVaultManager != null) {
             playerVaultManager.saveAll();
@@ -635,6 +667,8 @@ public final class AlcatrazPlugin extends JavaPlugin {
     public DuelMenuManager getDuelMenuManager() { return duelMenuManager; }
     public HalloweenManager getHalloweenManager() { return halloweenManager; }
     public CosmeticsManager getCosmeticsManager() { return cosmeticsManager; }
+    public AutoRestartManager getAutoRestartManager() { return autoRestartManager; }
+    public ModuleRegistry getModuleRegistry() { return moduleRegistry; }
 
     public void reloadBanList() {
         try {

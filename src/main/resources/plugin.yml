@@ -227,6 +227,10 @@ commands:
     aliases: [hw, pumpkin, halloweenevent]
     permission: alcatraz.halloween.use
     usage: /<command> [near|staff|spawn|givehead|give|trade|scatter|clear|reload]
+  ultimateautorestart:
+    description: Gestiona los reinicios automáticos programados y cuenta regresiva del servidor.
+    aliases: [uar, ar, autorestart]
+    usage: /<command> [now|delay|stop|time|reload|version|help]
 
 permissions:
   alcatraz.halloween.use:
@@ -395,6 +399,15 @@ permissions:
   alcatraz.halloween.admin:
     description: Permite gestionar el Evento de Halloween (scatter, spawn, give, staff).
     default: op
+  uar.admin:
+    description: Permite administrar los reinicios automáticos (/uar now, delay, stop, reload).
+    default: op
+  uar.staff.notifydelay:
+    description: Permite recibir notificaciones detalladas cuando un reinicio es retrasado automáticamente.
+    default: op
+  alcatraz.autorestart.admin:
+    description: Permiso alternativo de Alcatraz para gestionar reinicios automáticos.
+    default: op
 
-softdepend: [Vault, WorldGuard, GriefPrevention, floodgate, Geyser-Spigot]
+softdepend: [Vault, WorldGuard, GriefPrevention, floodgate, Geyser-Spigot, PlaceholderAPI]
 

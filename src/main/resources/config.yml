@@ -1147,7 +1147,7 @@ anti-caps:
 # ==========================================
 resource-pack:
   # Activar el gestor avanzado de paquetes de texturas
-  enabled: true
+  enabled: false
 
   # URL directa HTTP/HTTPS al archivo .zip del Resource Pack (Java)
   url: ""
@@ -1234,7 +1234,7 @@ grapplinghook:
 # 32. MÓDULO: EVENTO DE HALLOWEEN
 # ==========================================================
 halloween:
-  enabled: true
+  enabled: false
   world: "world"
   grid:
     # Tamaño de cada región en bloques (3000 = ~187 chunks)
@@ -1246,6 +1246,120 @@ halloween:
     weights:
       caves: 45
       surface: 55
+
+# ==========================================================
+# 34. MÓDULO: REINICIOS AUTOMÁTICOS (ULTIMATE AUTO RESTART)
+# ==========================================================
+autorestart:
+  enabled: true
+  # Zona horaria IANA para evaluar horarios (ej. America/Caracas)
+  timezone: "America/Caracas"
+  # Formatos soportados: 'Daily;08;00', 'Monday;12;00', o '08:00'
+  restarts:
+    - "Daily;08;00"
+    - "Daily;20;00"
+  # Comandos aceptados: normales (en 0s), [time:N], [MONDAY..SUNDAY], [proxy], [proxy:N], [proxydelay:N]
+  restart-commands:
+    - "[time:3] save-all"
+    - "save-all"
+    - "restart"
+  commands-after-reboot: []
+  message-at-intervals:
+    - 3600
+    - 1800
+    - 600
+    - 300
+    - 120
+    - 60
+    - 30
+    - 10
+    - 9
+    - 8
+    - 7
+    - 6
+    - 5
+    - 4
+    - 3
+    - 2
+    - 1
+  sound-at-intervals:
+    - 1800
+    - 600
+    - 300
+    - 120
+    - 60
+    - 30
+    - 10
+    - 9
+    - 8
+    - 7
+    - 6
+    - 5
+    - 4
+    - 3
+    - 2
+    - 1
+  delay-restart:
+    enabled: false
+    check-seconds-before-restart: 30
+    minimum-players: 1
+    delay-by-seconds: 600
+  proxy-secret: "bukkit:changethiskey"
+  webhook:
+    enabled: false
+    url: ""
+    timestamp-format: "dd.MM.yyyy - HH:mm:ss"
+    messages:
+      SERVER_RESTARTING:
+        enabled: true
+        content: "¡El servidor se está reiniciando ahora ({TIMESTAMP})! Vuelve en un momento."
+      SERVER_BACK_UP:
+        enabled: true
+        content: "¡El servidor está en línea nuevamente ({TIMESTAMP})!"
+      SERVER_FORCED_RESTART:
+        enabled: true
+        content: "Reinicio forzado programado en {FORMATTED}. Razón: {REASON}"
+  format:
+    unscheduled: "&f&lN/A"
+    days: "d "
+    day: "d "
+    hours: "h "
+    hour: "h "
+    minutes: "m "
+    minute: "m "
+    seconds: "s"
+    second: "s"
+    splitter: "y "
+  messages:
+    prefix: "<GRADIENT:9483FF>&lAlcatraz</GRADIENT:FB9AF2>&r"
+    default-reason: "Reinicio programado"
+    info: "{PREFIX} &f» &ePróximo reinicio automático en: &a{0}&e."
+    interval-chat-enabled: false
+    interval-chat:
+      - ""
+      - "{PREFIX} &f» &c⚠ Reiniciando servidor en &e{0}&c! &7({1})"
+      - ""
+    interval-actionbar-enabled: true
+    interval-actionbar: "{PREFIX} &f» &c⚠ Reiniciando en &e{0} &7(Guardando datos)"
+    interval-title-enabled: false
+    interval-title: "{PREFIX}"
+    interval-subtitle: "&fReiniciando en &d{0}&f!"
+    restart-title-enabled: true
+    restart-title: "&c&lREINICIO AUTOMÁTICO"
+    restart-subtitle: "&ePor favor, vuelve en un momento..."
+    restart-title-at-seconds: 3
+    delay-global: "{PREFIX} &f» &eEl reinicio del servidor se retrasó &a{0}&e."
+    delay-staff: "{PREFIX} &f» &eReinicio retrasado automáticamente &a{0}&e (jugadores activos)."
+    forced-global: "{PREFIX} &f» &c¡Reinicio forzado programado en &e{0}&c! Razón: &f{1}"
+    stopped-global: "{PREFIX} &f» &eLa cuenta regresiva del reinicio ha sido detenida."
+  sounds:
+    interval-sound: "ENTITY_EXPERIENCE_ORB_PICKUP"
+    interval-volume: 1.0
+    interval-pitch: 1.0
+    progressive-pitch-last-10s: true
+    restart-sound: "ENTITY_PLAYER_LEVELUP"
+    delay-sound: "ENTITY_PLAYER_LEVELUP"
+    invalid-sound: "ENTITY_VILLAGER_NO"
 
 
 
