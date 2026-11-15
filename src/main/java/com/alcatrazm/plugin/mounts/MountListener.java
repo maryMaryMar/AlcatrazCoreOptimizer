@@ -15,12 +15,15 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.entity.EntityMountEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class MountListener implements Listener {
 
@@ -132,14 +135,18 @@ public class MountListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        Entity clicked = event.getRightClicked();
+        Entity clicked = resolveMountEntity(event.getRightClicked());
         if (!clicked.hasMetadata(ActiveMount.METADATA_TAG)) {
             return;
         }
 
         event.setCancelled(true);
+        if (event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+
         Player player = event.getPlayer();
         ActiveMount mount = manager.getActiveMount(player.getUniqueId());
 
@@ -159,14 +166,47 @@ public class MountListener implements Listener {
                 }
             }
 
-            clicked.addPassenger(player);
-            player.playSound(player.getLocation(), Sound.ENTITY_HORSE_ARMOR, 1.0f, 1.2f);
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&8[&6Monturas&8] &a¡Te has subido a tu &e" + mount.getType().getDisplayName() + "&a!"));
+            if (clicked.addPassenger(player)) {
+                player.playSound(player.getLocation(), Sound.ENTITY_HORSE_ARMOR, 1.0f, 1.2f);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&8[&6Monturas&8] &a¡Te has subido a tu &e" + mount.getType().getDisplayName() + "&a!"));
+            }
         } else {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "&8[&6Monturas&8] &cEsta criatura le pertenece a otro jugador."));
         }
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
+        Entity clicked = resolveMountEntity(event.getRightClicked());
+        if (clicked.hasMetadata(ActiveMount.METADATA_TAG)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onEntityMount(EntityMountEvent event) {
+        Entity mounted = resolveMountEntity(event.getMount());
+        if (!mounted.hasMetadata(ActiveMount.METADATA_TAG)) {
+            return;
+        }
+
+        if (event.getEntity() instanceof Player player) {
+            ActiveMount mount = manager.getActiveMount(player.getUniqueId());
+            if (mount != null && mounted.equals(mount.getEntity())) {
+                event.setCancelled(false);
+            } else {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    private Entity resolveMountEntity(Entity entity) {
+        if (entity instanceof EnderDragonPart part) {
+            return part.getParent();
+        }
+        return entity;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
