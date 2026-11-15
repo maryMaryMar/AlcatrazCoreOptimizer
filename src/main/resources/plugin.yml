@@ -222,26 +222,12 @@ commands:
     aliases: [duels, duelo, duelos]
     usage: /<command> [accept|deny|cancel|<jugador>]
 
-  halloween:
-    description: Evento de Halloween — panel staff, spawn y siembra de calabazas.
-    aliases: [hw, pumpkin, halloweenevent]
-    permission: alcatraz.halloween.use
-    usage: /<command> [near|staff|spawn|givehead|give|trade|scatter|clear|reload]
   ultimateautorestart:
     description: Gestiona los reinicios automáticos programados y cuenta regresiva del servidor.
     aliases: [uar, ar, autorestart]
     usage: /<command> [now|delay|stop|time|reload|version|help]
 
 permissions:
-  alcatraz.halloween.use:
-    description: Permite usar el comando base del evento de Halloween.
-    default: true
-  alcatraz.halloween.near:
-    description: Permite a los usuarios buscar la calabaza más cercana con cooldown.
-    default: true
-  alcatraz.halloween.near.bypass:
-    description: Permite omitir el cooldown de 15 minutos en /halloween near.
-    default: op
   alcatraz.xray.alerts:
     description: Permite recibir alertas interactivas de minería sospechosa y X-Ray.
     default: op
@@ -392,12 +378,6 @@ permissions:
     default: op
   alcatraz.pack.reset:
     description: Permite resetear el registro de texturas de un jugador (/pack reset).
-    default: op
-  alcatraz.halloween.use:
-    description: Permite a los jugadores ver su saldo de calabazas de Halloween.
-    default: true
-  alcatraz.halloween.admin:
-    description: Permite gestionar el Evento de Halloween (scatter, spawn, give, staff).
     default: op
   uar.admin:
     description: Permite administrar los reinicios automáticos (/uar now, delay, stop, reload).

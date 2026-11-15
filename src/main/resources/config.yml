@@ -1231,23 +1231,6 @@ grapplinghook:
 
 
 # ==========================================================
-# 32. MÓDULO: EVENTO DE HALLOWEEN
-# ==========================================================
-halloween:
-  enabled: false
-  world: "world"
-  grid:
-    # Tamaño de cada región en bloques (3000 = ~187 chunks)
-    region-size: 3000
-    # Cantidad de calabazas a sembrar por región (600 = ~1 calabaza cada 4-5 chunks)
-    heads-per-region: 600
-    # Separación mínima en bloques entre cabezas del evento
-    min-distance-between-heads: 12
-    weights:
-      caves: 45
-      surface: 55
-
-# ==========================================================
 # 34. MÓDULO: REINICIOS AUTOMÁTICOS (ULTIMATE AUTO RESTART)
 # ==========================================================
 autorestart:

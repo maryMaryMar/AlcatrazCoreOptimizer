@@ -82,9 +82,7 @@ import com.alcatrazm.plugin.antixray.AntiXrayManager;
 import com.alcatrazm.plugin.grapplinghook.GrapplingHookCommand;
 import com.alcatrazm.plugin.grapplinghook.GrapplingHookListener;
 import com.alcatrazm.plugin.grapplinghook.GrapplingHookManager;
-import com.alcatrazm.plugin.halloween.HalloweenCommand;
-import com.alcatrazm.plugin.halloween.HalloweenListener;
-import com.alcatrazm.plugin.halloween.HalloweenManager;
+import com.alcatrazm.plugin.cleanup.LegacyPumpkinCleaner;
 import com.alcatrazm.plugin.module.AlcatrazModule;
 import com.alcatrazm.plugin.module.ModuleRegistry;
 import org.bukkit.Bukkit;
@@ -138,7 +136,6 @@ public final class AlcatrazPlugin extends JavaPlugin {
     private GrapplingHookListener grapplingHookListener;
     private DuelMenuManager duelMenuManager;
     private DuelMenuListener duelMenuListener;
-    private HalloweenManager halloweenManager;
     private AutoRestartManager autoRestartManager;
     private ModuleRegistry moduleRegistry;
 
@@ -434,16 +431,8 @@ public final class AlcatrazPlugin extends JavaPlugin {
             getLogger().warning("No se pudo registrar alias de duelos en CommandMap: " + e.getMessage());
         }
 
-        // 32. Módulo Evento de Halloween (calabazas HD, scatter asíncrono, panel staff)
-        if (getConfig().getBoolean("halloween.enabled", false)) {
-            this.halloweenManager = new HalloweenManager(this);
-            getServer().getPluginManager().registerEvents(new HalloweenListener(halloweenManager), this);
-            HalloweenCommand halloweenCmd = new HalloweenCommand(halloweenManager);
-            registerPluginCommand("halloween", halloweenCmd, halloweenCmd);
-            getLogger().info("  32. Evento de Halloween [ACTIVO]");
-        } else {
-            getLogger().info("  32. Evento de Halloween [DESACTIVADO — halloween.enabled: false en config.yml]");
-        }
+        // Limpiador automático de calabazas legacy si todavía existe data/halloween_spawns.yml
+        this.moduleRegistry.register(new LegacyPumpkinCleaner(this));
 
         // 16. Seguridad Anti-Dupe de Mochilas
         getServer().getPluginManager().registerEvents(new BackpackAntiDupeListener(this), this);
@@ -563,11 +552,6 @@ public final class AlcatrazPlugin extends JavaPlugin {
             resourcePackManager.saveData();
         }
 
-        if (halloweenManager != null) {
-            halloweenManager.savePlayerData();
-            halloweenManager.saveSpawnData();
-        }
-
         getLogger().info("AlcatrazCoreOptimizer v" + getDescription().getVersion() + " ha sido desactivado.");
         instance = null;
     }
@@ -665,7 +649,6 @@ public final class AlcatrazPlugin extends JavaPlugin {
     public AntiXrayManager getAntiXrayManager() { return antiXrayManager; }
     public GrapplingHookManager getGrapplingHookManager() { return grapplingHookManager; }
     public DuelMenuManager getDuelMenuManager() { return duelMenuManager; }
-    public HalloweenManager getHalloweenManager() { return halloweenManager; }
     public CosmeticsManager getCosmeticsManager() { return cosmeticsManager; }
     public AutoRestartManager getAutoRestartManager() { return autoRestartManager; }
     public ModuleRegistry getModuleRegistry() { return moduleRegistry; }
