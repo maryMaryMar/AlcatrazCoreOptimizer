@@ -263,6 +263,16 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
                 }
                 return true;
 
+            case "airdrop":
+            case "airdrops":
+            case "uad":
+                if (plugin.getAirDropModule() != null) {
+                    com.alcatrazm.plugin.airdrop.AirDropCommand adc = new com.alcatrazm.plugin.airdrop.AirDropCommand(plugin.getAirDropModule());
+                    String[] subArgs = Arrays.copyOfRange(args, 1, args.length);
+                    return adc.onCommand(sender, command, "uad", subArgs);
+                }
+                return true;
+
             default:
                 sendHelp(sender, label);
                 return true;

@@ -1,5 +1,7 @@
 package com.alcatrazm.plugin;
 
+import com.alcatrazm.plugin.airdrop.AirDropCommand;
+import com.alcatrazm.plugin.airdrop.AirDropModule;
 import com.alcatrazm.plugin.duels.DuelCommand;
 import com.alcatrazm.plugin.duels.DuelMenuListener;
 import com.alcatrazm.plugin.duels.DuelMenuManager;
@@ -137,6 +139,7 @@ public final class AlcatrazPlugin extends JavaPlugin {
     private DuelMenuManager duelMenuManager;
     private DuelMenuListener duelMenuListener;
     private AutoRestartManager autoRestartManager;
+    private AirDropModule airDropModule;
     private ModuleRegistry moduleRegistry;
 
 
@@ -450,6 +453,12 @@ public final class AlcatrazPlugin extends JavaPlugin {
         AutoRestartCommand autoRestartCmd = new AutoRestartCommand(this, autoRestartManager);
         registerPluginCommand("ultimateautorestart", autoRestartCmd, autoRestartCmd);
 
+        // 35. Módulo de AirDrops Automáticos y Cinemáticos (Absorbe UniversAirDrop)
+        this.airDropModule = new AirDropModule(this);
+        this.moduleRegistry.register(airDropModule);
+        AirDropCommand airDropCmd = new AirDropCommand(airDropModule);
+        registerPluginCommand("universairdrop", airDropCmd, airDropCmd);
+
         // Habilitar módulos registrados en ModuleRegistry según config.yml
         this.moduleRegistry.enableAll(getLogger());
 
@@ -651,6 +660,7 @@ public final class AlcatrazPlugin extends JavaPlugin {
     public DuelMenuManager getDuelMenuManager() { return duelMenuManager; }
     public CosmeticsManager getCosmeticsManager() { return cosmeticsManager; }
     public AutoRestartManager getAutoRestartManager() { return autoRestartManager; }
+    public AirDropModule getAirDropModule() { return airDropModule; }
     public ModuleRegistry getModuleRegistry() { return moduleRegistry; }
 
     public void reloadBanList() {

@@ -1344,6 +1344,86 @@ autorestart:
     delay-sound: "ENTITY_PLAYER_LEVELUP"
     invalid-sound: "ENTITY_VILLAGER_NO"
 
+# ==========================================================
+# 35. MÓDULO: AIRDROPS AUTOMÁTICOS Y CINEMÁTICOS (UNIVERSAIRDROP)
+# ==========================================================
+airdrop:
+  enabled: true
+  prefix: '<bold><gradient:#F8CB53:#FFE6A0>AlcatrazDrops</gradient></bold> <dark_gray>|</dark_gray> '
+
+  automatic:
+    enabled: true
+    interval-minutes: 60
+    mode: "ALEATORIO"
+    require-online-players: true
+
+  location:
+    world: "world"
+    radius: 3000
+    attempts: 80
+    avoid-water: true
+    avoid-leaves: true
+    avoid-protected-regions: true
+    maximum-slope: 4
+    disabled-worlds:
+      - "spawn"
+      - "lobby"
+      - "lobby_the_end"
+      - "lobby_aether_aether"
+      - "dungeon1"
+      - "dungeon2"
+      - "duel1"
+      - "duel2"
+      - "games"
+      - "juegos"
+
+  drop:
+    name: "DROP"
+    description: "drop lanzado"
+    countdown-seconds: 10
+    fall-seconds: 7
+    fall-height: 48
+    expiry-minutes: 30
+    max-active: 3
+
+  loot:
+    minimum: 2
+    maximum: 7
+
+  safe:
+    interaction-distance: 4.5
+
+  cinematic:
+    enabled: true
+    trigger-radius-blocks: 160
+    seconds: 7
+    orbit-radius: 12.0
+    combat-grace-seconds: 10
+
+  presentation:
+    sounds: true
+    particles: true
+    titles: true
+    holograms: true
+    effect: "ORBITA_DORADA"
+    chest-bob-height: 0.12
+    effect-radius: 1.9
+    particle-density: 1
+    primary-start: "#F8CB53"
+    primary-end: "#FFE6A0"
+    detail-color: "#A4A8B0"
+    success-color: "#87DCAA"
+    info-color: "#8FC8EB"
+    error-color: "#EB9198"
+
+  messages:
+    countdown-title: "<name> EN <seconds>"
+    countdown-subtitle: "ᴘʀᴇᴘᴀʀᴀᴛᴇ ᴘᴀʀᴀ ʟᴀ ᴄᴀɪᴅᴀ"
+    launched-title: "DROP"
+    launched-subtitle: "ᴅʀᴏᴘ ʟᴀɴᴢᴀᴅᴏ"
+    no-permission: "ɴᴏ ᴛɪᴇɴᴇꜱ ᴘᴇʀᴍɪꜱᴏ ᴘᴀʀᴀ ᴇꜱᴛᴀ ᴀᴄᴄɪᴏɴ"
+
+
 
 
 

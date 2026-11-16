@@ -18,6 +18,7 @@ public class WorldGuardHook {
     private static Method adaptLocMethod;
     private static Method adaptPlayerMethod;
     private static Method testBuildMethod;
+    private static Method getApplicableRegionsMethod;
 
     public WorldGuardHook() {
         Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
@@ -50,7 +51,8 @@ public class WorldGuardHook {
             for (Method m : query.getClass().getMethods()) {
                 if (m.getName().equals("testBuild") && m.getParameterCount() == 2) {
                     testBuildMethod = m;
-                    break;
+                } else if (m.getName().equals("getApplicableRegions") && m.getParameterCount() == 1) {
+                    getApplicableRegionsMethod = m;
                 }
             }
             initialized = true;
@@ -61,6 +63,38 @@ public class WorldGuardHook {
 
     public boolean isWorldGuardPresent() {
         return worldGuardPresent;
+    }
+
+    /**
+     * Indica si existen regiones de WorldGuard definidas en la ubicacion dada (excluyendo __global__).
+     */
+    public boolean hasApplicableRegions(Location location) {
+        if (!worldGuardPresent || location == null) {
+            return false;
+        }
+        if (!initialized) {
+            initReflection();
+            if (!initialized) return false;
+        }
+        if (getApplicableRegionsMethod == null) {
+            return false;
+        }
+        try {
+            Object wgInstance = getInstanceMethod.invoke(null);
+            Object platform = getPlatformMethod.invoke(wgInstance);
+            Object container = getRegionContainerMethod.invoke(platform);
+            Object query = createQueryMethod.invoke(container);
+            Object adaptedLoc = adaptLocMethod.invoke(null, location);
+            Object regionSet = getApplicableRegionsMethod.invoke(query, adaptedLoc);
+            if (regionSet != null) {
+                Object sizeObj = regionSet.getClass().getMethod("size").invoke(regionSet);
+                if (sizeObj instanceof Integer size) {
+                    return size > 0;
+                }
+            }
+        } catch (Throwable ignored) {
+        }
+        return false;
     }
 
     public boolean canBuildWithWorldGuard(Player player, Location location) {

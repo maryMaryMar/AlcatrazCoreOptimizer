@@ -227,6 +227,11 @@ commands:
     aliases: [uar, ar, autorestart]
     usage: /<command> [now|delay|stop|time|reload|version|help]
 
+  universairdrop:
+    description: Panel y gestión de AirDrops automáticos y cinemáticos.
+    aliases: [uad, ud, universairdrops, airdrop, airdropfree]
+    usage: /<command> [panel|lanzar|lista|cancelar|tp|cine|omitir|recargar|info]
+
 permissions:
   alcatraz.xray.alerts:
     description: Permite recibir alertas interactivas de minería sospechosa y X-Ray.
@@ -388,6 +393,41 @@ permissions:
   alcatraz.autorestart.admin:
     description: Permiso alternativo de Alcatraz para gestionar reinicios automáticos.
     default: op
+
+  alcatraz.airdrop.admin:
+    description: Permite abrir el panel /uad y administrar todos los ajustes de AirDrops.
+    default: op
+    children:
+      alcatraz.airdrop.launch: true
+      alcatraz.airdrop.reload: true
+      alcatraz.airdrop.manage: true
+  alcatraz.airdrop.launch:
+    description: Permite lanzar AirDrops manualmente.
+    default: op
+  alcatraz.airdrop.reload:
+    description: Permite recargar la configuración y botín de AirDrops.
+    default: op
+  alcatraz.airdrop.manage:
+    description: Permite listar, teletransportarse o cancelar AirDrops activos.
+    default: op
+  alcatraz.airdrop.play:
+    description: Permite abrir y recoger el botín de los AirDrops.
+    default: true
+  universairdrop.admin:
+    description: Alias de compatibilidad para administrar AirDrops.
+    default: op
+    children:
+      universairdrop.launch: true
+      universairdrop.reload: true
+      universairdrop.manage: true
+  universairdrop.launch:
+    default: op
+  universairdrop.reload:
+    default: op
+  universairdrop.manage:
+    default: op
+  universairdrop.play:
+    default: true
 
 softdepend: [Vault, WorldGuard, GriefPrevention, floodgate, Geyser-Spigot, PlaceholderAPI]
 
