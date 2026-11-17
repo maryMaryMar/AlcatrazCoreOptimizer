@@ -47,8 +47,8 @@ public final class DropInstance implements InventoryHolder {
         this.lastTick = tick;
         this.displayName = MessageFormatter.cleanUpper(module.getString("drop.name", "DROP"));
         this.description = MessageFormatter.toSmallCaps(module.getString("drop.description", "drop lanzado"));
-        this.countdownDurationTicks = module.getInt("drop.countdown-seconds", 10, 0, 120) * 20L;
-        this.fallDurationTicks = module.getInt("drop.fall-seconds", 7, 2, 30) * 20L;
+        this.countdownDurationTicks = module.getInt("drop.countdown-seconds", 0, 0, 120) * 20L;
+        this.fallDurationTicks = module.getInt("drop.fall-seconds", 0, 0, 30) * 20L;
 
         int size = Math.max(9, Math.min(54, (items.size() + 8) / 9 * 9));
         this.inventory = Bukkit.createInventory(this, size, module.getMessageFormatter().gradient(this.displayName + " " + id + " | " + type.name()));

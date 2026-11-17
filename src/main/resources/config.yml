@@ -1353,7 +1353,7 @@ airdrop:
 
   automatic:
     enabled: true
-    interval-minutes: 60
+    interval-minutes: 45
     mode: "ALEATORIO"
     require-online-players: true
 
@@ -1380,10 +1380,10 @@ airdrop:
   drop:
     name: "DROP"
     description: "drop lanzado"
-    countdown-seconds: 10
-    fall-seconds: 7
+    countdown-seconds: 0
+    fall-seconds: 0
     fall-height: 48
-    expiry-minutes: 30
+    expiry-minutes: 15
     max-active: 3
 
   loot:
@@ -1394,19 +1394,19 @@ airdrop:
     interaction-distance: 4.5
 
   cinematic:
-    enabled: true
+    enabled: false
     trigger-radius-blocks: 160
     seconds: 7
     orbit-radius: 12.0
     combat-grace-seconds: 10
 
   presentation:
-    sounds: true
-    particles: true
-    titles: true
+    sounds: false
+    particles: false
+    titles: false
     holograms: true
     effect: "ORBITA_DORADA"
-    chest-bob-height: 0.12
+    chest-bob-height: 0.0
     effect-radius: 1.9
     particle-density: 1
     primary-start: "#F8CB53"

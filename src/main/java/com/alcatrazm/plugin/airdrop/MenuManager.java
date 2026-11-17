@@ -449,7 +449,7 @@ public final class MenuManager implements Listener {
                         else if (slot == 19) this.toggleBoolean(player, s, "presentation.holograms");
                         else if (slot == 21) this.openMenu(player, Page.PARTICLES);
                         else if (slot == 23) this.promptChat(player, s, "drop.countdown-seconds", "CUENTA REGRESIVA", 0, 120, "int");
-                        else if (slot == 25) this.promptChat(player, s, "drop.fall-seconds", "TIEMPO DE CAIDA", 2, 30, "int");
+                        else if (slot == 25) this.promptChat(player, s, "drop.fall-seconds", "TIEMPO DE CAIDA", 0, 30, "int");
                         else if (slot == 28) this.promptChat(player, s, "drop.fall-height", "ALTURA DE CAIDA", 8, 150, "int");
                         else if (slot == 30) this.promptChat(player, s, "cinematic.seconds", "DURACION DE CAMARA", 2, 20, "int");
                         else if (slot == 32) this.promptChat(player, s, "cinematic.orbit-radius", "RADIO DE CAMARA", 4.0, 16.0, "double");

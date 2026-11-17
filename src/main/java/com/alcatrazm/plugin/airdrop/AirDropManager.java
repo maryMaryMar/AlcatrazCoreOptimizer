@@ -152,6 +152,10 @@ public final class AirDropManager {
             this.sendFeedback(sender, "Mundo no encontrado: " + worldName);
             return;
         }
+        if (world.getEnvironment() != World.Environment.NORMAL) {
+            this.sendFeedback(sender, "Los AirDrops solo estan permitidos en el Overworld: " + worldName);
+            return;
+        }
 
         this.pendingSpawns++;
         if (sender != null) {
@@ -216,11 +220,19 @@ public final class AirDropManager {
                             this.activeDrops.put(dropId, drop);
                             this.addChunkTicket(drop);
 
-                            Component bc = this.module.getMessageFormatter().gradient(drop.displayName + " " + dropId + " ")
-                                .append(this.module.getMessageFormatter().detail("| " + drop.type.name() + " | "))
-                                .append(this.module.getMessageFormatter().coords(surfaceLoc))
-                                .append(this.module.getMessageFormatter().detail(" | " + world.getName()));
-                            this.module.getMessageFormatter().broadcast(bc);
+                            if (drop.countdownDurationTicks <= 0L) {
+                                if (drop.fallDurationTicks <= 0L) {
+                                    this.landDrop(drop, this.module.getTicks());
+                                } else {
+                                    this.startFalling(drop, this.module.getTicks());
+                                }
+                            } else {
+                                Component bc = this.module.getMessageFormatter().gradient(drop.displayName + " " + dropId + " ")
+                                    .append(this.module.getMessageFormatter().detail("| " + drop.type.name() + " | "))
+                                    .append(this.module.getMessageFormatter().coords(surfaceLoc))
+                                    .append(this.module.getMessageFormatter().detail(" | " + world.getName()));
+                                this.module.getMessageFormatter().broadcast(bc);
+                            }
 
                             if (sender != null) {
                                 this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().success("Drop #" + dropId + " iniciado con exito"));
@@ -268,7 +280,8 @@ public final class AirDropManager {
             }
         }
 
-        Location loc = new Location(world, x + 0.5, highestY + 1.25, z + 0.5);
+        double yOffset = this.module.getDouble("presentation.chest-bob-height", 0.0, 0.0, 0.5) > 0.0 ? 1.25 : 1.0;
+        Location loc = new Location(world, x + 0.5, highestY + yOffset, z + 0.5);
         double radius = this.module.getInt("location.radius", 3000, 16, 30000000);
         if (loc.getX() * loc.getX() + loc.getZ() * loc.getZ() > radius * radius) {
             return null;
@@ -378,7 +391,11 @@ public final class AirDropManager {
                 }
 
                 if (remainingTicks <= 0L) {
-                    this.startFalling(drop, currentTick);
+                    if (drop.fallDurationTicks <= 0L) {
+                        this.landDrop(drop, currentTick);
+                    } else {
+                        this.startFalling(drop, currentTick);
+                    }
                 }
             } else if (drop.state == DropInstance.State.FALLING) {
                 double progress = Math.clamp((double) (currentTick - drop.stateStartTick) / drop.fallDurationTicks, 0.0, 1.0);
@@ -400,9 +417,12 @@ public final class AirDropManager {
                 if (currentTick >= drop.stateStartTick) {
                     this.removeDrop(drop, "expirado");
                 } else if (currentTick % 2L == 0L) {
-                    double bob = Math.sin(currentTick * 0.08) * this.module.getDouble("presentation.chest-bob-height", 0.12, 0.0, 0.5);
-                    Location bobLoc = drop.location.clone().add(0.0, bob, 0.0);
-                    this.updateEntityPositions(drop, bobLoc, currentTick, false);
+                    double bobHeight = this.module.getDouble("presentation.chest-bob-height", 0.0, 0.0, 0.5);
+                    if (bobHeight > 0.0 || this.module.getBoolean("presentation.particles", false)) {
+                        double bob = Math.sin(currentTick * 0.08) * bobHeight;
+                        Location bobLoc = drop.location.clone().add(0.0, bob, 0.0);
+                        this.updateEntityPositions(drop, bobLoc, currentTick, false);
+                    }
                 }
             }
         }
@@ -421,24 +441,20 @@ public final class AirDropManager {
         return entity;
     }
 
-    private void startFalling(DropInstance drop, long tick) {
-        drop.state = DropInstance.State.FALLING;
-        drop.stateStartTick = tick;
+    private void ensureDisplayEntities(DropInstance drop, Location spawnLoc) {
+        if (drop.blockDisplay == null || !drop.blockDisplay.isValid()) {
+            drop.blockDisplay = this.trackEntity(drop, spawnLoc.getWorld().spawn(spawnLoc, BlockDisplay.class, e -> {
+                e.setBlock(Bukkit.createBlockData(Material.CHEST));
+                e.setBrightness(new Brightness(15, 15));
+                e.setTransformationMatrix(new Matrix4f().translate(-0.5F, 0.0F, -0.5F));
+                e.setTeleportDuration(2);
+                e.setViewRange(2.0F);
+                e.setShadowRadius(0.5F);
+                e.setShadowStrength(0.25F);
+            }));
+        }
 
-        Location spawnLoc = drop.location.clone().add(0.0, this.module.getInt("drop.fall-height", 48, 8, 150), 0.0);
-        spawnLoc.setY(Math.min(drop.location.getWorld().getMaxHeight() - 4, spawnLoc.getY()));
-
-        drop.blockDisplay = this.trackEntity(drop, spawnLoc.getWorld().spawn(spawnLoc, BlockDisplay.class, e -> {
-            e.setBlock(Bukkit.createBlockData(Material.CHEST));
-            e.setBrightness(new Brightness(15, 15));
-            e.setTransformationMatrix(new Matrix4f().translate(-0.5F, 0.0F, -0.5F));
-            e.setTeleportDuration(2);
-            e.setViewRange(2.0F);
-            e.setShadowRadius(0.5F);
-            e.setShadowStrength(0.25F);
-        }));
-
-        if (this.module.getBoolean("presentation.holograms", true)) {
+        if ((drop.textDisplay == null || !drop.textDisplay.isValid()) && this.module.getBoolean("presentation.holograms", true)) {
             drop.textDisplay = this.trackEntity(drop, spawnLoc.getWorld().spawn(spawnLoc.clone().add(0.0, 2.0, 0.0), TextDisplay.class, e -> {
                 e.setBillboard(Billboard.CENTER);
                 e.setDefaultBackground(false);
@@ -452,7 +468,16 @@ public final class AirDropManager {
                 e.setViewRange(2.0F);
             }));
         }
+    }
 
+    private void startFalling(DropInstance drop, long tick) {
+        drop.state = DropInstance.State.FALLING;
+        drop.stateStartTick = tick;
+
+        Location spawnLoc = drop.location.clone().add(0.0, this.module.getInt("drop.fall-height", 48, 8, 150), 0.0);
+        spawnLoc.setY(Math.min(drop.location.getWorld().getMaxHeight() - 4, spawnLoc.getY()));
+
+        this.ensureDisplayEntities(drop, spawnLoc);
         this.updateHologramText(drop);
 
         String launchedTitle = this.module.getString("messages.launched-title", drop.displayName);
@@ -468,7 +493,8 @@ public final class AirDropManager {
     private void updateEntityPositions(DropInstance drop, Location loc, long tick, boolean falling) {
         if (drop.blockDisplay != null && drop.blockDisplay.isValid()) {
             drop.blockDisplay.teleport(loc);
-            double rot = falling ? tick * 0.025 : Math.sin(tick * 0.012) * 0.12;
+            boolean animate = falling || this.module.getDouble("presentation.chest-bob-height", 0.0, 0.0, 0.5) > 0.0;
+            double rot = !animate ? 0.0 : (falling ? tick * 0.025 : Math.sin(tick * 0.012) * 0.12);
             drop.blockDisplay.setTransformationMatrix(new Matrix4f().rotateY((float) rot).translate(-0.5F, 0.0F, -0.5F));
             drop.blockDisplay.setInterpolationDelay(0);
             drop.blockDisplay.setInterpolationDuration(2);
@@ -486,7 +512,10 @@ public final class AirDropManager {
     private void landDrop(DropInstance drop, long tick) {
         drop.state = DropInstance.State.LANDED;
         drop.lastTick = tick;
-        drop.stateStartTick = tick + this.module.getInt("drop.expiry-minutes", 30, 1, 1440) * 1200L;
+        int expiryMinutes = this.module.getInt("drop.expiry-minutes", 15, 1, 1440);
+        drop.stateStartTick = tick + expiryMinutes * 1200L;
+
+        this.ensureDisplayEntities(drop, drop.location);
 
         drop.interaction = this.trackEntity(drop, drop.location.getWorld().spawn(drop.location.clone().add(0.0, -0.25, 0.0), Interaction.class, e -> {
             e.setInteractionWidth(1.6F);
@@ -496,13 +525,15 @@ public final class AirDropManager {
 
         this.updateEntityPositions(drop, drop.location, tick, false);
         this.updateHologramText(drop);
-        this.module.getParticleRenderer().renderImpactBurst(drop.location);
-        this.module.getCinematicManager().onDropLanded(drop);
-        this.module.getMessageFormatter().playSound(drop.location, Sound.BLOCK_END_PORTAL_SPAWN, 0.65F, 1.6F);
+        if (drop.fallDurationTicks > 0L) {
+            this.module.getParticleRenderer().renderImpactBurst(drop.location);
+            this.module.getCinematicManager().onDropLanded(drop);
+            this.module.getMessageFormatter().playSound(drop.location, Sound.BLOCK_END_PORTAL_SPAWN, 0.65F, 1.6F);
+        }
 
         Component msg = this.module.getMessageFormatter().gradient(drop.displayName + " #" + drop.id + " DISPONIBLE ")
             .append(this.module.getMessageFormatter().coords(drop.location))
-            .append(this.module.getMessageFormatter().detail(" | " + drop.location.getWorld().getName()));
+            .append(this.module.getMessageFormatter().detail(" | " + drop.location.getWorld().getName() + " | " + expiryMinutes + "m"));
         this.module.getMessageFormatter().broadcast(msg);
     }
 
