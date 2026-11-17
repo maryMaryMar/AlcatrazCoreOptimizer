@@ -1477,6 +1477,7 @@ command-guard:
   block-namespaced: true
   block-dotted-commands: true
   unknown-command-default-allow: false
+  strict-allowlist-mode: true
   messages:
     denied: "&8[&c✖&8] &cComando desconocido o no disponible para tu rango."
 
@@ -1970,7 +1971,9 @@ command-guard:
     gamemode: ["essentials.gamemode", "minecraft.command.gamemode", "bukkit.command.gamemode"]
     broadcast: ["essentials.broadcast"]
     bc: ["essentials.broadcast"]
-    co: ["coreprotect.lookup", "coreprotect.inspect", "coreprotect.co", "coreprotect.*"]
+    co: ["coreprotect.lookup", "coreprotect.inspect", "coreprotect.*"]
+    mv: ["multiverse.core.list", "multiverse.*"]
+    mvtp: ["multiverse.teleport.self.*", "multiverse.*"]
     coreprotect: ["coreprotect.coreprotect", "coreprotect.*"]
     tp: ["essentials.tp", "minecraft.command.tp"]
     tphere: ["essentials.tphere"]

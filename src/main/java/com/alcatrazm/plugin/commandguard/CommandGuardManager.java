@@ -37,6 +37,7 @@ public final class CommandGuardManager {
             String deniedMessage,
             boolean blockNamespaced,
             boolean unknownCommandDefaultAllow,
+            boolean strictAllowlistMode,
             boolean blockDottedCommands,
             Set<String> blockedCommands,
             Set<String> blockedPrefixes,
@@ -52,6 +53,7 @@ public final class CommandGuardManager {
                 "&8[&c✖&8] &cComando desconocido o no disponible para tu rango.",
                 true,
                 false,
+                true,
                 true,
                 Collections.emptySet(),
                 Collections.emptySet(),
@@ -88,6 +90,7 @@ public final class CommandGuardManager {
         String deniedMsg = sec.getString("messages.denied", "&8[&c✖&8] &cComando desconocido o no disponible para tu rango.");
         boolean blockNamespaced = sec.getBoolean("block-namespaced", true);
         boolean unknownDefaultAllow = sec.getBoolean("unknown-command-default-allow", false);
+        boolean strictAllowlist = sec.getBoolean("strict-allowlist-mode", true);
         boolean blockDotted = sec.getBoolean("block-dotted-commands", true);
 
         Set<String> blocked = toLowerSet(sec.getStringList("blocked-commands"));
@@ -105,6 +108,7 @@ public final class CommandGuardManager {
                 deniedMsg,
                 blockNamespaced,
                 unknownDefaultAllow,
+                strictAllowlist,
                 blockDotted,
                 Collections.unmodifiableSet(blocked),
                 Collections.unmodifiableSet(blockedPrefixes),
@@ -348,6 +352,10 @@ public final class CommandGuardManager {
         }
         if (cfg.alwaysAllow().contains(label)) {
             return true;
+        }
+
+        if (cfg.strictAllowlistMode()) {
+            return false;
         }
 
         String canonical = snapshot.canonicalByLabel().get(label);
