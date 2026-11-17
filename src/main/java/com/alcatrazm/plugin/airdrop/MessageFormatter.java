@@ -115,10 +115,10 @@ public final class MessageFormatter {
     }
 
     public ItemStack createGuiItem(Material mat, String title, String... lore) {
-        return this.createGuiItem(mat, title, null, null, lore);
+        return this.createColoredGuiItem(mat, title, null, null, lore);
     }
 
-    public ItemStack createGuiItem(Material mat, String title, String startHex, String endHex, String... lore) {
+    public ItemStack createColoredGuiItem(Material mat, String title, String startHex, String endHex, String... lore) {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {

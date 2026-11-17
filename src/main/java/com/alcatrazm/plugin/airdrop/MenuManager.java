@@ -188,7 +188,7 @@ public final class MenuManager implements Listener {
                 for (int i = 0; i < tiers.size() && i < slots.length; i++) {
                     DropTier t = tiers.get(i);
                     String pct = String.format(java.util.Locale.ROOT, "%.0f%%", DropTier.getChancePercent(tiers, t));
-                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createGuiItem(
+                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createColoredGuiItem(
                         t.blockMaterial(),
                         t.displayName(),
                         t.colorStart(),
@@ -212,7 +212,7 @@ public final class MenuManager implements Listener {
                 int[] slots = {20, 22, 24, 29, 31, 33};
                 for (int i = 0; i < tiers.size() && i < slots.length; i++) {
                     DropTier t = tiers.get(i);
-                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createGuiItem(
+                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createColoredGuiItem(
                         t.blockMaterial(),
                         "EDITAR " + t.displayName(),
                         t.colorStart(),
@@ -260,7 +260,7 @@ public final class MenuManager implements Listener {
                 for (int i = 0; i < tiers.size() && i < slots.length; i++) {
                     DropTier t = tiers.get(i);
                     String pct = String.format(java.util.Locale.ROOT, "%.0f%%", DropTier.getChancePercent(tiers, t));
-                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createGuiItem(
+                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createColoredGuiItem(
                         t.blockMaterial(),
                         "AJUSTAR " + t.displayName(),
                         t.colorStart(),
