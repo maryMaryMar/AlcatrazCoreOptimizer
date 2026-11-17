@@ -429,5 +429,5 @@ permissions:
   universairdrop.play:
     default: true
 
-softdepend: [Vault, WorldGuard, GriefPrevention, floodgate, Geyser-Spigot, PlaceholderAPI]
+softdepend: [Vault, WorldGuard, GriefPrevention, floodgate, Geyser-Spigot, PlaceholderAPI, ModelEngine]
 
