@@ -50,13 +50,23 @@ public final class MenuManager implements Listener {
     }
 
     public void openMenu(Player player, Page page) {
-        this.openMenu(player, page, 0, null);
+        this.openMenu(player, page, 0, null, null);
+    }
+
+    public void openMenu(Player player, Page page, String tierId) {
+        this.openMenu(player, page, 0, null, tierId);
     }
 
     public void openMenu(Player player, Page page, int pageIndex, List<ItemStack> customItems) {
+        this.openMenu(player, page, pageIndex, customItems, null);
+    }
+
+    public void openMenu(Player player, Page page, int pageIndex, List<ItemStack> customItems, String tierId) {
         if (!isAdmin(player)) {
             return;
         }
+
+        String resolvedTier = (tierId == null || tierId.isBlank()) ? "comun" : DropTier.normalizeId(tierId);
 
         if (page == Page.LOOT_CONTENT && this.lootEditor != null && !this.lootEditor.equals(player.getUniqueId())) {
             this.module.getMessageFormatter().sendMessage(player, this.module.getMessageFormatter().error("Otro administrador esta editando el contenido"));
@@ -64,18 +74,20 @@ public final class MenuManager implements Listener {
         }
 
         if (page == Page.LOOT_CONTENT && customItems == null) {
-            customItems = new ArrayList<>(this.module.getLootManager().getItems());
+            customItems = new ArrayList<>(this.module.getLootManager().getItems(resolvedTier));
         }
 
-        MenuSession session = new MenuSession(page, pageIndex, customItems);
+        MenuSession session = new MenuSession(page, pageIndex, customItems, resolvedTier);
         String title = switch (page) {
             case MAIN -> "ALCATRAZ AIRDROP | PANEL";
             case LAUNCH -> "LANZAR DROP";
             case AUTOMATIC -> "AUTOMATICOS";
-            case LOOT_CONTENT -> "CONTENIDO | " + (pageIndex + 1);
-            case LOCATION -> "UBICACION";
+            case LOOT_TIER_SELECT -> "ESCOGER RAREZA | BOTIN";
+            case LOOT_CONTENT -> "BOTIN " + resolvedTier.toUpperCase() + " | " + (pageIndex + 1);
+            case LOCATION -> "UBICACION Y DIMENSIONES";
             case CHOOSE_WORLD -> "ESCOGER MUNDO";
-            case LIMITS -> "LIMITES Y APERTURA";
+            case LIMITS -> "LIMITES Y RAREZAS";
+            case TIER_EDIT -> "AJUSTES | " + resolvedTier.toUpperCase();
             case PRESENTATION -> "PRESENTACION";
             case PARTICLES -> "EFECTOS DE PARTICULAS";
             case NAME_DESC -> "NOMBRE Y DESCRIPCION";
@@ -140,9 +152,14 @@ public final class MenuManager implements Listener {
         return this.module.getBoolean(path, false) ? "ACTIVADO" : "DESACTIVADO";
     }
 
+    private void addToggleItem(MenuSession s, int slot, String path, String title, boolean defaultVal) {
+        boolean val = this.module.getBoolean(path, defaultVal);
+        Material mat = val ? Material.LIME_DYE : Material.GRAY_DYE;
+        s.inventory.setItem(slot, this.module.getMessageFormatter().createGuiItem(mat, title, "Estado: " + (val ? "ACTIVADO" : "DESACTIVADO"), "Click para cambiar"));
+    }
+
     private void addToggleItem(MenuSession s, int slot, String path, String title) {
-        Material mat = this.module.getBoolean(path, false) ? Material.LIME_DYE : Material.GRAY_DYE;
-        s.inventory.setItem(slot, this.module.getMessageFormatter().createGuiItem(mat, title, "Estado: " + this.getStatus(path), "Click para cambiar"));
+        this.addToggleItem(s, slot, path, title, false);
     }
 
     private void addValueItem(MenuSession s, int slot, Material mat, String path, String title, String unit) {
@@ -153,28 +170,60 @@ public final class MenuManager implements Listener {
     private void populatePage(MenuSession s) {
         switch (s.page) {
             case MAIN:
-                s.inventory.setItem(10, this.module.getMessageFormatter().createGuiItem(Material.ENDER_CHEST, "LANZAR DROP", "Manual | Libre"));
-                s.inventory.setItem(12, this.module.getMessageFormatter().createGuiItem(Material.CLOCK, "AUTOMATICOS", "Estado: " + this.getStatus("automatic.enabled"), "Intervalo: " + this.getConfigVal("automatic.interval-minutes") + " min"));
-                s.inventory.setItem(14, this.module.getMessageFormatter().createGuiItem(Material.CHEST, "CONTENIDO", this.module.getLootManager().getItemCount() + " objetos disponibles", "Seleccion aleatoria sin repetir entradas"));
-                s.inventory.setItem(16, this.module.getMessageFormatter().createGuiItem(Material.COMPASS, "UBICACION", "Mundo: " + this.getConfigVal("location.world"), "Radio: " + this.getConfigVal("location.radius") + " | Centro: 0, 0"));
+                s.inventory.setItem(10, this.module.getMessageFormatter().createGuiItem(Material.ENDER_CHEST, "LANZAR DROP", "Aleatorio o por rareza"));
+                s.inventory.setItem(12, this.module.getMessageFormatter().createGuiItem(Material.CLOCK, "AUTOMATICOS", "Estado: " + this.getStatus("automatic.enabled"), "Intervalo: " + this.getConfigVal("automatic.interval-minutes") + " min", "Modo: " + this.getConfigVal("automatic.mode")));
+                s.inventory.setItem(14, this.module.getMessageFormatter().createGuiItem(Material.CHEST, "CONTENIDO", this.module.getLootManager().getTotalItemCount() + " objetos en pools", "Editar Común, Épico y Legendario"));
+                s.inventory.setItem(16, this.module.getMessageFormatter().createGuiItem(Material.COMPASS, "UBICACION Y DIMENSIONES", "Mundo: " + this.getConfigVal("location.world"), "Overworld=" + this.module.getBoolean("location.dimensions.overworld", true) + " | Nether=" + this.module.getBoolean("location.dimensions.nether", false) + " | End=" + this.module.getBoolean("location.dimensions.end", false)));
                 s.inventory.setItem(28, this.module.getMessageFormatter().createGuiItem(Material.BLAZE_POWDER, "PRESENTACION", "Cinematica | Sonidos | Efectos"));
-                s.inventory.setItem(30, this.module.getMessageFormatter().createGuiItem(Material.COMPARATOR, "LIMITES Y APERTURA", "Contenido: " + this.getConfigVal("loot.minimum") + " - " + this.getConfigVal("loot.maximum"), "Distancia: " + this.getConfigVal("safe.interaction-distance") + " bloques"));
+                s.inventory.setItem(30, this.module.getMessageFormatter().createGuiItem(Material.COMPARATOR, "LIMITES Y RAREZAS", "Probabilidades, duracion y limites"));
                 s.inventory.setItem(32, this.module.getMessageFormatter().createGuiItem(Material.ENDER_EYE, "DROPS ACTIVOS", this.module.getAirDropManager().getActiveAndPendingCount() + " drops en curso", "Visitar o cancelar"));
                 s.inventory.setItem(34, this.module.getMessageFormatter().createGuiItem(Material.NAME_TAG, "NOMBRE Y DESCRIPCION", "Editar textos y colores del drop"));
                 this.renderStatusItem(s, 40);
                 s.inventory.setItem(42, this.module.getMessageFormatter().createGuiItem(Material.NETHER_STAR, "MODO ALCATRAZ", "Integrado en ModuleRegistry", "Protecciones GP/WG activas"));
                 break;
-            case LAUNCH:
-                s.inventory.setItem(11, this.module.getMessageFormatter().createGuiItem(Material.TRIPWIRE_HOOK, "MODO: LIBRE", "Cofre abierto para todos"));
-                s.inventory.setItem(15, this.module.getMessageFormatter().createGuiItem(Material.FIREWORK_ROCKET, "LANZAR AHORA", "Cuenta regresiva: " + this.getConfigVal("drop.countdown-seconds") + " s", "Mundo: " + this.getConfigVal("location.world"), "Ubicacion aleatoria segura en el radio"));
+            case LAUNCH: {
+                s.inventory.setItem(13, this.module.getMessageFormatter().createGuiItem(Material.FIREWORK_ROCKET, "LANZAR ALEATORIO", "Sortea según probabilidad", "Mundo: " + this.getConfigVal("location.world")));
+                List<DropTier> tiers = this.module.getAirDropManager().getTiers();
+                int[] slots = {20, 22, 24, 29, 31, 33};
+                for (int i = 0; i < tiers.size() && i < slots.length; i++) {
+                    DropTier t = tiers.get(i);
+                    String pct = String.format(java.util.Locale.ROOT, "%.0f%%", DropTier.getChancePercent(tiers, t));
+                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createGuiItem(
+                        t.blockMaterial(),
+                        t.displayName(),
+                        t.colorStart(),
+                        t.colorEnd(),
+                        "Probabilidad: " + pct + " | Limite: " + t.expiryMinutes() + " min",
+                        "Items: " + t.minItems() + "-" + t.maxItems() + " | Pool: " + this.module.getLootManager().getItemCount(t.id()),
+                        "Click para lanzar ahora"
+                    ));
+                }
                 break;
+            }
             case AUTOMATIC:
                 this.addToggleItem(s, 10, "automatic.enabled", "AUTOMATICOS");
                 this.addValueItem(s, 12, Material.CLOCK, "automatic.interval-minutes", "INTERVALO", "min");
-                s.inventory.setItem(14, this.module.getMessageFormatter().createGuiItem(Material.TRIPWIRE_HOOK, "MODO: " + this.getConfigVal("automatic.mode"), "Click para alternar"));
+                s.inventory.setItem(14, this.module.getMessageFormatter().createGuiItem(Material.TRIPWIRE_HOOK, "MODO: " + this.getConfigVal("automatic.mode"), "Click para alternar (ALEATORIO / rareza)"));
                 this.addToggleItem(s, 16, "automatic.require-online-players", "REQUIERE JUGADORES");
                 this.renderNextAutoItem(s, 31, this.module.getTicks());
                 break;
+            case LOOT_TIER_SELECT: {
+                List<DropTier> tiers = this.module.getAirDropManager().getTiers();
+                int[] slots = {20, 22, 24, 29, 31, 33};
+                for (int i = 0; i < tiers.size() && i < slots.length; i++) {
+                    DropTier t = tiers.get(i);
+                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createGuiItem(
+                        t.blockMaterial(),
+                        "EDITAR " + t.displayName(),
+                        t.colorStart(),
+                        t.colorEnd(),
+                        "Objetos configurados: " + this.module.getLootManager().getItemCount(t.id()),
+                        "Cantidad por cofre: " + t.minItems() + " - " + t.maxItems(),
+                        "Click para abrir editor de botin"
+                    ));
+                }
+                break;
+            }
             case LOOT_CONTENT:
                 for (int i = 0; i < 45; i++) {
                     int idx = s.pageIndex * 45 + i;
@@ -188,24 +237,53 @@ public final class MenuManager implements Listener {
                 this.addValueItem(s, 12, Material.COMPASS, "location.radius", "RADIO DESDE 0, 0", "bloques");
                 this.addToggleItem(s, 14, "location.avoid-water", "EVITAR AGUA");
                 this.addToggleItem(s, 16, "location.avoid-leaves", "EVITAR HOJAS");
-                this.addValueItem(s, 28, Material.LEVER, "location.maximum-slope", "DESNIVEL MAXIMO", "bloques");
-                this.addValueItem(s, 30, Material.REPEATER, "location.attempts", "INTENTOS DE BUSQUEDA", "intentos");
-                this.addToggleItem(s, 32, "location.avoid-protected-regions", "EVITAR CLAIMS Y REGIONES");
+                this.addValueItem(s, 19, Material.LEVER, "location.maximum-slope", "DESNIVEL MAXIMO", "bloques");
+                this.addValueItem(s, 21, Material.REPEATER, "location.attempts", "INTENTOS DE BUSQUEDA", "intentos");
+                this.addToggleItem(s, 23, "location.avoid-protected-regions", "EVITAR CLAIMS Y REGIONES");
+                this.addToggleItem(s, 28, "location.dimensions.overworld", "DIMENSION OVERWORLD", true);
+                this.addToggleItem(s, 30, "location.dimensions.nether", "DIMENSION NETHER", false);
+                this.addToggleItem(s, 32, "location.dimensions.end", "DIMENSION END", false);
                 break;
             case CHOOSE_WORLD:
                 List<World> worlds = Bukkit.getWorlds();
                 for (int i = 0; i < worlds.size() && i < 36; i++) {
                     World w = worlds.get(i);
-                    s.inventory.setItem(9 + i, this.module.getMessageFormatter().createGuiItem(Material.GRASS_BLOCK, w.getName(), "Click para seleccionar este mundo"));
+                    boolean allowed = this.module.getAirDropManager().isDimensionAllowed(w.getEnvironment());
+                    s.inventory.setItem(9 + i, this.module.getMessageFormatter().createGuiItem(Material.GRASS_BLOCK, w.getName(), "Dimension: " + w.getEnvironment().name() + (allowed ? " (DESBLOQUEADA)" : " (BLOQUEADA)"), "Click para seleccionar este mundo"));
                 }
                 break;
-            case LIMITS:
-                this.addValueItem(s, 10, Material.CHEST, "loot.minimum", "MINIMO DE OBJETOS", "items");
-                this.addValueItem(s, 12, Material.ENDER_CHEST, "loot.maximum", "MAXIMO DE OBJETOS", "items");
-                this.addValueItem(s, 14, Material.COMPARATOR, "drop.max-active", "MAXIMO DROPS ACTIVOS", "drops");
-                this.addValueItem(s, 28, Material.CLOCK, "drop.expiry-minutes", "DURACION DISPONIBLE", "min");
-                this.addValueItem(s, 30, Material.COMPASS, "safe.interaction-distance", "DISTANCIA DE APERTURA", "bloques");
+            case LIMITS: {
+                this.addValueItem(s, 11, Material.COMPARATOR, "drop.max-active", "MAXIMO DROPS ACTIVOS", "drops");
+                this.addValueItem(s, 15, Material.COMPASS, "safe.interaction-distance", "DISTANCIA DE APERTURA", "bloques");
+                List<DropTier> tiers = this.module.getAirDropManager().getTiers();
+                int[] slots = {29, 31, 33, 38, 40, 42};
+                for (int i = 0; i < tiers.size() && i < slots.length; i++) {
+                    DropTier t = tiers.get(i);
+                    String pct = String.format(java.util.Locale.ROOT, "%.0f%%", DropTier.getChancePercent(tiers, t));
+                    s.inventory.setItem(slots[i], this.module.getMessageFormatter().createGuiItem(
+                        t.blockMaterial(),
+                        "AJUSTAR " + t.displayName(),
+                        t.colorStart(),
+                        t.colorEnd(),
+                        "Estado: " + (t.enabled() ? "ACTIVADO" : "DESACTIVADO"),
+                        "Probabilidad: " + t.probability() + " (" + pct + ")",
+                        "Duracion: " + t.expiryMinutes() + " min",
+                        "Items: " + t.minItems() + " - " + t.maxItems(),
+                        "Click para configurar"
+                    ));
+                }
                 break;
+            }
+            case TIER_EDIT: {
+                String base = "tiers." + s.tierId + ".";
+                this.addToggleItem(s, 10, base + "enabled", "RAREZA ACTIVA", true);
+                this.addValueItem(s, 12, Material.EMERALD, base + "probability", "PROBABILIDAD (PESO)", "");
+                this.addValueItem(s, 14, Material.CLOCK, base + "expiry-minutes", "DURACION DEL DROP", "min");
+                this.addValueItem(s, 16, Material.CHEST, base + "min-items", "MINIMO DE OBJETOS", "items");
+                this.addValueItem(s, 29, Material.ENDER_CHEST, base + "max-items", "MAXIMO DE OBJETOS", "items");
+                s.inventory.setItem(33, this.module.getMessageFormatter().createGuiItem(Material.BOOK, "EDITAR BOTIN", "Abrir inventario de " + s.tierId.toUpperCase()));
+                break;
+            }
             case PRESENTATION:
                 this.addToggleItem(s, 10, "cinematic.enabled", "CINEMATICA");
                 this.addToggleItem(s, 12, "presentation.sounds", "SONIDOS");
@@ -319,17 +397,21 @@ public final class MenuManager implements Listener {
     }
 
     private void toggleBoolean(Player player, MenuSession s, String path) {
-        boolean curr = this.module.getBoolean(path, false);
+        this.toggleBoolean(player, s, path, false);
+    }
+
+    private void toggleBoolean(Player player, MenuSession s, String path, boolean defaultVal) {
+        boolean curr = this.module.getBoolean(path, defaultVal);
         this.module.setSetting(path, !curr);
         this.module.getPlugin().saveConfig();
         if ("automatic.enabled".equals(path)) {
             this.module.getAirDropManager().resetAutoSchedule(this.module.getTicks());
         }
-        this.openMenu(player, s.page);
+        this.openMenu(player, s.page, s.tierId);
     }
 
     private void promptChat(Player player, MenuSession s, String path, String title, double min, double max, String type) {
-        this.activePrompts.put(player.getUniqueId(), new ChatPrompt(path, title, min, max, s.page, type));
+        this.activePrompts.put(player.getUniqueId(), new ChatPrompt(path, title, min, max, s.page, s.tierId, type));
         player.closeInventory();
         this.module.getMessageFormatter().sendMessage(player, this.module.getMessageFormatter().gradient(title));
         String hint;
@@ -379,14 +461,20 @@ public final class MenuManager implements Listener {
             if (slot == 53) {
                 player.closeInventory();
             } else if (slot == 49) {
-                this.openMenu(player, s.page == Page.PARTICLES ? Page.PRESENTATION : Page.MAIN);
+                Page back = switch (s.page) {
+                    case PARTICLES -> Page.PRESENTATION;
+                    case TIER_EDIT -> Page.LIMITS;
+                    case CHOOSE_WORLD -> Page.LOCATION;
+                    default -> Page.MAIN;
+                };
+                this.openMenu(player, back, s.tierId);
             } else {
                 switch (s.page) {
                     case MAIN -> {
                         switch (slot) {
                             case 10 -> this.openMenu(player, Page.LAUNCH);
                             case 12 -> this.openMenu(player, Page.AUTOMATIC);
-                            case 14 -> this.openMenu(player, Page.LOOT_CONTENT);
+                            case 14 -> this.openMenu(player, Page.LOOT_TIER_SELECT);
                             case 16 -> this.openMenu(player, Page.LOCATION);
                             case 28 -> this.openMenu(player, Page.PRESENTATION);
                             case 30 -> this.openMenu(player, Page.LIMITS);
@@ -395,12 +483,36 @@ public final class MenuManager implements Listener {
                         }
                     }
                     case LAUNCH -> {
-                        if (slot == 15) {
+                        if (slot == 13) {
                             player.closeInventory();
                             if (canLaunch(player)) {
-                                this.module.getAirDropManager().launch("LIBRE", player);
+                                this.module.getAirDropManager().launch("ALEATORIO", player);
                             } else {
                                 this.module.getMessageFormatter().sendMessage(player, this.module.getMessageFormatter().error(this.module.getString("messages.no-permission", "No tienes permiso")));
+                            }
+                        } else {
+                            int[] slots = {20, 22, 24, 29, 31, 33};
+                            List<DropTier> tiers = this.module.getAirDropManager().getTiers();
+                            for (int i = 0; i < slots.length && i < tiers.size(); i++) {
+                                if (slot == slots[i]) {
+                                    player.closeInventory();
+                                    if (canLaunch(player)) {
+                                        this.module.getAirDropManager().launch(tiers.get(i).id(), player);
+                                    } else {
+                                        this.module.getMessageFormatter().sendMessage(player, this.module.getMessageFormatter().error(this.module.getString("messages.no-permission", "No tienes permiso")));
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    case LOOT_TIER_SELECT -> {
+                        int[] slots = {20, 22, 24, 29, 31, 33};
+                        List<DropTier> tiers = this.module.getAirDropManager().getTiers();
+                        for (int i = 0; i < slots.length && i < tiers.size(); i++) {
+                            if (slot == slots[i]) {
+                                this.openMenu(player, Page.LOOT_CONTENT, tiers.get(i).id());
+                                break;
                             }
                         }
                     }
@@ -408,9 +520,20 @@ public final class MenuManager implements Listener {
                         if (slot == 10) this.toggleBoolean(player, s, "automatic.enabled");
                         else if (slot == 12) this.promptChat(player, s, "automatic.interval-minutes", "INTERVALO", 1, 1440, "int");
                         else if (slot == 14) {
+                            List<String> modes = new ArrayList<>();
+                            modes.add("ALEATORIO");
+                            for (DropTier t : this.module.getAirDropManager().getTiers()) {
+                                modes.add(t.id());
+                            }
                             String curMode = this.module.getString("automatic.mode", "ALEATORIO");
-                            String nextMode = "ALEATORIO".equalsIgnoreCase(curMode) ? "LIBRE" : "ALEATORIO";
-                            this.module.setSetting("automatic.mode", nextMode);
+                            int idx = 0;
+                            for (int i = 0; i < modes.size(); i++) {
+                                if (modes.get(i).equalsIgnoreCase(curMode)) {
+                                    idx = (i + 1) % modes.size();
+                                    break;
+                                }
+                            }
+                            this.module.setSetting("automatic.mode", modes.get(idx));
                             this.module.getPlugin().saveConfig();
                             this.openMenu(player, Page.AUTOMATIC);
                         } else if (slot == 16) this.toggleBoolean(player, s, "automatic.require-online-players");
@@ -421,9 +544,12 @@ public final class MenuManager implements Listener {
                             case 12 -> this.promptChat(player, s, "location.radius", "RADIO DESDE 0, 0", 16, 30000000, "int");
                             case 14 -> this.toggleBoolean(player, s, "location.avoid-water");
                             case 16 -> this.toggleBoolean(player, s, "location.avoid-leaves");
-                            case 28 -> this.promptChat(player, s, "location.maximum-slope", "DESNIVEL MAXIMO", 0, 30, "int");
-                            case 30 -> this.promptChat(player, s, "location.attempts", "INTENTOS DE BUSQUEDA", 1, 500, "int");
-                            case 32 -> this.toggleBoolean(player, s, "location.avoid-protected-regions");
+                            case 19 -> this.promptChat(player, s, "location.maximum-slope", "DESNIVEL MAXIMO", 0, 30, "int");
+                            case 21 -> this.promptChat(player, s, "location.attempts", "INTENTOS DE BUSQUEDA", 1, 500, "int");
+                            case 23 -> this.toggleBoolean(player, s, "location.avoid-protected-regions");
+                            case 28 -> this.toggleBoolean(player, s, "location.dimensions.overworld", true);
+                            case 30 -> this.toggleBoolean(player, s, "location.dimensions.nether", false);
+                            case 32 -> this.toggleBoolean(player, s, "location.dimensions.end", false);
                         }
                     }
                     case CHOOSE_WORLD -> {
@@ -435,11 +561,27 @@ public final class MenuManager implements Listener {
                         }
                     }
                     case LIMITS -> {
-                        if (slot == 10) this.promptChat(player, s, "loot.minimum", "MINIMO DE OBJETOS", 1, 54, "int");
-                        else if (slot == 12) this.promptChat(player, s, "loot.maximum", "MAXIMO DE OBJETOS", 1, 54, "int");
-                        else if (slot == 14) this.promptChat(player, s, "drop.max-active", "MAXIMO DROPS ACTIVOS", 1, 20, "int");
-                        else if (slot == 28) this.promptChat(player, s, "drop.expiry-minutes", "DURACION DISPONIBLE", 1, 1440, "int");
-                        else if (slot == 30) this.promptChat(player, s, "safe.interaction-distance", "DISTANCIA DE APERTURA", 1.5, 16.0, "double");
+                        if (slot == 11) this.promptChat(player, s, "drop.max-active", "MAXIMO DROPS ACTIVOS", 1, 20, "int");
+                        else if (slot == 15) this.promptChat(player, s, "safe.interaction-distance", "DISTANCIA DE APERTURA", 1.5, 16.0, "double");
+                        else {
+                            int[] slots = {29, 31, 33, 38, 40, 42};
+                            List<DropTier> tiers = this.module.getAirDropManager().getTiers();
+                            for (int i = 0; i < slots.length && i < tiers.size(); i++) {
+                                if (slot == slots[i]) {
+                                    this.openMenu(player, Page.TIER_EDIT, tiers.get(i).id());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    case TIER_EDIT -> {
+                        String base = "tiers." + s.tierId + ".";
+                        if (slot == 10) this.toggleBoolean(player, s, base + "enabled", true);
+                        else if (slot == 12) this.promptChat(player, s, base + "probability", "PROBABILIDAD (PESO)", 0, 10000, "int");
+                        else if (slot == 14) this.promptChat(player, s, base + "expiry-minutes", "DURACION DEL DROP", 1, 1440, "int");
+                        else if (slot == 16) this.promptChat(player, s, base + "min-items", "MINIMO DE OBJETOS", 1, 54, "int");
+                        else if (slot == 29) this.promptChat(player, s, base + "max-items", "MAXIMO DE OBJETOS", 1, 54, "int");
+                        else if (slot == 33) this.openMenu(player, Page.LOOT_CONTENT, s.tierId);
                     }
                     case PRESENTATION -> {
                         if (slot == 10) this.toggleBoolean(player, s, "cinematic.enabled");
@@ -520,11 +662,11 @@ public final class MenuManager implements Listener {
         } else {
             this.syncLootBuffer(s);
             if (slot == 45 && s.pageIndex > 0) {
-                this.openMenu(player, Page.LOOT_CONTENT, s.pageIndex - 1, s.customItems);
+                this.openMenu(player, Page.LOOT_CONTENT, s.pageIndex - 1, s.customItems, s.tierId);
             } else if (slot == 52 && s.pageIndex < 100) {
-                this.openMenu(player, Page.LOOT_CONTENT, s.pageIndex + 1, s.customItems);
+                this.openMenu(player, Page.LOOT_CONTENT, s.pageIndex + 1, s.customItems, s.tierId);
             } else if (slot == 49 || slot == 51) {
-                this.openMenu(player, Page.MAIN);
+                this.openMenu(player, Page.LOOT_TIER_SELECT);
             } else if (slot == 53) {
                 player.closeInventory();
             }
@@ -545,7 +687,7 @@ public final class MenuManager implements Listener {
         if (player.isOnline() && isAdmin(player) && this.activePrompts.get(player.getUniqueId()) == prompt) {
             if ("cancelar".equalsIgnoreCase(input)) {
                 this.activePrompts.remove(player.getUniqueId());
-                this.openMenu(player, prompt.returnPage);
+                this.openMenu(player, prompt.returnPage, prompt.tierId);
             } else {
                 try {
                     if ("int".equals(prompt.type)) {
@@ -569,7 +711,7 @@ public final class MenuManager implements Listener {
                     }
                     this.activePrompts.remove(player.getUniqueId());
                     this.module.getMessageFormatter().sendMessage(player, this.module.getMessageFormatter().success("Ajuste guardado"));
-                    this.openMenu(player, prompt.returnPage);
+                    this.openMenu(player, prompt.returnPage, prompt.tierId);
                 } catch (IllegalArgumentException e) {
                     this.module.getMessageFormatter().sendMessage(player, this.module.getMessageFormatter().error("Valor no valido | Intenta de nuevo o escribe cancelar"));
                 }
@@ -581,7 +723,7 @@ public final class MenuManager implements Listener {
     public void onInventoryClose(InventoryCloseEvent event) {
         if (event.getInventory().getHolder() instanceof MenuSession s && s.page == Page.LOOT_CONTENT) {
             this.syncLootBuffer(s);
-            boolean saved = this.module.getLootManager().setItems(s.customItems);
+            boolean saved = this.module.getLootManager().setItems(s.tierId, s.customItems);
             if (event.getPlayer().getUniqueId().equals(this.lootEditor)) {
                 this.lootEditor = null;
             }
@@ -620,12 +762,14 @@ public final class MenuManager implements Listener {
         public final Page page;
         public final int pageIndex;
         public final List<ItemStack> customItems;
+        public final String tierId;
         public Inventory inventory;
 
-        MenuSession(Page page, int pageIndex, List<ItemStack> customItems) {
+        MenuSession(Page page, int pageIndex, List<ItemStack> customItems, String tierId) {
             this.page = page;
             this.pageIndex = pageIndex;
             this.customItems = customItems;
+            this.tierId = tierId;
         }
 
         @Override
@@ -638,15 +782,17 @@ public final class MenuManager implements Listener {
         MAIN,
         LAUNCH,
         AUTOMATIC,
+        LOOT_TIER_SELECT,
         LOOT_CONTENT,
         LOCATION,
         CHOOSE_WORLD,
         LIMITS,
+        TIER_EDIT,
         PRESENTATION,
         PARTICLES,
         NAME_DESC,
         ACTIVE_DROPS
     }
 
-    record ChatPrompt(String path, String title, double min, double max, Page returnPage, String type) {}
+    record ChatPrompt(String path, String title, double min, double max, Page returnPage, String tierId, String type) {}
 }

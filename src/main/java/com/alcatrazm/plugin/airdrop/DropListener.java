@@ -127,6 +127,29 @@ public final class DropListener implements Listener {
                     if ((event.isLeftClick() || event.isRightClick()) && event.getClick() != ClickType.DOUBLE_CLICK) {
                         ItemStack item = drop.inventory.getItem(event.getRawSlot());
                         if (item != null && !item.getType().isAir()) {
+                            String pendingCmd = this.module.getLootManager().getPendingCommand(item);
+                            if (pendingCmd != null) {
+                                drop.inventory.setItem(event.getRawSlot(), null);
+                                String resolvedCmd = pendingCmd.replace("%player%", player.getName());
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), resolvedCmd);
+
+                                Component itemName = (item.getItemMeta() != null && item.getItemMeta().hasDisplayName())
+                                    ? item.getItemMeta().displayName()
+                                    : Component.translatable(item.translationKey());
+                                Component message = this.module.getMessageFormatter().success(player.getName() + " RECOGIO ")
+                                    .append(itemName != null ? itemName : Component.text(item.getType().name()))
+                                    .append(this.module.getMessageFormatter().detail(" | "))
+                                    .append(this.module.getMessageFormatter().gradient(drop.displayName + " #" + drop.id, drop.tier.colorStart(), drop.tier.colorEnd()));
+
+                                this.module.getMessageFormatter().broadcast(message);
+                                this.module.getMessageFormatter().playSound(player, Sound.ENTITY_ITEM_PICKUP, 0.7F, 1.1F);
+
+                                if (drop.isEmpty()) {
+                                    Bukkit.getScheduler().runTask(this.module.getPlugin(), () -> this.module.getAirDropManager().removeDrop(drop, "recogido"));
+                                }
+                                return;
+                            }
+
                             int amountToTake = event.isRightClick() && !event.isShiftClick() ? (item.getAmount() + 1) / 2 : item.getAmount();
                             ItemStack toAdd = item.clone();
                             toAdd.setAmount(amountToTake);
@@ -146,7 +169,7 @@ public final class DropListener implements Listener {
                                 Component message = this.module.getMessageFormatter().success(player.getName() + " RECOGIO ")
                                     .append(itemName != null ? itemName : Component.text(item.getType().name()))
                                     .append(this.module.getMessageFormatter().detail(" x" + taken + " | "))
-                                    .append(this.module.getMessageFormatter().gradient(drop.displayName + " " + drop.id));
+                                    .append(this.module.getMessageFormatter().gradient(drop.displayName + " #" + drop.id, drop.tier.colorStart(), drop.tier.colorEnd()));
 
                                 this.module.getMessageFormatter().broadcast(message);
                                 this.module.getMessageFormatter().playSound(player, Sound.ENTITY_ITEM_PICKUP, 0.7F, 1.1F);

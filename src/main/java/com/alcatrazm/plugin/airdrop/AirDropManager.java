@@ -121,22 +121,50 @@ public final class AirDropManager {
         return (remainingTicks + 19L) / 20L;
     }
 
+    public List<DropTier> getTiers() {
+        return DropTier.loadTiers(this.module);
+    }
+
+    public boolean isDimensionAllowed(World.Environment env) {
+        return switch (env) {
+            case NORMAL -> this.module.getBoolean("location.dimensions.overworld", true);
+            case NETHER -> this.module.getBoolean("location.dimensions.nether", false);
+            case THE_END -> this.module.getBoolean("location.dimensions.end", false);
+            default -> false;
+        };
+    }
+
     public void launch(String mode, CommandSender sender) {
-        if (!"LIBRE".equalsIgnoreCase(mode) && !"ALEATORIO".equalsIgnoreCase(mode)) {
-            if (sender != null) {
-                this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().error("Modo no disponible"));
+        List<DropTier> tiers = this.getTiers();
+        DropTier selectedTier;
+        if ("LIBRE".equalsIgnoreCase(mode) || "ALEATORIO".equalsIgnoreCase(mode)) {
+            List<DropTier> eligible = tiers.stream()
+                .filter(t -> t.enabled() && this.module.getLootManager().getItemCount(t.id()) > 0)
+                .toList();
+            if (eligible.isEmpty()) {
+                this.sendFeedback(sender, "No hay rarezas activas con objetos en airdrop_loot.yml");
+                return;
             }
-            return;
+            selectedTier = DropTier.pickWeighted(eligible, this.module.getRandom());
+        } else {
+            selectedTier = DropTier.resolveTier(tiers, mode);
+            if (selectedTier == null) {
+                this.sendFeedback(sender, "Tipo de drop no disponible: " + mode + " (usa aleatorio, comun, epico o legendario)");
+                return;
+            }
+            if (!selectedTier.enabled()) {
+                this.sendFeedback(sender, "El tipo '" + selectedTier.displayName() + "' esta desactivado en config.yml");
+                return;
+            }
+            if (this.module.getLootManager().getItemCount(selectedTier.id()) == 0) {
+                this.sendFeedback(sender, "No hay objetos configurados para '" + selectedTier.displayName() + "' en airdrop_loot.yml");
+                return;
+            }
         }
 
         int maxActive = this.module.getInt("drop.max-active", 3, 1, 20);
         if (this.getActiveAndPendingCount() >= maxActive) {
             this.sendFeedback(sender, "Se alcanzo el maximo de drops activos (" + maxActive + ")");
-            return;
-        }
-
-        if (this.module.getLootManager().getItemCount() == 0) {
-            this.sendFeedback(sender, "No hay objetos configurados en airdrop_loot.yml");
             return;
         }
 
@@ -152,17 +180,17 @@ public final class AirDropManager {
             this.sendFeedback(sender, "Mundo no encontrado: " + worldName);
             return;
         }
-        if (world.getEnvironment() != World.Environment.NORMAL) {
-            this.sendFeedback(sender, "Los AirDrops solo estan permitidos en el Overworld: " + worldName);
+        if (!this.isDimensionAllowed(world.getEnvironment())) {
+            this.sendFeedback(sender, "La dimension '" + world.getEnvironment().name() + "' esta bloqueada para AirDrops en config.yml");
             return;
         }
 
         this.pendingSpawns++;
         if (sender != null) {
-            this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().success("Buscando ubicacion segura para el drop..."));
+            this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().success("Buscando ubicacion segura para " + selectedTier.displayName() + "..."));
         }
 
-        this.findAndSpawn(world, "LIBRE", sender, 0, this.launchEpoch);
+        this.findAndSpawn(world, selectedTier, sender, 0, this.launchEpoch);
     }
 
     private void sendFeedback(CommandSender sender, String text) {
@@ -173,7 +201,7 @@ public final class AirDropManager {
         }
     }
 
-    private void findAndSpawn(World world, String mode, CommandSender sender, int attempt, long epoch) {
+    private void findAndSpawn(World world, DropTier tier, CommandSender sender, int attempt, long epoch) {
         if (!this.module.isActive() || this.module.isDisabling() || epoch != this.launchEpoch) {
             return;
         }
@@ -193,7 +221,7 @@ public final class AirDropManager {
 
             Location targetLoc = new Location(world, coords.x() + 0.5, world.getSpawnLocation().getY(), coords.z() + 0.5);
             if (!world.getWorldBorder().isInside(targetLoc)) {
-                Bukkit.getScheduler().runTask(this.module.getPlugin(), () -> this.findAndSpawn(world, mode, sender, attempt + 1, epoch));
+                Bukkit.getScheduler().runTask(this.module.getPlugin(), () -> this.findAndSpawn(world, tier, sender, attempt + 1, epoch));
                 return;
             }
 
@@ -204,19 +232,19 @@ public final class AirDropManager {
 
                         Location surfaceLoc = (err == null) ? this.validateGround(world, coords.x(), coords.z()) : null;
                         if (surfaceLoc == null) {
-                            this.findAndSpawn(world, mode, sender, attempt + 1, epoch);
+                            this.findAndSpawn(world, tier, sender, attempt + 1, epoch);
                         } else {
                             this.pendingSpawns = Math.max(0, this.pendingSpawns - 1);
-                            List<org.bukkit.inventory.ItemStack> loot = this.module.getLootManager().rollLoot();
+                            List<org.bukkit.inventory.ItemStack> loot = this.module.getLootManager().rollLoot(tier);
                             if (loot.isEmpty()) {
-                                this.sendFeedback(sender, "No hay loot disponible para generar el drop");
+                                this.sendFeedback(sender, "No hay loot disponible para " + tier.displayName());
                                 return;
                             }
 
                             String dropId = String.format(Locale.ROOT, "%03d", this.dropCounter++);
                             this.saveState();
 
-                            DropInstance drop = new DropInstance(this.module, dropId, DropMath.DropType.LIBRE, surfaceLoc, loot, this.module.getTicks());
+                            DropInstance drop = new DropInstance(this.module, dropId, tier, DropMath.DropType.LIBRE, surfaceLoc, loot, this.module.getTicks());
                             this.activeDrops.put(dropId, drop);
                             this.addChunkTicket(drop);
 
@@ -227,27 +255,41 @@ public final class AirDropManager {
                                     this.startFalling(drop, this.module.getTicks());
                                 }
                             } else {
-                                Component bc = this.module.getMessageFormatter().gradient(drop.displayName + " " + dropId + " ")
-                                    .append(this.module.getMessageFormatter().detail("| " + drop.type.name() + " | "))
+                                Component bc = this.module.getMessageFormatter().gradient(drop.displayName + " #" + dropId + " ", tier.colorStart(), tier.colorEnd())
+                                    .append(this.module.getMessageFormatter().detail("| "))
                                     .append(this.module.getMessageFormatter().coords(surfaceLoc))
                                     .append(this.module.getMessageFormatter().detail(" | " + world.getName()));
                                 this.module.getMessageFormatter().broadcast(bc);
                             }
 
                             if (sender != null) {
-                                this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().success("Drop #" + dropId + " iniciado con exito"));
+                                this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().success(drop.displayName + " #" + dropId + " iniciado con exito"));
                             }
                         }
                     });
                 }
             });
         } else {
-            Bukkit.getScheduler().runTask(this.module.getPlugin(), () -> this.findAndSpawn(world, mode, sender, attempt + 1, epoch));
+            Bukkit.getScheduler().runTask(this.module.getPlugin(), () -> this.findAndSpawn(world, tier, sender, attempt + 1, epoch));
         }
     }
 
     private Location validateGround(World world, int x, int z) {
-        int highestY = world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING);
+        int highestY = -1;
+        if (world.getEnvironment() == World.Environment.NETHER) {
+            for (int y = 115; y >= 32; y--) {
+                Block ground = world.getBlockAt(x, y, z);
+                if (ground.getType().isSolid() && !ground.isLiquid() && world.getBlockAt(x, y + 1, z).isPassable() && world.getBlockAt(x, y + 2, z).isPassable()) {
+                    highestY = y;
+                    break;
+                }
+            }
+            if (highestY < 32) {
+                return null;
+            }
+        } else {
+            highestY = world.getHighestBlockYAt(x, z, HeightMap.MOTION_BLOCKING);
+        }
         if (highestY <= world.getMinHeight() || highestY + 5 >= world.getMaxHeight()) {
             return null;
         }
@@ -444,7 +486,7 @@ public final class AirDropManager {
     private void ensureDisplayEntities(DropInstance drop, Location spawnLoc) {
         if (drop.blockDisplay == null || !drop.blockDisplay.isValid()) {
             drop.blockDisplay = this.trackEntity(drop, spawnLoc.getWorld().spawn(spawnLoc, BlockDisplay.class, e -> {
-                e.setBlock(Bukkit.createBlockData(Material.CHEST));
+                e.setBlock(Bukkit.createBlockData(drop.tier.blockMaterial()));
                 e.setBrightness(new Brightness(15, 15));
                 e.setTransformationMatrix(new Matrix4f().translate(-0.5F, 0.0F, -0.5F));
                 e.setTeleportDuration(2);
@@ -512,7 +554,7 @@ public final class AirDropManager {
     private void landDrop(DropInstance drop, long tick) {
         drop.state = DropInstance.State.LANDED;
         drop.lastTick = tick;
-        int expiryMinutes = this.module.getInt("drop.expiry-minutes", 15, 1, 1440);
+        int expiryMinutes = drop.tier.expiryMinutes();
         drop.stateStartTick = tick + expiryMinutes * 1200L;
 
         this.ensureDisplayEntities(drop, drop.location);
@@ -531,7 +573,7 @@ public final class AirDropManager {
             this.module.getMessageFormatter().playSound(drop.location, Sound.BLOCK_END_PORTAL_SPAWN, 0.65F, 1.6F);
         }
 
-        Component msg = this.module.getMessageFormatter().gradient(drop.displayName + " #" + drop.id + " DISPONIBLE ")
+        Component msg = this.module.getMessageFormatter().gradient(drop.displayName + " #" + drop.id + " DISPONIBLE ", drop.tier.colorStart(), drop.tier.colorEnd())
             .append(this.module.getMessageFormatter().coords(drop.location))
             .append(this.module.getMessageFormatter().detail(" | " + drop.location.getWorld().getName() + " | " + expiryMinutes + "m"));
         this.module.getMessageFormatter().broadcast(msg);
@@ -539,8 +581,8 @@ public final class AirDropManager {
 
     public void updateHologramText(DropInstance drop) {
         if (drop.textDisplay != null) {
-            Component subtitle = this.module.getMessageFormatter().detail("ᴍᴏᴅᴏ ʟɪʙʀᴇ | ᴄʟɪᴄᴋ ᴘᴀʀᴀ ʀᴇᴄᴏɢᴇʀ");
-            Component text = this.module.getMessageFormatter().gradient(drop.displayName)
+            Component subtitle = this.module.getMessageFormatter().detail("ʟɪᴍɪᴛᴇ: " + drop.tier.expiryMinutes() + "ᴍ | ᴄʟɪᴄᴋ ᴘᴀʀᴀ ʀᴇᴄᴏɢᴇʀ");
+            Component text = this.module.getMessageFormatter().gradient(drop.displayName, drop.tier.colorStart(), drop.tier.colorEnd())
                 .append(Component.newline())
                 .append(this.module.getMessageFormatter().detail(drop.description));
 

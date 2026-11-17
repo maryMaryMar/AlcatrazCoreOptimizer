@@ -1359,6 +1359,11 @@ airdrop:
 
   location:
     world: "world"
+    # Dimensiones permitidas para AirDrops (true = desbloqueada, false = bloqueada)
+    dimensions:
+      overworld: true
+      nether: false
+      end: false
     radius: 3000
     attempts: 80
     avoid-water: true
@@ -1366,6 +1371,11 @@ airdrop:
     avoid-protected-regions: true
     maximum-slope: 4
     disabled-worlds:
+      - "world_nether"
+      - "world_the_end"
+      - "custom_nether"
+      - "world_custom_end"
+      - "end"
       - "spawn"
       - "lobby"
       - "lobby_the_end"
@@ -1376,6 +1386,42 @@ airdrop:
       - "duel2"
       - "games"
       - "juegos"
+
+  # Rarezas de AirDrop (editable aqui o en /uad -> LIMITES Y RAREZAS, recarga con /uad recargar)
+  tiers:
+    comun:
+      enabled: true
+      display-name: "DROP COMÚN"
+      description: "botín común"
+      probability: 65
+      expiry-minutes: 15
+      min-items: 3
+      max-items: 5
+      block: "CHEST"
+      color-start: "#87DCAA"
+      color-end: "#D2FFE4"
+    epico:
+      enabled: true
+      display-name: "DROP ÉPICO"
+      description: "botín épico"
+      probability: 25
+      expiry-minutes: 15
+      min-items: 4
+      max-items: 6
+      block: "TRAPPED_CHEST"
+      color-start: "#B66BFF"
+      color-end: "#F2A7FF"
+    legendario:
+      enabled: true
+      display-name: "DROP LEGENDARIO"
+      description: "botín legendario"
+      probability: 10
+      expiry-minutes: 20
+      min-items: 5
+      max-items: 8
+      block: "ENDER_CHEST"
+      color-start: "#FFAA00"
+      color-end: "#FFF078"
 
   drop:
     name: "DROP"

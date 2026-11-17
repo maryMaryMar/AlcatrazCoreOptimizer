@@ -69,7 +69,7 @@ public final class AirDropCommand implements CommandExecutor, TabCompleter {
             }
             case "lanzar" -> {
                 if (this.checkPermission(sender, "launch")) {
-                    String mode = args.length > 1 ? args[1].toUpperCase(Locale.ROOT) : "LIBRE";
+                    String mode = args.length > 1 ? args[1].toUpperCase(Locale.ROOT) : "ALEATORIO";
                     this.module.getAirDropManager().launch(mode, sender);
                 }
             }
@@ -134,12 +134,24 @@ public final class AirDropCommand implements CommandExecutor, TabCompleter {
             case "info", "estado" -> {
                 boolean autoOn = this.module.getBoolean("automatic.enabled", false);
                 long nextSecs = this.module.getAirDropManager().getSecondsUntilNextAutoDrop(this.module.getTicks());
-                this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().gradient("ALCATRAZ AIRDROP ").append(this.module.getMessageFormatter().detail("Integrado (UniversAirDrop)")));
+                List<DropTier> tiers = this.module.getAirDropManager().getTiers();
+                this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().gradient("ALCATRAZ AIRDROP ").append(this.module.getMessageFormatter().detail("Multi-Rareza (UniversAirDrop)")));
                 this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().detail("Automaticos: ").append(autoOn ? this.module.getMessageFormatter().success("ACTIVO (" + MessageFormatter.formatDuration(nextSecs * 1000L) + ")") : this.module.getMessageFormatter().error("DESACTIVADO")));
-                this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().detail("Objetos en botin: ").append(this.module.getMessageFormatter().info(String.valueOf(this.module.getLootManager().getItemCount()))));
+                this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().detail("Objetos en botin total: ").append(this.module.getMessageFormatter().info(String.valueOf(this.module.getLootManager().getTotalItemCount()))));
+                this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().detail("Dimensiones: ")
+                    .append(this.module.getMessageFormatter().info("Overworld=" + this.module.getBoolean("location.dimensions.overworld", true)
+                        + " | Nether=" + this.module.getBoolean("location.dimensions.nether", false)
+                        + " | End=" + this.module.getBoolean("location.dimensions.end", false))));
+                for (DropTier t : tiers) {
+                    String chanceStr = String.format(Locale.ROOT, "%.0f%%", DropTier.getChancePercent(tiers, t));
+                    int count = this.module.getLootManager().getItemCount(t.id());
+                    this.module.getMessageFormatter().sendMessage(sender,
+                        this.module.getMessageFormatter().gradient(" - " + t.displayName() + " ", t.colorStart(), t.colorEnd())
+                            .append(this.module.getMessageFormatter().detail("(" + (t.enabled() ? chanceStr : "OFF") + " | " + t.expiryMinutes() + "m | " + t.minItems() + "-" + t.maxItems() + " items | " + count + " en pool)")));
+                }
                 this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().detail("Drops activos: ").append(this.module.getMessageFormatter().info(String.valueOf(this.module.getAirDropManager().getActiveAndPendingCount()))));
             }
-            default -> this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().detail("/uad | /uad lanzar libre | /uad lista | /uad cancelar | /uad info"));
+            default -> this.module.getMessageFormatter().sendMessage(sender, this.module.getMessageFormatter().detail("/uad | /uad lanzar [aleatorio|comun|epico|legendario] | /uad lista | /uad cancelar | /uad recargar | /uad info"));
         }
         return true;
     }
@@ -163,7 +175,10 @@ public final class AirDropCommand implements CommandExecutor, TabCompleter {
             }
         }
         if (args.length == 2 && "lanzar".equalsIgnoreCase(args[0]) && hasPerm(sender, "launch")) {
-            list.add("libre");
+            list.add("aleatorio");
+            if (this.module.getAirDropManager() != null) {
+                list.addAll(this.module.getAirDropManager().getTiers().stream().map(DropTier::id).toList());
+            }
         }
         if (args.length == 2 && List.of("cancelar", "tp").contains(args[0].toLowerCase(Locale.ROOT)) && hasPerm(sender, "manage")) {
             if (this.module.getAirDropManager() != null) {

@@ -59,8 +59,14 @@ public final class MessageFormatter {
     }
 
     public Component gradient(String text) {
-        TextColor start = this.getColor("primary-start", "#F8CB53");
-        TextColor end = this.getColor("primary-end", "#FFE6A0");
+        return this.gradient(text, this.module.getString("presentation.primary-start", "#F8CB53"), this.module.getString("presentation.primary-end", "#FFE6A0"));
+    }
+
+    public Component gradient(String text, String startHex, String endHex) {
+        TextColor start = TextColor.fromHexString(startHex != null ? startHex : "#F8CB53");
+        TextColor end = TextColor.fromHexString(endHex != null ? endHex : "#FFE6A0");
+        if (start == null) start = TextColor.fromHexString("#F8CB53");
+        if (end == null) end = TextColor.fromHexString("#FFE6A0");
         Component result = Component.empty();
         int[] cps = text.codePoints().toArray();
         for (int i = 0; i < cps.length; i++) {
@@ -109,10 +115,14 @@ public final class MessageFormatter {
     }
 
     public ItemStack createGuiItem(Material mat, String title, String... lore) {
+        return this.createGuiItem(mat, title, null, null, lore);
+    }
+
+    public ItemStack createGuiItem(Material mat, String title, String startHex, String endHex, String... lore) {
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.displayName(this.gradient(title));
+            meta.displayName((startHex != null && endHex != null) ? this.gradient(title, startHex, endHex) : this.gradient(title));
             meta.lore(Arrays.stream(lore).map(line -> {
                 if ("SELECCIONADO".equals(line)) {
                     return this.success(line);

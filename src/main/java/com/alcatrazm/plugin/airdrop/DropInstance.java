@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public final class DropInstance implements InventoryHolder {
     public final String id;
+    public final DropTier tier;
     public final String displayName;
     public final String description;
     public final DropMath.DropType type;
@@ -39,19 +40,20 @@ public final class DropInstance implements InventoryHolder {
     public TextDisplay textDisplay;
     public Interaction interaction;
 
-    public DropInstance(AirDropModule module, String id, DropMath.DropType type, Location location, List<ItemStack> items, long tick) {
+    public DropInstance(AirDropModule module, String id, DropTier tier, DropMath.DropType type, Location location, List<ItemStack> items, long tick) {
         this.id = id;
+        this.tier = tier;
         this.type = type;
         this.location = location.clone();
         this.creationTick = tick;
         this.lastTick = tick;
-        this.displayName = MessageFormatter.cleanUpper(module.getString("drop.name", "DROP"));
-        this.description = MessageFormatter.toSmallCaps(module.getString("drop.description", "drop lanzado"));
+        this.displayName = MessageFormatter.cleanUpper(tier.displayName());
+        this.description = MessageFormatter.toSmallCaps(tier.description());
         this.countdownDurationTicks = module.getInt("drop.countdown-seconds", 0, 0, 120) * 20L;
         this.fallDurationTicks = module.getInt("drop.fall-seconds", 0, 0, 30) * 20L;
 
         int size = Math.max(9, Math.min(54, (items.size() + 8) / 9 * 9));
-        this.inventory = Bukkit.createInventory(this, size, module.getMessageFormatter().gradient(this.displayName + " " + id + " | " + type.name()));
+        this.inventory = Bukkit.createInventory(this, size, module.getMessageFormatter().gradient(this.displayName + " #" + id, tier.colorStart(), tier.colorEnd()));
 
         for (int i = 0; i < items.size() && i < size; i++) {
             this.inventory.setItem(i, items.get(i).clone());
