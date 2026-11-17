@@ -85,6 +85,7 @@ import com.alcatrazm.plugin.grapplinghook.GrapplingHookCommand;
 import com.alcatrazm.plugin.grapplinghook.GrapplingHookListener;
 import com.alcatrazm.plugin.grapplinghook.GrapplingHookManager;
 import com.alcatrazm.plugin.cleanup.LegacyPumpkinCleaner;
+import com.alcatrazm.plugin.commandguard.CommandGuardModule;
 import com.alcatrazm.plugin.module.AlcatrazModule;
 import com.alcatrazm.plugin.module.ModuleRegistry;
 import org.bukkit.Bukkit;
@@ -140,6 +141,7 @@ public final class AlcatrazPlugin extends JavaPlugin {
     private DuelMenuListener duelMenuListener;
     private AutoRestartManager autoRestartManager;
     private AirDropModule airDropModule;
+    private CommandGuardModule commandGuardModule;
     private ModuleRegistry moduleRegistry;
 
 
@@ -459,6 +461,10 @@ public final class AlcatrazPlugin extends JavaPlugin {
         AirDropCommand airDropCmd = new AirDropCommand(airDropModule);
         registerPluginCommand("universairdrop", airDropCmd, airDropCmd);
 
+        // 36. Módulo CommandGuard (Visibilidad '/' y permisos reales por rango)
+        this.commandGuardModule = new CommandGuardModule(this);
+        this.moduleRegistry.register(commandGuardModule);
+
         // Habilitar módulos registrados en ModuleRegistry según config.yml
         this.moduleRegistry.enableAll(getLogger());
 
@@ -661,6 +667,7 @@ public final class AlcatrazPlugin extends JavaPlugin {
     public CosmeticsManager getCosmeticsManager() { return cosmeticsManager; }
     public AutoRestartManager getAutoRestartManager() { return autoRestartManager; }
     public AirDropModule getAirDropModule() { return airDropModule; }
+    public CommandGuardModule getCommandGuardModule() { return commandGuardModule; }
     public ModuleRegistry getModuleRegistry() { return moduleRegistry; }
 
     public void reloadBanList() {

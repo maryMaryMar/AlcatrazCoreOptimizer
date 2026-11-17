@@ -263,6 +263,11 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
                 }
                 return true;
 
+            case "cmdcheck":
+            case "commandcheck":
+                handleCmdCheckCommand(sender, args);
+                return true;
+
             case "airdrop":
             case "airdrops":
             case "uad":
@@ -727,7 +732,42 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(color("&e/" + label + " reload &7- Recarga toda la configuración y optimizadores."));
             sender.sendMessage(color("&e/" + label + " version &7- Información y estado del optimizador."));
         }
+        if (isAdmin) {
+            sender.sendMessage(color("&e/" + label + " cmdcheck <jugador> [filtro] &7- Lista los comandos visibles en '/' para un jugador."));
+        }
         sender.sendMessage(color("&8&m----------------------------------------"));
+    }
+
+    private void handleCmdCheckCommand(CommandSender sender, String[] args) {
+        if (plugin.getCommandGuardModule() == null || !plugin.getCommandGuardModule().isActive()) {
+            sender.sendMessage(color("&cEl módulo CommandGuard no está activo."));
+            return;
+        }
+        if (args.length < 2) {
+            sender.sendMessage(color("&cUso: /alcatraz cmdcheck <jugador> [filtro]"));
+            return;
+        }
+        Player target = Bukkit.getPlayerExact(args[1]);
+        if (target == null) {
+            target = Bukkit.getPlayer(args[1]);
+        }
+        if (target == null) {
+            sender.sendMessage(color("&cJugador no conectado: &e" + args[1]));
+            return;
+        }
+        com.alcatrazm.plugin.commandguard.CommandGuardManager mgr = plugin.getCommandGuardModule().getManager();
+        boolean bypass = mgr.hasBypass(target);
+        List<String> visible = mgr.getVisibleCommandsFor(target);
+        String filter = args.length >= 3 ? args[2].toLowerCase(Locale.ROOT) : null;
+        if (filter != null && !filter.isEmpty()) {
+            List<String> filtered = new ArrayList<>();
+            for (String c : visible) {
+                if (c.contains(filter)) filtered.add(c);
+            }
+            visible = filtered;
+        }
+        sender.sendMessage(color("&8[&bCommandGuard&8] &7Jugador: &e" + target.getName() + " &7| Bypass: " + (bypass ? "&aSI" : "&cNO") + " &7| Visibles: &b" + visible.size()));
+        sender.sendMessage(color("&7Comandos: &f" + String.join(", ", visible)));
     }
 
     @Override
@@ -769,7 +809,7 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
                 subs.add("filtro");
             }
             if (isAdmin) {
-                subs.addAll(Arrays.asList("ps", "monturas", "bossdefense", "skills", "fixskills", "monitor", "clean", "mobcatcher", "claim", "proteccion", "hojasonica", "pechera", "libro", "lifemending", "newbie", "xray", "gancho", "reload", "version", "help"));
+                subs.addAll(Arrays.asList("ps", "monturas", "bossdefense", "skills", "fixskills", "monitor", "clean", "mobcatcher", "claim", "proteccion", "hojasonica", "pechera", "libro", "lifemending", "newbie", "xray", "gancho", "cmdcheck", "reload", "version", "help"));
             }
 
             List<String> completions = new ArrayList<>();
@@ -806,6 +846,15 @@ public class AlcatrazCommand implements CommandExecutor, TabCompleter {
             }
             if (isAdmin && args[0].equalsIgnoreCase("claim")) {
                 return Arrays.asList("create_perm", "delete", "list");
+            }
+            if (isAdmin && (args[0].equalsIgnoreCase("cmdcheck") || args[0].equalsIgnoreCase("commandcheck"))) {
+                List<String> players = new ArrayList<>();
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (p.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
+                        players.add(p.getName());
+                    }
+                }
+                return players;
             }
             if (isAdmin && Arrays.asList("mobcatcher", "hojasonica", "pechera", "libro", "lifemending", "newbie").contains(args[0].toLowerCase())) {
                 List<String> completions = new ArrayList<>();

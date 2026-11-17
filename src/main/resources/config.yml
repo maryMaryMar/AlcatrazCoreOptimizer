@@ -1468,8 +1468,647 @@ airdrop:
     launched-title: "DROP"
     launched-subtitle: "ᴅʀᴏᴘ ʟᴀɴᴢᴀᴅᴏ"
     no-permission: "ɴᴏ ᴛɪᴇɴᴇꜱ ᴘᴇʀᴍɪꜱᴏ ᴘᴀʀᴀ ᴇꜱᴛᴀ ᴀᴄᴄɪᴏɴ"
+# ----------------------------------------------------------
+# 36. MÓDULO: COMMAND GUARD (VISIBILIDAD '/' Y PERMISOS POR RANGO)
+# ----------------------------------------------------------
+command-guard:
+  enabled: true
+  bypass-permission: "alcatraz.commandguard.bypass"
+  block-namespaced: true
+  block-dotted-commands: true
+  unknown-command-default-allow: false
+  messages:
+    denied: "&8[&c✖&8] &cComando desconocido o no disponible para tu rango."
 
+  # Comandos y prefijos bloqueados siempre para evitar fuga de plugins/versión
+  blocked-commands:
+    - "pl"
+    - "plugins"
+    - "ver"
+    - "version"
+    - "about"
+    - "icanhasbukkit"
+    - "?"
+    - "bukkit"
+    - "spigot"
+    - "paper"
+    - "purpur"
+    - "leaf"
+    - "gale"
+    - "timings"
+    - "watchdog"
+    - "plugman"
+    - "plm"
+    - "commandwhitelist"
+    - "cw"
+    - "skbee"
+    - "axapi"
+    - "blueslimecore"
+    - "nightcore"
+    - "protectionlib"
+    - "emptycommand"
+    - "examplecmd"
+    - "test"
+    - "testlang"
+    - "testus"
+    - "none"
+    - "debug"
+    - "debug-event"
+    - "dc-addon"
+    - "ryzenstaff"
+    - "packet"
+    - "packetlog"
+    - "protocol"
+    - "item-info"
+    - "item-to-base64"
+    - "item-to-nbt"
+    - "serveritem"
 
+  blocked-prefixes:
+    - "ryzenstaff."
+    - "bukkit:"
+    - "minecraft:"
+    - "spigot:"
+    - "paper:"
+    - "purpur:"
+    - "leaf:"
+    - "plugmanx:"
 
+  # Ocultos en '/' aunque el jugador pueda ejecutarlos vía menú/NPC/alias
+  hide-from-tab:
+    - "dm"
+    - "deluxemenus"
+    - "uc"
+    - "ultracosmetics"
+    - "ia"
+    - "tab"
+    - "interactivechat"
+    - "ic"
+    - "evenmorefish"
+    - "playerprofiles"
+    - "toggleprofile"
+    - "unlockprofile"
+    - "abtoggle"
 
+  # Comandos con namespace permitidos solo en ejecución interna (DeluxeMenus / ConditionalEvents / Citizens)
+  allowed-namespaced:
+    - "betterrtp:rtp"
+    - "essentials:kit"
+    - "essentials:warp"
+    - "essentials:heal"
+    - "essentials:ignore"
+    - "essentials:unignore"
+    - "jobs:jobs"
+    - "notbounties:bounty"
+    - "quests:quests"
+    - "ultimateshop:shop"
+    - "ultimateshop:ultimateshop"
+    - "aegrief:claim"
+    - "aegrief:claimslist"
+    - "aegrief:abandonclaim"
+    - "aegrief:ps"
+    - "ryzenstaff:staffchat"
+    - "excellentenchants:eenchants"
 
+  # Comandos base accesibles para todos los jugadores (incluye atajos MyCommand / Bedrock / Velocity / menús)
+  always-allow:
+    - "dm"
+    - "deluxemenus"
+    - "uc"
+    - "ultracosmetics"
+    - "ia"
+    - "tab"
+    - "interactivechat"
+    - "ic"
+    - "toggleprofile"
+    - "unlockprofile"
+    - "playerprofiles"
+    - "abtoggle"
+    - "menu"
+    - "principal"
+    - "m"
+    - "guide"
+    - "guia"
+    - "help"
+    - "discord"
+    - "store"
+    - "tienda"
+    - "pipon"
+    - "rules"
+    - "motd"
+    - "list"
+    - "dungeons"
+    - "rewards"
+    - "battlepass"
+    - "carreras"
+    - "carrera"
+    - "boatrace"
+    - "boatracing"
+    - "alquimista"
+    - "alchemist"
+    - "pociones"
+    - "sellwands"
+    - "varas"
+    - "varaventa"
+    - "varitas"
+    - "swshop"
+    - "settings"
+    - "souls"
+    - "soul"
+    - "toolskins"
+    - "vote"
+    - "idioma"
+    - "emoji"
+    - "emojis"
+    - "honestamente"
+    - "bedrock"
+    - "ge"
+    - "offhand"
+    - "linkaccount"
+    - "unlinkaccount"
+    - "emotes"
+    - "sit"
+    - "gbellyflop"
+    - "gcrawl"
+    - "glay"
+    - "glegsup"
+    - "gsit"
+    - "gspin"
+    - "marry"
+    - "pack"
+    - "resourcepack"
+    - "texturas"
+    - "texturepack"
+    - "duel"
+    - "duels"
+    - "duelo"
+    - "duelos"
+    - "spectate"
+    - "newbieprotection"
+    - "pvp"
+    - "newbie"
+    - "proteccionnovato"
+    - "togglepvp"
+    - "pvpstats"
+    - "grace"
+    - "killrecaps"
+    - "deathmessagestoggle"
+    - "kittys"
+    - "mici"
+    - "kitty"
+    - "kitmici"
+    - "kitkittys"
+    - "honey"
+    - "kithoney"
+    - "miel"
+    - "kitmiel"
+    - "b"
+    - "backpackplus"
+    - "evento"
+    - "ps"
+    - "psshop"
+    - "protections_shop"
+    - "protes"
+    - "piedras"
+    - "protectionstones"
+    - "claim"
+    - "jobs"
+    - "quests"
+    - "dquests"
+    - "odailyquests"
+    - "skills"
+    - "skill"
+    - "skillrank"
+    - "skilltop"
+    - "mana"
+    - "stats"
+    - "grave"
+    - "graves"
+    - "axgrave"
+    - "axgraves"
+    - "clan"
+    - "uclan"
+    - "c"
+    - "report"
+    - "profile"
+    - "vanel"
+    - "login"
+    - "l"
+    - "register"
+    - "reg"
+    - "changepass"
+    - "changepassword"
+    - "premium"
+    - "cracked"
+    - "autologin"
+    - "hub"
+    - "lobby"
+
+  # Mapa real de permisos por comando/alias (se evalúa con player.hasPermission en tiempo real)
+  permission-map:
+    # Tienda & Economía jugador
+    shop: ["ultimateshop.menu"]
+    ultimateshop: ["ultimateshop.menu"]
+    s: ["ultimateshop.menu"]
+    buy: ["ultimateshop.menu"]
+    farm: ["ultimateshop.menu"]
+    farmer: ["ultimateshop.menu"]
+    sell: ["ultimateshop.sellall"]
+    sellall: ["ultimateshop.sellall"]
+    vender: ["ultimateshop.sellall"]
+    vendertodo: ["ultimateshop.sellall"]
+    sellhand: ["ultimateshop.sellhand"]
+    bal: ["essentials.balance"]
+    balance: ["essentials.balance"]
+    baltop: ["essentials.balancetop"]
+    balancetop: ["essentials.balancetop"]
+    money: ["essentials.balance"]
+    pay: ["essentials.pay"]
+    wallet: ["coinsengine.command.currency.balance", "coinsengine.*"]
+    coins: ["coinsengine.command.currency.balance", "coinsengine.*"]
+    coinsengine: ["coinsengine.*"]
+
+    # RTP & Viajes
+    rtp: ["betterrtp.use"]
+    wild: ["betterrtp.use"]
+    randomtp: ["betterrtp.use"]
+    tpr: ["betterrtp.use"]
+    rtp_nether: ["betterrtp.world.world_nether", "betterrtp.world.*"]
+    rtp_end: ["betterrtp.world.world_the_end", "betterrtp.world.*"]
+    nethercustom: ["betterrtp.world"]
+    customnether: ["betterrtp.world"]
+    endcustom: ["betterrtp.world"]
+    customend: ["betterrtp.world"]
+    betterrtp: ["betterrtp.use", "betterrtp.admin", "betterrtp.*"]
+
+    # Teletransporte, Homes, Warps, Spawn, Kits (Essentials)
+    spawn: ["essentials.spawn"]
+    warp: ["essentials.warp"]
+    warps: ["essentials.warp"]
+    warpinfo: ["essentials.warp"]
+    w: ["essentials.warp"]
+    home: ["essentials.home"]
+    homes: ["essentials.home"]
+    sethome: ["essentials.sethome"]
+    delhome: ["essentials.delhome"]
+    renamehome: ["essentials.renamehome"]
+    tpa: ["essentials.tpa"]
+    tpahere: ["essentials.tpahere"]
+    tpaccept: ["essentials.tpaccept"]
+    tpyes: ["essentials.tpaccept"]
+    tpdeny: ["essentials.tpdeny"]
+    tpno: ["essentials.tpdeny"]
+    tpacancel: ["essentials.tpacancel"]
+    back: ["essentials.back"]
+    deathback: ["essentials.back.ondeath"]
+    afk: ["essentials.afk"]
+    playtime: ["essentials.playtime"]
+    kit: ["essentials.kit"]
+    kits: ["essentials.kit"]
+    k: ["essentials.kit"]
+    showkit: ["essentials.kit"]
+    msg: ["essentials.msg"]
+    tell: ["essentials.msg"]
+    whisper: ["essentials.msg"]
+    pm: ["essentials.msg"]
+    r: ["essentials.r", "essentials.msg"]
+    reply: ["essentials.r", "essentials.msg"]
+    mail: ["essentials.mail"]
+
+    # Subastas, PlayerWarps, Trade, Recompensas, Pesca, Cosmeticos base
+    ah: ["pa.open", "pa.auction"]
+    pa: ["pa.open", "pa.auction"]
+    pauction: ["pa.open", "pa.auction"]
+    playerauctions: ["pa.open", "pa.auction"]
+    pw: ["playerwarps.use", "playerwarps.pwarp"]
+    pwarp: ["playerwarps.use", "playerwarps.pwarp"]
+    playerwarps: ["playerwarps.use", "playerwarps.pwarp"]
+    trade: ["axtrade.trade"]
+    axtrade: ["axtrade.trade"]
+    bounty: ["notbounties.basic", "notbounties.view"]
+    notbounties: ["notbounties.basic", "notbounties.view"]
+    notbountiesadmin: ["notbounties.admin"]
+    emf: ["emf.shop", "emf.*"]
+    evenmorefish: ["emf.shop", "emf.*"]
+    emfa: ["emf.admin", "emf.*"]
+    bloons: ["bloons.equip", "bloons.unequip"]
+    glow: ["fancyglow.command.color"]
+    chatcolor: ["chatcolor.gui", "chatcolor.use", "chatcolor.change.self"]
+    chatgames: ["chatgames.toggle"]
+    chatgame: ["chatgames.toggle"]
+    skins: ["skinsrestorer.player", "skinsrestorer.command.gui", "skinsrestorer.command.set"]
+    sr: ["skinsrestorer.player", "skinsrestorer.command.gui", "skinsrestorer.command.set"]
+    rskin: ["rskin.change.*", "skinsrestorer.player"]
+    skinhelp: ["skinsrestorer.player"]
+    skinrefresh: ["skinsrestorer.player"]
+    voicechat: ["voicechat"]
+    bt: ["besttools.use"]
+    besttools: ["besttools.use"]
+    autotranslate: ["autotranslate.use"]
+    translateme: ["autotranslate.use"]
+
+    # AlcatrazCoreOptimizer jugador + admin
+    sellwand: ["alcatraz.sellwand.use"]
+    varaventa: ["alcatraz.sellwand.use"]
+    varitas: ["alcatraz.sellwand.use"]
+    vara: ["alcatraz.sellwand.use"]
+    sw: ["alcatraz.sellwand.use"]
+    fixpp: ["alcatraz.limpiarparticulas"]
+    limpiarparticulas: ["alcatraz.limpiarparticulas"]
+    trash: ["alcatraz.trash.use"]
+    basurero: ["alcatraz.trash.use"]
+    papelera: ["alcatraz.trash.use"]
+    lock: ["alcatraz.lock.use"]
+    candado: ["alcatraz.lock.use"]
+    bloquear: ["alcatraz.lock.use"]
+    cprivate: ["alcatraz.lock.use"]
+    privado: ["alcatraz.lock.use"]
+    acosmetics: ["alcatraz.cosmetics.use"]
+    cosmetics: ["alcatraz.cosmetics.use"]
+    cosmetic: ["alcatraz.cosmetics.use"]
+    cosmeticos: ["alcatraz.cosmetics.use"]
+    monturas: ["alcatraz.mounts.use"]
+    montura: ["alcatraz.mounts.use"]
+    mounts: ["alcatraz.mounts.use"]
+    mount: ["alcatraz.mounts.use"]
+    mascotas: ["alcatraz.mounts.use"]
+    mascota: ["alcatraz.mounts.use"]
+    pets: ["alcatraz.mounts.use"]
+    pet: ["alcatraz.mounts.use"]
+    chatbubbles: ["alcatraz.chatbubbles.use"]
+    cb: ["alcatraz.chatbubbles.use"]
+    bocadillos: ["alcatraz.chatbubbles.use"]
+    bocadillo: ["alcatraz.chatbubbles.use"]
+    globos: ["alcatraz.chatbubbles.use"]
+    globo: ["alcatraz.chatbubbles.use"]
+    alcatraz: ["alcatraz.admin"]
+    alcatrazcore: ["alcatraz.admin"]
+    alcatrazoptimizer: ["alcatraz.admin"]
+    pv: ["alcatraz.pv.admin", "alcatraz.admin"]
+    playervault: ["alcatraz.pv.admin", "alcatraz.admin"]
+    vault: ["alcatraz.pv.admin", "alcatraz.admin"]
+    uar: ["uar.admin", "alcatraz.autorestart.admin"]
+    ultimateautorestart: ["uar.admin", "alcatraz.autorestart.admin"]
+    ar: ["uar.admin", "alcatraz.autorestart.admin"]
+    uad: ["alcatraz.airdrop.admin", "universairdrop.admin", "alcatraz.admin"]
+    universairdrop: ["alcatraz.airdrop.admin", "universairdrop.admin", "alcatraz.admin"]
+    airdrop: ["alcatraz.airdrop.admin", "universairdrop.admin", "alcatraz.admin"]
+    forcepack: ["alcatraz.pack.force", "alcatraz.pack.staff", "alcatraz.admin"]
+    forcebd: ["alcatraz.pack.forcebd", "alcatraz.pack.staff", "alcatraz.admin"]
+    hojasonica: ["sonicblade.admin", "alcatraz.admin"]
+    netheriteelytra: ["netheriteelytra.admin", "alcatraz.admin"]
+    elytrachest: ["netheriteelytra.admin", "alcatraz.admin"]
+    elytrabook: ["netheriteelytra.admin", "alcatraz.admin"]
+    pechera: ["netheriteelytra.admin", "alcatraz.admin"]
+    libro: ["netheriteelytra.admin", "alcatraz.admin"]
+    lifemending: ["lifemending.admin", "alcatraz.admin"]
+    lm: ["lifemending.admin", "alcatraz.admin"]
+    mobcatcher: ["alcatraz.admin"]
+    bossdefense: ["alcatraz.bossdefense", "alcatraz.admin"]
+    defensaboss: ["alcatraz.bossdefense", "alcatraz.admin"]
+    bossdef: ["alcatraz.bossdefense", "alcatraz.admin"]
+    xray: ["alcatraz.xray.admin", "alcatraz.admin"]
+    antixray: ["alcatraz.xray.admin", "alcatraz.admin"]
+    grapplinghook: ["alcatraz.grapplinghook.admin", "alcatraz.admin"]
+    gancho: ["alcatraz.grapplinghook.admin", "alcatraz.admin"]
+    chatfilter: ["alcatraz.chatfilter.admin", "alcatraz.admin"]
+
+    # Rango Zero (Guardian) en adelante
+    hat: ["essentials.hat"]
+    workbench: ["essentials.workbench"]
+    wb: ["essentials.workbench"]
+    craft: ["essentials.workbench"]
+    ignore: ["essentials.ignore"]
+    unignore: ["essentials.ignore"]
+    msgtoggle: ["essentials.msgtoggle"]
+    paytoggle: ["essentials.paytoggle"]
+    payconfirmtoggle: ["essentials.payconfirmtoggle"]
+    tptoggle: ["essentials.tptoggle"]
+    rtoggle: ["essentials.rtoggle"]
+    abandonclaim: ["griefprevention.claims"]
+    abandonallclaims: ["griefprevention.claims"]
+    abandontoplevelclaim: ["griefprevention.claims"]
+    trust: ["griefprevention.claims"]
+    tr: ["griefprevention.claims"]
+    untrust: ["griefprevention.claims"]
+    unt: ["griefprevention.claims"]
+    containertrust: ["griefprevention.claims"]
+    accesstrust: ["griefprevention.claims"]
+    clantrust: ["griefprevention.claims"]
+    trustlist: ["griefprevention.claims"]
+    claims: ["griefprevention.claims"]
+    claimslist: ["griefprevention.claims"]
+    extendclaim: ["griefprevention.claims"]
+    subdivideclaims: ["griefprevention.claims"]
+    trapped: ["griefprevention.claims"]
+    buyclaimblocks: ["griefprevention.claims"]
+    sellclaimblocks: ["griefprevention.claims"]
+
+    # Rango Hunter (Champion) en adelante
+    enderchest: ["essentials.enderchest"]
+    ec: ["essentials.enderchest"]
+    echest: ["essentials.enderchest"]
+    disposal: ["essentials.disposal"]
+    near: ["essentials.near"]
+    recipe: ["essentials.recipe"]
+    recipes: ["essentials.recipe"]
+
+    # Rango Lord (Warlord) en adelante
+    feed: ["essentials.feed"]
+    eat: ["essentials.feed"]
+
+    # Rango Elemental (Titan) / Media / Celebridad
+    heal: ["essentials.heal"]
+    repair: ["essentials.repair"]
+    fix: ["essentials.repair"]
+    suicide: ["essentials.suicide"]
+    escala: ["escala.use"]
+    altura: ["escala.use"]
+    scale: ["escala.use"]
+
+    # Rango Scorpion / Vouchers
+    fly: ["essentials.fly"]
+    anvil: ["essentials.anvil"]
+    cartographytable: ["essentials.cartographytable"]
+    condense: ["essentials.condense"]
+    grindstone: ["essentials.grindstone"]
+    itemname: ["essentials.itemname", "itemedit.itemedit.rename"]
+    rename: ["essentials.itemname", "itemedit.itemedit.rename"]
+    loom: ["essentials.loom"]
+    nick: ["essentials.nick"]
+    nickname: ["essentials.nick"]
+    smithingtable: ["essentials.smithingtable"]
+    stonecutter: ["essentials.stonecutter"]
+
+    # Staff (t-helper -> helper -> mod -> admin -> dev -> headadmin)
+    sc: ["ryzenstaff.staffchat"]
+    staffchat: ["ryzenstaff.staffchat"]
+    ac: ["ryzenstaff.adminchat"]
+    adminchat: ["ryzenstaff.adminchat"]
+    mute: ["essentials.mute", "ryzenstaff.punishment"]
+    tempmute: ["essentials.tempmute", "ryzenstaff.punishment"]
+    unmute: ["essentials.unmute", "ryzenstaff.punishment"]
+    reports: ["ryzenstaff.reports", "ryzenstaff.reports.manage"]
+    warn: ["ryzenstaff.warn", "ryzenstaff.punishment"]
+    support: ["ryzenstaff.support.use"]
+    helpop: ["essentials.helpop"]
+    whois: ["essentials.whois"]
+    ping: ["essentials.ping"]
+    checkalts: ["ryzenstaff.checkalts"]
+    examine: ["ryzenstaff.examine"]
+    freeze: ["ryzenstaff.freeze"]
+    ban: ["essentials.ban", "ryzenstaff.punishment"]
+    tempban: ["essentials.tempban", "ryzenstaff.punishment"]
+    unban: ["essentials.unban"]
+    pardon: ["essentials.unban", "minecraft.command.pardon"]
+    banip: ["essentials.banip"]
+    tempbanip: ["essentials.banip"]
+    unbanip: ["essentials.unbanip"]
+    kick: ["essentials.kick"]
+    invsee: ["essentials.invsee"]
+    gm: ["essentials.gamemode", "minecraft.command.gamemode", "bukkit.command.gamemode"]
+    gamemode: ["essentials.gamemode", "minecraft.command.gamemode", "bukkit.command.gamemode"]
+    broadcast: ["essentials.broadcast"]
+    bc: ["essentials.broadcast"]
+    co: ["coreprotect.lookup", "coreprotect.inspect", "coreprotect.co", "coreprotect.*"]
+    coreprotect: ["coreprotect.coreprotect", "coreprotect.*"]
+    tp: ["essentials.tp", "minecraft.command.tp"]
+    tphere: ["essentials.tphere"]
+    tpo: ["essentials.tpo", "essentials.tp"]
+    tpoffline: ["essentials.tpoffline", "essentials.tp"]
+    tpohere: ["essentials.tpohere", "essentials.tphere"]
+    tppos: ["essentials.tppos"]
+    tpall: ["essentials.tpall"]
+    tpaall: ["essentials.tpaall"]
+    top: ["essentials.top"]
+    jump: ["essentials.jump"]
+    thru: ["essentials.thru"]
+    ascend: ["essentials.ascend"]
+    descend: ["essentials.descend"]
+    vanish: ["essentials.vanish", "ryzenstaff.vanish"]
+    v: ["essentials.vanish", "ryzenstaff.vanish"]
+    anuncio: ["servidor.anuncio"]
+    jail: ["ryzenstaff.jail", "ryzenstaff.punishment"]
+    unjail: ["ryzenstaff.unjail", "ryzenstaff.punishment"]
+    togglejail: ["ryzenstaff.jail", "ryzenstaff.punishment"]
+    jails: ["ryzenstaff.jail.list"]
+    socialspy: ["ryzenstaff.socialspy"]
+    staffmode: ["ryzenstaff.staffmode"]
+    softmute: ["ryzenstaff.punishment"]
+    revive: ["ryzenstaff.revive"]
+    clearinventory: ["essentials.clearinventory"]
+    ext: ["essentials.ext"]
+    extinguish: ["essentials.ext"]
+    god: ["essentials.god"]
+    ungod: ["essentials.god"]
+    seen: ["essentials.seen"]
+    speed: ["essentials.speed"]
+    whitelist: ["bukkit.command.whitelist", "minecraft.command.whitelist"]
+    keyall: ["alcatraz.admin"]
+    setwarp: ["essentials.setwarp"]
+    delwarp: ["essentials.delwarp"]
+    setspawn: ["essentials.setspawn"]
+    skull: ["essentials.skull"]
+    more: ["essentials.more"]
+    kill: ["essentials.kill"]
+    nuke: ["essentials.nuke"]
+    weather: ["essentials.weather"]
+    time: ["essentials.time"]
+    eco: ["essentials.eco"]
+    economy: ["essentials.eco"]
+    restart: ["bukkit.command.restart"]
+    stop: ["bukkit.command.stop"]
+    save-all: ["bukkit.command.save.perform"]
+    ee: ["excellentenchants.admin"]
+    eenchants: ["excellentenchants.admin"]
+
+    # Dev / Admin avanzado / WorldEdit / LuckPerms / Citizens / MythicMobs
+    auraskills: ["auraskills.*"]
+    axafkzone: ["axafkzone.admin"]
+    citizens: ["citizens.*"]
+    npc: ["citizens.*"]
+    trait: ["citizens.*"]
+    crazyvouchers: ["crazyvouchers.admin", "crazyvouchers.*"]
+    crates: ["excellentcrates.admin", "excellentcrates.*"]
+    itemedit: ["itemedit.itemedit", "itemedit.*"]
+    itemlore: ["itemedit.itemlore", "itemedit.*"]
+    lp: ["luckperms.user.info", "luckperms.*"]
+    luckperms: ["luckperms.user.info", "luckperms.*"]
+    mm: ["mythicmobs.admin", "mythicmobs.*"]
+    mythicmobs: ["mythicmobs.admin", "mythicmobs.*"]
+    mythicmobsmenu: ["mythicmobs.admin", "mythicmobs.*"]
+    inventoryrollbackplus: ["inventoryrollbackplus.viewbackups", "inventoryrollbackplus.*"]
+    sk: ["skript.admin"]
+    skript: ["skript.admin"]
+    conditionalevents: ["conditionalevents.admin"]
+    mycmd: ["mycommand.admin"]
+    mycommand: ["mycommand.admin"]
+    worldguard: ["worldguard.region.info", "worldguard.region.*"]
+    region: ["worldguard.region.info", "worldguard.region.*"]
+    worldedit: ["worldedit.wand", "worldedit.*"]
+    "/wand": ["worldedit.wand"]
+    "/pos1": ["worldedit.selection.pos"]
+    "/pos2": ["worldedit.selection.pos"]
+    "/set": ["worldedit.region.set"]
+    "/replace": ["worldedit.region.replace"]
+    "/copy": ["worldedit.clipboard.copy"]
+    "/paste": ["worldedit.clipboard.paste"]
+    "/undo": ["worldedit.history.undo"]
+    "/redo": ["worldedit.history.redo"]
+    schematic: ["worldedit.schematic.load", "worldedit.schematic.*"]
+    spark: ["spark"]
+    tps: ["spark", "bukkit.command.tps"]
+    mspt: ["spark", "paper.command.mspt"]
+    ignoreclaims: ["griefprevention.ignoreclaims"]
+    adminclaims: ["griefprevention.adminclaims"]
+    deleteclaim: ["griefprevention.deleteclaims"]
+    deleteallclaims: ["griefprevention.deleteclaims"]
+    adjustbonusclaimblocks: ["griefprevention.adjustbonusclaimblocks"]
+    claimbook: ["griefprevention.claims"]
+
+  # Subcomandos administrativos protegidos dentro de comandos públicos
+  subcommand-permissions:
+    "evento setspawn": ["alcatraz.admin"]
+    "evento abrir": ["alcatraz.admin"]
+    "evento tpall": ["alcatraz.admin"]
+    "chatbubbles reload": ["alcatraz.admin"]
+    "cb reload": ["alcatraz.admin"]
+    "pack force": ["alcatraz.pack.force", "alcatraz.pack.staff", "alcatraz.admin"]
+    "pack forcebd": ["alcatraz.pack.forcebd", "alcatraz.pack.staff", "alcatraz.admin"]
+    "pack reset": ["alcatraz.pack.reset", "alcatraz.pack.staff", "alcatraz.admin"]
+    "pack reload": ["alcatraz.pack.staff", "alcatraz.admin"]
+    "resourcepack reload": ["alcatraz.pack.staff", "alcatraz.admin"]
+    "sellwand give": ["alcatraz.sellwand.admin", "alcatraz.admin"]
+    "sellwand reload": ["alcatraz.sellwand.admin", "alcatraz.admin"]
+    "acosmetics give": ["alcatraz.cosmetics.admin", "alcatraz.admin"]
+    "acosmetics reload": ["alcatraz.cosmetics.admin", "alcatraz.admin"]
+    "monturas reload": ["alcatraz.mounts.admin", "alcatraz.admin"]
+    "montura reload": ["alcatraz.mounts.admin", "alcatraz.admin"]
+    "mounts reload": ["alcatraz.mounts.admin", "alcatraz.admin"]
+    "jobs reload": ["jobs.admin"]
+    "jobs admin": ["jobs.admin"]
+    "quests admin": ["quests.admin"]
+    "quests reload": ["quests.admin"]
+    "betterrtp reload": ["betterrtp.admin", "betterrtp.*"]
+    "betterrtp admin": ["betterrtp.admin", "betterrtp.*"]
+    "pa reload": ["pa.admin"]
+    "pa admin": ["pa.admin"]
+    "pwarp reload": ["playerwarps.admin"]
+    "pw reload": ["playerwarps.admin"]
+    "uclan admin": ["uclans.admin", "uclans.*"]
+    "uclan reload": ["uclans.admin", "uclans.*"]
+    "clan admin": ["uclans.admin", "uclans.*"]
+    "clan reload": ["uclans.admin", "uclans.*"]
+    "notbounties reload": ["notbounties.admin"]
+    "notbounties admin": ["notbounties.admin"]
+    "bounty reload": ["notbounties.admin"]
+    "dm reload": ["deluxemenus.admin"]
+    "dm list": ["deluxemenus.admin"]
+    "deluxemenus reload": ["deluxemenus.admin"]
+    "deluxemenus list": ["deluxemenus.admin"]
+    "tab reload": ["tab.admin"]
+    "tab debug": ["tab.admin"]
+    "tab cpu": ["tab.admin"]
+    "ia reload": ["ia.admin"]
+    "ia zip": ["ia.admin"]
+    "ia give": ["ia.admin"]

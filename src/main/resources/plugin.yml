@@ -429,5 +429,12 @@ permissions:
   universairdrop.play:
     default: true
 
+  alcatraz.commandguard.bypass:
+    description: Permite ver y ejecutar todos los comandos sin restricción de CommandGuard.
+    default: op
+  alcatraz.commandguard.admin:
+    description: Permite usar herramientas de diagnóstico de CommandGuard (/alcatraz cmdcheck).
+    default: op
+
 softdepend: [Vault, WorldGuard, GriefPrevention, floodgate, Geyser-Spigot, PlaceholderAPI, ModelEngine]
 
