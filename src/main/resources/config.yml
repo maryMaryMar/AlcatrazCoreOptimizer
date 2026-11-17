@@ -1353,7 +1353,7 @@ airdrop:
 
   automatic:
     enabled: true
-    interval-minutes: 45
+    interval-minutes: 120
     mode: "ALEATORIO"
     require-online-players: true
 
